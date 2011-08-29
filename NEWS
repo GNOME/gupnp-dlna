@@ -1,3 +1,17 @@
+0.6.3
+=====
+
+- Add profile for MPEG4_P2_MP4_SP_L6_AAC.
+- Respect ACLOCAL_FLAGS environment variable
+
+All contributors to this release:
+
+Jens Georg <mail@jensge.org>
+Lukasz Pawlik <lucas.pawlik@gmail.com>
+
+Bugs fixed:
+- bgo#655504
+
 0.6.2
 =====
 
