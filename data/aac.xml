@@ -21,7 +21,7 @@
     <restriction id="AAC-320" type="audio">
       <parent name="AAC" />
 
-      <field name="bitrate" type="int">
+      <field name="bitrate" type="int" used="in-strict">
         <range min="0" max="320000" />
       </field>
     </restriction>
