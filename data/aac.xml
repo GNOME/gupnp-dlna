@@ -48,8 +48,10 @@
   </restrictions>
 
   <dlna-profile name="AAC_ADTS_320" mime="audio/vnd.dlna.adts">
-    <parent name="AAC-ADTS" />
-    <parent name="AAC-320" />
+    <restriction type="audio">
+      <parent name="AAC-ADTS" />
+      <parent name="AAC-320" />
+    </restriction>
   </dlna-profile>
 
   <dlna-profile name="AAC_ISO_320" mime="audio/mp4">
@@ -63,8 +65,10 @@
   </dlna-profile>
 
   <dlna-profile name="AAC_ADTS" mime="audio/vnd.dlna.adts">
-    <parent name="AAC" />
-    <parent name="AAC-576" />
+    <restriction type="audio">
+      <parent name="AAC-ADTS" />
+      <parent name="AAC-576" />
+    </restriction>
   </dlna-profile>
 
   <dlna-profile name="AAC_ISO" mime="audio/mp4">
@@ -78,8 +82,10 @@
   </dlna-profile>
 
   <dlna-profile name="AAC_MULT5_ADTS" mime="audio/vnd.dlna.adts">
-    <parent name="AAC" />
-    <parent name="AAC-MULT5" />
+    <restriction type="audio">
+      <parent name="AAC-ADTS" />
+      <parent name="AAC-MULT5" />
+    </restriction>
   </dlna-profile>
 
   <dlna-profile name="AAC_MULT5_ISO" mime="audio/mp4">
