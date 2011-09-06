@@ -88,6 +88,17 @@
       </field>
     </restriction>
 
+    <restriction id="SP_4000" type="video">
+        <parent name="SP" />
+
+        <field name="level" type="string">
+            <value>4a</value>
+        </field>
+        <field name="bitrate" type="int" used="in-strict">
+            <range min="1" max="4000000" />
+        </field>
+    </restriction>
+
     <restriction id="SP_8000" type="video">
       <parent name="SP" />
 
@@ -96,6 +107,17 @@
       </field>
       <field name="bitrate" type="int" used="in-strict">
         <range min="1" max="8000000" />
+      </field>
+    </restriction>
+
+    <restriction id="SP_12000" type="video">
+      <parent name="SP" />
+
+      <field name="level" type="string">
+        <value>6</value>
+      </field>
+      <field name="bitrate" type="int" used="in-strict">
+        <range min="1" max="12000000" />
       </field>
     </restriction>
 
