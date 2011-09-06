@@ -950,6 +950,15 @@
     </restriction>
   </dlna-profile>
 
+  <dlna-profile name="MPEG4_P2_MP4_SP_L5_AAC" mime="video/mp4"
+    base-profile="SP_L5">
+    <parent name="MP4" />
+
+    <restriction type="audio">
+        <parent name="AAC" />
+    </restriction>
+  </dlna-profile>
+
   <dlna-profile name="MPEG4_P2_MP4_SP_L6_AAC" mime="video/mp4"
     base-profile="SP_L6">
     <parent name="MP4" />
