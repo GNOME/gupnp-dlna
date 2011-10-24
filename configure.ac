@@ -9,9 +9,9 @@ AC_CONFIG_SRCDIR(libgupnp-dlna/gupnp-dlna-profile.h)
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
 
-AM_INIT_AUTOMAKE()
+AM_INIT_AUTOMAKE([1.11 tar-ustar no-dist-gzip dist-xz])
 
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
+AM_SILENT_RULES([yes])
 
 dnl library versioning
 dnl Increase when changing the API
