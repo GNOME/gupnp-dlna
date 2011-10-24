@@ -5,9 +5,10 @@ AC_INIT([gupnp-dlna],
         [gupnp-dlna],
         [http://www.gupnp.org/])
 
+AC_CONFIG_HEADERS([config.h])
 AC_CONFIG_SRCDIR(libgupnp-dlna/gupnp-dlna-profile.h)
-AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
+AC_CONFIG_AUX_DIR([build-aux])
 
 AM_INIT_AUTOMAKE([1.11 tar-ustar no-dist-gzip dist-xz])
 
