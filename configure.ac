@@ -1,9 +1,17 @@
-AC_PREREQ(2.53)
-AC_INIT(gupnp-dlna, 0.6.4, http://www.gupnp.org/)
-AM_INIT_AUTOMAKE()
+AC_PREREQ([2.63])
+AC_INIT([gupnp-dlna],
+        [0.6.4],
+        [https://bugzilla.gnome.org/enter_bug.cgi?product=gupnp&component=gupnp-dlna],
+        [gupnp-dlna],
+        [http://www.gupnp.org/])
+
 AC_CONFIG_SRCDIR(libgupnp-dlna/gupnp-dlna-profile.h)
 AM_CONFIG_HEADER(config.h)
 AC_CONFIG_MACRO_DIR([m4])
+
+AM_INIT_AUTOMAKE()
+
+m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])])
 
 dnl library versioning
 dnl Increase when changing the API
@@ -20,13 +28,13 @@ GUPNP_DLNA_AGE=0
 GUPNP_DLNA_VERSION_INFO="$GUPNP_DLNA_CURRENT:$GUPNP_DLNA_REVISION:$GUPNP_DLNA_AGE"
 AC_SUBST(GUPNP_DLNA_VERSION_INFO)
 
-m4_ifdef([AM_SILENT_RULES],[AM_SILENT_RULES([yes])],)
-
-AC_ISC_POSIX
+# Check for programs
 AC_PROG_CC
-AC_STDC_HEADERS
-AC_LIBTOOL_WIN32_DLL
-AC_PROG_LIBTOOL
+AC_HEADER_STDC
+
+# Initialize libtool
+LT_PREREQ([2.2])
+LT_INIT([win32-dll])
 
 PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= 2.5.0)
 
@@ -55,9 +63,9 @@ fi
 
 GOBJECT_INTROSPECTION_CHECK([0.6.4])
 
-GTK_DOC_CHECK([1.0])
+GTK_DOC_CHECK([1.11],[--flavour no-tmpl])
 
-AC_OUTPUT([
+AC_CONFIG_FILES([
 Makefile
 libgupnp-dlna/Makefile
 tools/Makefile
@@ -69,3 +77,4 @@ data/Makefile
 gupnp-dlna-1.0.pc
 gupnp-dlna-1.0-uninstalled.pc
 ])
+AC_OUTPUT
