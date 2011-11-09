@@ -804,4 +804,62 @@
 
     <parent name="MP3" />
   </dlna-profile>
+
+  <dlna-profile name="AVC_MP4_HP_HD_EAC3" mime="video/mp4">
+    <parent name="MP4" />
+    <parent name="AVC-L4" />
+    <parent name="EAC3-3024" />
+
+    <restriction type="video">
+      <field name="profile" type="string">
+        <value>high</value>
+        <value>main</value>
+        <value>baseline</value>
+      </field>
+      <field name="bitrate" type="int" used="in-strict">
+        <range min="0" max="25000000" />
+      </field>
+    </restriction>
+
+    <restriction type="video" used="in-relaxed">
+      <parent name="upto1920x1080" />
+      <parent name="60fps" />
+    </restriction>
+
+    <!-- Also applies to discrete 1280x1080 and 1440x1080  -->
+    <restriction type="video" used="in-strict">
+      <parent name="upto1920x1080" />
+      <parent name="59.94fps" />
+      <field name="interlaced" type="boolean">
+        <value>true</value>
+      </field>
+    </restriction>
+    <restriction type="video" used="in-strict">
+      <parent name="upto1920x1080" />
+      <parent name="50fps" />
+      <field name="interlaced" type="boolean">
+        <value>true</value>
+      </field>
+    </restriction>
+    <restriction type="video" used="in-strict">
+      <parent name="upto1920x1080" />
+      <parent name="29.97fps" />
+    </restriction>
+    <restriction type="video" used="in-strict">
+      <parent name="upto1920x1080" />
+      <parent name="25fps" />
+    </restriction>
+
+    <!-- Also applies to 960x720 -->
+    <restriction type="video" used="in-strict">
+      <parent name="upto1280x720" />
+      <parent name="59.94fps" />
+    </restriction>
+    <restriction type="video" used="in-strict">
+      <parent name="upto1280x720" />
+      <parent name="50fps" />
+    </restriction>
+
+  </dlna-profile>
+
 </dlna-profiles>
