@@ -59,14 +59,15 @@ INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --warn-all				\
 			     --symbol-prefix=gupnp		\
 			     --identifier-prefix=GUPnP	\
-			     --add-include-path=$(top_srcdir)
+			     --add-include-path=$(top_srcdir) \
+			     --add-init-section="gst_init(NULL, NULL);"
 INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)
 
 if HAVE_INTROSPECTION
 GUPnP-DLNA-1.0.gir: libgupnp-dlna-1.0.la
 GUPnP_DLNA_1_0_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-0.10
 GUPnP_DLNA_1_0_gir_CFLAGS =  $(INCLUDES) $(AM_CFLAGS)
-GUPnP_DLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la
+GUPnP_DLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la gstreamer-0.10
 GUPnP_DLNA_1_0_gir_FILES = $(introspection_sources)
 GUPnP_DLNA_1_0_gir_NAMESPACE = GUPnP
 GUPnP_DLNA_1_0_gir_VERSION = 1.0
