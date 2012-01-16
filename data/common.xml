@@ -24,6 +24,12 @@
       </field>
     </restriction>
 
+    <restriction id="MKV" type="container">
+      <field name="name" type="string">
+        <value>video/x-matroska</value>
+      </field>
+    </restriction>
+
     <!-- Audio restrictions -->
     <restriction id="AAC" type="audio">
       <field name="name" type="string">
@@ -58,6 +64,24 @@
     </restriction>
 
     <!-- Video resolutions -->
+    <restriction id="upto1920x1152" type="video">
+      <field name="width" type="int">
+        <range min="1" max="1920" />
+      </field>
+      <field name="height" type="int">
+        <range min="1" max="1152" />
+      </field>
+    </restriction>
+
+    <restriction id="upto1920x1080" type="video">
+      <field name="width" type="int">
+        <range min="1" max="1920" />
+      </field>
+      <field name="height" type="int">
+        <range min="1" max="1080" />
+      </field>
+    </restriction>
+
     <restriction id="1920x1080" type="video">
       <field name="width" type="int" used="in-strict">
         <value>1920</value>
@@ -65,11 +89,15 @@
       <field name="height" type="int" used="in-strict">
         <value>1080</value>
       </field>
-      <field name="width" type="int" used="in-relaxed">
-        <range min="1" max="1920" />
+      <parent name="upto1920x1080" used="in-relaxed" />
+    </restriction>
+
+    <restriction id="upto1280x720" type="video">
+      <field name="width" type="int">
+        <range min="1" max="1280" />
       </field>
-      <field name="height" type="int" used="in-relaxed">
-        <range min="1" max="1080" />
+      <field name="height" type="int">
+        <range min="1" max="720" />
       </field>
     </restriction>
 
@@ -80,12 +108,7 @@
       <field name="height" type="int" used="in-strict">
         <value>720</value>
       </field>
-      <field name="width" type="int" used="in-relaxed">
-        <range min="1" max="1280" />
-      </field>
-      <field name="height" type="int" used="in-relaxed">
-        <range min="1" max="720" />
-      </field>
+      <parent name="upto1280x720" used="in-relaxed" />
     </restriction>
 
     <restriction id="625_D1" type="video">
@@ -365,6 +388,18 @@
     <restriction id="30fps" type="video">
       <field name="framerate" type="fraction">
         <range min="0/1" max="30/1" />
+      </field>
+    </restriction>
+
+    <restriction id="50fps" type="video">
+      <field name="framerate" type="fraction">
+        <range min="0/1" max="50/1" />
+      </field>
+    </restriction>
+
+    <restriction id="59.94fps" type="video">
+      <field name="framerate" type="fraction">
+        <range min="0/1" max="60000/1001" />
       </field>
     </restriction>
 
