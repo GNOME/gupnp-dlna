@@ -79,8 +79,8 @@ gupnp_dlna_profile_get_property (GObject    *object,
                         break;
 
                 case PROP_ENCODING_PROFILE:
-                        gst_value_set_mini_object (value,
-                                        GST_MINI_OBJECT (priv->enc_profile));
+                        g_value_set_object (value,
+                                            G_OBJECT (priv->enc_profile));
                         break;
 
                 case PROP_DLNA_EXTENDED:
@@ -176,13 +176,13 @@ gupnp_dlna_profile_class_init (GUPnPDLNAProfileClass *klass)
                                      G_PARAM_CONSTRUCT_ONLY);
         g_object_class_install_property (object_class, PROP_DLNA_MIME, pspec);
 
-        pspec = gst_param_spec_mini_object ("encoding-profile",
-                                            "Encoding Profile for the "
-                                            "DLNA Profile",
-                                            "GstEncodingProfile object"
-                                            "corresponding to the DLNA profile",
-                                            GST_TYPE_ENCODING_PROFILE,
-                                            G_PARAM_READABLE);
+        pspec = g_param_spec_object ("encoding-profile",
+                                     "Encoding Profile for the DLNA Profile",
+                                     "GstEncodingProfile object corresponding "
+                                     "to the DLNA profile",
+                                     GST_TYPE_ENCODING_PROFILE,
+                                     G_PARAM_READABLE);
+
         g_object_class_install_property (object_class,
                                          PROP_ENCODING_PROFILE,
                                          pspec);

@@ -49,18 +49,18 @@ static GstCaps *
 merge_caps (GstCaps *caps1, GstCaps *caps2)
 {
         GstStructure *st1, *st2;
-        GstCaps *ret;
+        GstCaps *ret = NULL;
         gboolean any = FALSE;
 
         /* If one of the caps GST_CAPS_ANY, gst_caps_merge will result in a
          * GST_CAPS_ANY, which might not be correct for us */
         if (!gst_caps_is_any (caps1) && !gst_caps_is_any (caps2)) {
                 any = TRUE;
-                gst_caps_merge (caps1, gst_caps_copy (caps2));
-                gst_caps_do_simplify (caps1);
-        }
+                ret = gst_caps_merge (caps1, gst_caps_ref (caps2));
+                ret = gst_caps_simplify (ret);
+        } else
+                ret = gst_caps_make_writable (caps1);
 
-        ret = gst_caps_make_writable (caps1);
         st1 = gst_caps_get_structure (ret, 0);
         if (gst_caps_get_size (caps1) == 2)
                 /* Non-merged fields were copied to a second structure in caps
@@ -586,14 +586,14 @@ process_dlna_profile (xmlTextReaderPtr   reader,
                                 break;
 
                         if (restr->type == GST_TYPE_ENCODING_CONTAINER_PROFILE)
-                                gst_caps_merge (temp_container,
-                                                gst_caps_copy (restr->caps));
+                                temp_container = gst_caps_merge (temp_container,
+                                                                 gst_caps_ref (restr->caps));
                         else if (restr->type == GST_TYPE_ENCODING_VIDEO_PROFILE)
-                                gst_caps_merge (temp_video,
-                                                gst_caps_copy (restr->caps));
+                                temp_video = gst_caps_merge (temp_video,
+                                                             gst_caps_ref (restr->caps));
                         else if (restr->type == GST_TYPE_ENCODING_AUDIO_PROFILE)
-                                gst_caps_merge (temp_audio,
-                                                gst_caps_copy (restr->caps));
+                                temp_audio = gst_caps_merge (temp_audio,
+                                                             gst_caps_ref (restr->caps));
                         else
                                 g_assert_not_reached ();
 
@@ -636,14 +636,14 @@ process_dlna_profile (xmlTextReaderPtr   reader,
                                        gupnp_dlna_profile_get_container_caps (base);
 
                 if (GST_IS_CAPS (video_caps))
-                        gst_caps_merge (temp_video,
-                                        gst_caps_copy (video_caps));
+                        temp_video = gst_caps_merge (temp_video,
+                                                     gst_caps_ref ((GstCaps *) video_caps));
                 if (GST_IS_CAPS (audio_caps))
-                        gst_caps_merge (temp_audio,
-                                        gst_caps_copy (audio_caps));
+                        temp_audio = gst_caps_merge (temp_audio,
+                                                     gst_caps_ref ((GstCaps *) audio_caps));
                 if (GST_IS_CAPS (container_caps))
-                        gst_caps_merge (temp_container,
-                                        gst_caps_copy (container_caps));
+                        temp_container = gst_caps_merge (temp_container,
+                                                         gst_caps_ref ((GstCaps *) container_caps));
 
         }
 

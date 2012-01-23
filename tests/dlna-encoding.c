@@ -41,7 +41,7 @@ pad_added_cb (GstElement * uridecodebin, GstPad * pad, GstElement * encodebin)
     GstCaps *caps;
 
     /* Ask encodebin for a compatible pad */
-    caps = gst_pad_get_caps (pad);
+    caps = gst_pad_query_caps (pad, NULL);
     g_signal_emit_by_name (encodebin, "request-pad", caps, &sinkpad);
     if (caps)
       gst_caps_unref (caps);
@@ -104,7 +104,7 @@ transcode_file (gchar * uri, gchar * outputuri, GstEncodingProfile * prof)
   g_print (" Input URI  : %s\n", uri);
   g_print (" Output URI : %s\n", outputuri);
 
-  sink = gst_element_make_from_uri (GST_URI_SINK, outputuri, "sink");
+  sink = gst_element_make_from_uri (GST_URI_SINK, outputuri, "sink", NULL);
   if (G_UNLIKELY (sink == NULL)) {
     g_print ("Can't create output sink, most likely invalid output URI !\n");
     return;

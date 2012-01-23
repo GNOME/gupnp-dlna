@@ -224,7 +224,7 @@ gupnp_dlna_discoverer_class_init (GUPnPDLNADiscovererClass *klass)
                               NULL, NULL,
                               gupnp_dlna_marshal_VOID__OBJECT_BOXED,
                               G_TYPE_NONE, 2, GUPNP_TYPE_DLNA_INFORMATION,
-                              GST_TYPE_G_ERROR);
+                              G_TYPE_ERROR);
 
         /* Load DLNA profiles from disk */
         if (g_type_from_name ("GstElement")) {

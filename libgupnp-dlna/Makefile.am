@@ -65,9 +65,9 @@ INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)
 
 if HAVE_INTROSPECTION
 GUPnPDLNA-1.0.gir: libgupnp-dlna-1.0.la
-GUPnPDLNA_1_0_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-0.10
+GUPnPDLNA_1_0_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-1.0
 GUPnPDLNA_1_0_gir_CFLAGS =  $(INCLUDES) $(AM_CFLAGS)
-GUPnPDLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la gstreamer-0.10
+GUPnPDLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la gstreamer-1.0
 GUPnPDLNA_1_0_gir_FILES = $(introspection_sources)
 GUPnPDLNA_1_0_gir_NAMESPACE = GUPnPDLNA
 GUPnPDLNA_1_0_gir_VERSION = 1.0

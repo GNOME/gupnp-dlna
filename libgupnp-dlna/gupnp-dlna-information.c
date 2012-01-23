@@ -76,8 +76,8 @@ gupnp_dlna_information_get_property (GObject    *object,
                         break;
 
                 case PROP_DISCOVERER_INFO:
-                        gst_value_set_mini_object (value,
-                                                   GST_MINI_OBJECT(priv->info));
+                        g_value_set_object (value,
+                                            G_OBJECT (priv->info));
 
                         break;
 
@@ -116,7 +116,7 @@ gupnp_dlna_information_set_property (GObject      *object,
                         if (priv->info)
                                 gst_discoverer_info_unref (priv->info);
                         priv->info = GST_DISCOVERER_INFO
-                                (gst_value_dup_mini_object (value));
+                                        (g_value_dup_object (value));
 
                         break;
 
@@ -174,13 +174,13 @@ gupnp_dlna_information_class_init (GUPnPDLNAInformationClass *klass)
                                      G_PARAM_CONSTRUCT_ONLY);
         g_object_class_install_property (object_class, PROP_DLNA_MIME, pspec);
 
-        pspec = gst_param_spec_mini_object ("info",
-                                            "Stream metadata",
-                                            "Metadata of the stream in a "
-                                            "GstDiscovererInfo structure",
-                                            GST_TYPE_DISCOVERER_INFO,
-                                            G_PARAM_READWRITE |
-                                            G_PARAM_CONSTRUCT_ONLY);
+        pspec = g_param_spec_object ("info",
+                                     "Stream metadata",
+                                     "Metadata of the stream in a "
+                                     "GstDiscovererInfo structure",
+                                     GST_TYPE_DISCOVERER_INFO,
+                                     G_PARAM_READWRITE |
+                                     G_PARAM_CONSTRUCT_ONLY);
         g_object_class_install_property (object_class,
                                          PROP_DISCOVERER_INFO,
                                          pspec);
