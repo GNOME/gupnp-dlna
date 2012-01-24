@@ -57,25 +57,25 @@ libgupnp_dlna_1_0_la_LIBADD = $(LIBXML_LIBS) \
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS = --warn-all				\
-			     --symbol-prefix=gupnp		\
-			     --identifier-prefix=GUPnP	\
+			     --symbol-prefix=gupnp_dlna		\
+			     --identifier-prefix=GUPnPDLNA	\
 			     --add-include-path=$(top_srcdir) \
 			     --add-init-section="gst_init(NULL, NULL);"
 INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)
 
 if HAVE_INTROSPECTION
-GUPnP-DLNA-1.0.gir: libgupnp-dlna-1.0.la
-GUPnP_DLNA_1_0_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-0.10
-GUPnP_DLNA_1_0_gir_CFLAGS =  $(INCLUDES) $(AM_CFLAGS)
-GUPnP_DLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la gstreamer-0.10
-GUPnP_DLNA_1_0_gir_FILES = $(introspection_sources)
-GUPnP_DLNA_1_0_gir_NAMESPACE = GUPnP
-GUPnP_DLNA_1_0_gir_VERSION = 1.0
+GUPnPDLNA-1.0.gir: libgupnp-dlna-1.0.la
+GUPnPDLNA_1_0_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-0.10
+GUPnPDLNA_1_0_gir_CFLAGS =  $(INCLUDES) $(AM_CFLAGS)
+GUPnPDLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la gstreamer-0.10
+GUPnPDLNA_1_0_gir_FILES = $(introspection_sources)
+GUPnPDLNA_1_0_gir_NAMESPACE = GUPnPDLNA
+GUPnPDLNA_1_0_gir_VERSION = 1.0
 
-INTROSPECTION_GIRS += GUPnP-DLNA-1.0.gir
+INTROSPECTION_GIRS += GUPnPDLNA-1.0.gir
 
 girdir = $(datadir)/gir-1.0
-gir_DATA = GUPnP-DLNA-1.0.gir
+gir_DATA = GUPnPDLNA-1.0.gir
 
 typelibdir = $(libdir)/girepository-1.0/
 typelib_DATA = $(gir_DATA:.gir=.typelib)
