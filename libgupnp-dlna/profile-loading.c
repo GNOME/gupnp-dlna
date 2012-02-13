@@ -885,14 +885,12 @@ gupnp_dlna_load_profiles_from_disk (gboolean relaxed_mode,
 
         load_data = g_new0 (GUPnPDLNALoadState, 1);
 
-        if (load_data) {
-                load_data->files_hash = g_hash_table_new_full (g_str_hash,
-                                                               g_str_equal,
-                                                               g_free,
-                                                               NULL);
-                load_data->relaxed_mode = relaxed_mode;
-                load_data->extended_mode = extended_mode;
-        }
+        load_data->files_hash = g_hash_table_new_full (g_str_hash,
+                                                       g_str_equal,
+                                                       g_free,
+                                                       NULL);
+        load_data->relaxed_mode = relaxed_mode;
+        load_data->extended_mode = extended_mode;
 
         ret = gupnp_dlna_load_profiles_from_dir (DLNA_DATA_DIR,
                                                  load_data);
