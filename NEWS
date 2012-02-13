@@ -1,3 +1,15 @@
+0.6.5
+=====
+- Update autotools integration.
+- Add missing functions to documentation.
+- Fix warnings during GIR generation.
+- Fix GIR namespace to not clash with GUPnP's.
+
+All contributors to this release:
+
+Javier Jardón <jjardon@gnome.org>
+Jens Georg <mail@jensge.org>
+
 0.6.4
 =====
 
