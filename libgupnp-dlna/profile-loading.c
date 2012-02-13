@@ -526,7 +526,7 @@ process_restrictions (xmlTextReaderPtr reader, GUPnPDLNALoadState *data)
         }
 }
 
-static int
+static void
 process_dlna_profile (xmlTextReaderPtr   reader,
                       GList              **profiles,
                       GUPnPDLNALoadState *data)
@@ -680,8 +680,6 @@ out:
                 xmlFree (extended);
         if (base_profile)
                 xmlFree (base_profile);
-
-        return ret;
 }
 
 static GList *
