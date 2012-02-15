@@ -15,7 +15,7 @@
         <!-- XXX: need to verify channel mapping -->
         <range min="1" max="6"/>
       </field>
-      <field name="bitrate" type="int">
+      <field name="bitrate" type="int" used="in-strict">
         <range min="32000" max="6144000"/>
       </field>
     </restriction>
