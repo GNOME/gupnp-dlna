@@ -250,7 +250,7 @@
       </field>
     </restriction>
 
-    <restriction id="AVC_MKV" type="video">
+    <restriction id="AVC-L4" type="video">
       <field name="name" type="string">
         <value>video/x-h264</value>
       </field>
@@ -680,7 +680,7 @@
     <parent name="MKV" />
 
     <restriction type="video">
-      <parent name="AVC_MKV" />
+      <parent name="AVC-L4" />
 
       <field name="bitrate" type="int">
         <range min="0" max="20000000" />
@@ -726,7 +726,7 @@
     <parent name="MKV" />
 
     <restriction type="video">
-      <parent name="AVC_MKV" />
+      <parent name="AVC-L4" />
 
       <field name="bitrate" type="int">
         <range min="0" max="30000000" />
