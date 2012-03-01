@@ -604,13 +604,7 @@
 
   <dlna-profile name="AVC_MP4_MP_SD_EAC3" mime="video/mp4" >
     <parent name="MP4" />
-
-    <restriction type="audio">
-      <parent name="EAC3" />
-      <field name="bitrate" type="int" used="in-strict">
-        <range min="0" max="3024000" />
-      </field>
-    </restriction>
+    <parent name="EAC3-3024" />
 
     <restriction type="video">
       <parent name="AVC_MP" />

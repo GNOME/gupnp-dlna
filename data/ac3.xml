@@ -37,6 +37,13 @@
 	<range min="64000" max="640000"/>
       </field>
     </restriction>
+
+    <restriction id="EAC3-3024" type="audio">
+      <parent name="EAC3" />
+      <field name="bitrate" type="int" used="in-strict">
+        <range min="0" max="3024000" />
+      </field>
+    </restriction>
   </restrictions>
 
   <dlna-profile name="AC3" mime="audio/vnd.dolby.dd-raw">
