@@ -1,3 +1,13 @@
+0.6.6
+=====
+- Fix minor issues found by static code analysis
+- Add MKV profiles
+- Add AVC_MP4_*_EAC3 profiles from Harmattan
+
+All contributors to this release:
+
+Jens Georg <mail@jensge.org>
+
 0.6.5
 =====
 - Update autotools integration.
