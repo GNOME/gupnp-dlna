@@ -199,8 +199,7 @@ main (int argc, char **argv)
   GUPnPDLNAProfile *profile;
   gchar *inputuri;
 
-  if (!g_thread_supported ())
-    g_thread_init (NULL);
+  g_type_init ();
 
   ctx = g_option_context_new ("- encode URIs with GstProfile and encodebin");
   g_option_context_add_main_entries (ctx, options, NULL);
