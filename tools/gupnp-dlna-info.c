@@ -113,7 +113,7 @@ gst_stream_audio_information_to_string (GstDiscovererStreamInfo * info,
         my_g_string_append_printf (s, "Tags:\n");
         taglist = gst_discoverer_stream_info_get_tags (info);
         if (taglist) {
-                tmp = gst_structure_to_string ((GstStructure *) taglist);
+                tmp = gst_tag_list_to_string (taglist);
                 my_g_string_append_printf (s, "  %s\n", tmp);
                 g_free (tmp);
         } else {
