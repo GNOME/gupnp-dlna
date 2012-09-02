@@ -8,4 +8,4 @@ Description: GObject-based AV specific UPnP library
 Version: @VERSION@
 Libs: -L${libdir} -lgupnp-dlna-1.0
 Cflags: -I${includedir}/gupnp-dlna-1.0
-Requires: gstreamer-0.10 gstreamer-base-0.10 gstreamer-video-0.10
+Requires: gstreamer-@GST_MAJORMINOR@ gstreamer-base-@GST_MAJORMINOR@ gstreamer-video-@GST_MAJORMINOR@
