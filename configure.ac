@@ -16,7 +16,7 @@ AM_SILENT_RULES([yes])
 
 dnl library versioning
 dnl Increase when changing the API
-GUPNP_DLNA_CURRENT=2
+GUPNP_DLNA_CURRENT=3
 
 dnl Update when changing implementation of current API,
 dnl reset to 0 when changing CURRENT.  This is the revision of
@@ -77,7 +77,7 @@ tests/test-discoverer.sh
 doc/Makefile
 doc/version.xml
 data/Makefile
-gupnp-dlna-1.0.pc
-gupnp-dlna-1.0-uninstalled.pc
+gupnp-dlna-1.1.pc
+gupnp-dlna-1.1-uninstalled.pc
 ])
 AC_OUTPUT

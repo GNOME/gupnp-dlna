@@ -72,7 +72,7 @@ expand_content_files=
 # e.g. GTKDOC_LIBS=$(top_builddir)/gtk/$(gtktargetlib)
 INCLUDES=-I$(top_srcdir) \
 	 $(GST_CFLAGS)
-GTKDOC_LIBS=$(top_builddir)/libgupnp-dlna/libgupnp-dlna-1.0.la \
+GTKDOC_LIBS=$(top_builddir)/libgupnp-dlna/libgupnp-dlna-1.1.la \
 	    $(GST_LIBS)
 
 # This includes the standard gtk-doc make rules, copied by gtkdocize.

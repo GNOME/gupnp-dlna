@@ -18,7 +18,7 @@ AM_CFLAGS = -I$(top_srcdir) \
 	    -DDATA_DIR='"$(shareddir)"' \
 	    -DG_LOG_DOMAIN='"gupnp-dlna"'
 
-lib_LTLIBRARIES = libgupnp-dlna-1.0.la
+lib_LTLIBRARIES = libgupnp-dlna-1.1.la
 
 gupnp-dlna-marshal.c: gupnp-dlna-marshal.list
 	$(AM_V_GEN) \
@@ -30,9 +30,9 @@ gupnp-dlna-marshal.h: gupnp-dlna-marshal.list
 
 BUILT_SOURCES = gupnp-dlna-marshal.c gupnp-dlna-marshal.h
 
-libgupnp_dlna_incdir = $(includedir)/gupnp-dlna-1.0/libgupnp-dlna
+libgupnp_dlna_incdir = $(includedir)/gupnp-dlna-1.1/libgupnp-dlna
 
-libgupnp_dlna_1_0_la_LDFLAGS = -version-info $(LTVERSION) -no-undefined
+libgupnp_dlna_1_1_la_LDFLAGS = -version-info $(LTVERSION) -no-undefined
 
 libgupnp_dlna_inc_HEADERS = gupnp-dlna-profile.h \
 			    gupnp-dlna-information.h \
@@ -48,10 +48,10 @@ introspection_sources = $(libgupnp_dlna_inc_HEADERS) \
 			gupnp-dlna-profiles.c \
 			profile-loading.c
 
-libgupnp_dlna_1_0_la_SOURCES = $(introspection_sources) \
+libgupnp_dlna_1_1_la_SOURCES = $(introspection_sources) \
 			       $(BUILT_SOURCES)
 
-libgupnp_dlna_1_0_la_LIBADD = $(LIBXML_LIBS) \
+libgupnp_dlna_1_1_la_LIBADD = $(LIBXML_LIBS) \
 			      $(GST_PBU_LIBS)
 
 -include $(INTROSPECTION_MAKEFILE)
@@ -64,18 +64,18 @@ INTROSPECTION_SCANNER_ARGS = --warn-all				\
 INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)
 
 if HAVE_INTROSPECTION
-GUPnPDLNA-1.0.gir: libgupnp-dlna-1.0.la
-GUPnPDLNA_1_0_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-1.0
-GUPnPDLNA_1_0_gir_CFLAGS =  $(INCLUDES) $(AM_CFLAGS)
-GUPnPDLNA_1_0_gir_LIBS = libgupnp-dlna-1.0.la gstreamer-1.0
-GUPnPDLNA_1_0_gir_FILES = $(introspection_sources)
-GUPnPDLNA_1_0_gir_NAMESPACE = GUPnPDLNA
-GUPnPDLNA_1_0_gir_VERSION = 1.0
+GUPnPDLNA-1.1.gir: libgupnp-dlna-1.1.la
+GUPnPDLNA_1_1_gir_INCLUDES = libxml2-2.0 GObject-2.0 GstPbutils-1.0
+GUPnPDLNA_1_1_gir_CFLAGS =  $(INCLUDES) $(AM_CFLAGS)
+GUPnPDLNA_1_1_gir_LIBS = libgupnp-dlna-1.1.la gstreamer-1.0
+GUPnPDLNA_1_1_gir_FILES = $(introspection_sources)
+GUPnPDLNA_1_1_gir_NAMESPACE = GUPnPDLNA
+GUPnPDLNA_1_1_gir_VERSION = 1.1
 
-INTROSPECTION_GIRS += GUPnPDLNA-1.0.gir
+INTROSPECTION_GIRS += GUPnPDLNA-1.1.gir
 
 girdir = $(datadir)/gir-1.0
-gir_DATA = GUPnPDLNA-1.0.gir
+gir_DATA = GUPnPDLNA-1.1.gir
 
 typelibdir = $(libdir)/girepository-1.0/
 typelib_DATA = $(gir_DATA:.gir=.typelib)
