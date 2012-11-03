@@ -1,6 +1,6 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
-SUBDIRS = libgupnp-dlna tools tests data doc
+SUBDIRS = libgupnp-dlna tools tests data doc vala
 
 pkgconfig_DATA = gupnp-dlna-1.1.pc
 pkgconfigdir = $(libdir)/pkgconfig

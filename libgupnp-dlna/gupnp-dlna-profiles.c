@@ -509,6 +509,9 @@ guess_image_profile (GstDiscovererStreamInfo *info,
         gst_caps_unref (caps);
 }
 
+/**
+ * gupnp_dlna_information_new_from_discoverer_info: (skip)
+ **/
 GUPnPDLNAInformation *
 gupnp_dlna_information_new_from_discoverer_info (GstDiscovererInfo *info,
                                                  GList             *profiles)

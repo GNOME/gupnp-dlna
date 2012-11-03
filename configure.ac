@@ -66,6 +66,15 @@ fi
 
 GOBJECT_INTROSPECTION_CHECK([0.6.4])
 
+# vapigen
+AS_IF([test "x$found_introspection" = "xyes"],
+      [
+       dnl we need 0.18 for included GStreamer 1.0 vapis
+       VALA_PROG_VAPIGEN([0.18])
+      ]
+)
+AM_CONDITIONAL([HAVE_VAPIGEN], [test "x$VAPIGEN" != "x"])
+
 GTK_DOC_CHECK([1.11],[--flavour no-tmpl])
 
 AC_CONFIG_FILES([
@@ -77,6 +86,7 @@ tests/test-discoverer.sh
 doc/Makefile
 doc/version.xml
 data/Makefile
+vala/Makefile
 gupnp-dlna-1.1.pc
 gupnp-dlna-1.1-uninstalled.pc
 ])

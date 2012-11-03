@@ -396,7 +396,7 @@ gupnp_dlna_discoverer_get_profile (GUPnPDLNADiscoverer *self,
  *
  * Retuns a list of the all the DLNA profiles supported by @self.
  *
- * Returns: (transfer none) (element-type GUPnPDLNAProfile*): a #GList of
+ * Returns: (transfer none) (element-type GUPnPDLNAProfile): a #GList of
  *          #GUPnPDLNAProfile on success, NULL otherwise.
  **/
 const GList *
