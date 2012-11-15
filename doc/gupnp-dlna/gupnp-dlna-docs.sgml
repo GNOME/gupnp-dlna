@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN"
                "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd" [
-<!ENTITY version SYSTEM "version.xml">
+<!ENTITY version SYSTEM "../version.xml">
 ]>
 <book id="index" xmlns:xi="http://www.w3.org/2003/XInclude">
   <bookinfo>
@@ -20,6 +20,10 @@
     <copyright>
       <year>2010</year>
       <holder>Nokia Corporation</holder>
+    </copyright>
+    <copyright>
+      <year>2012</year>
+      <holder>Intel Corporation</holder>
     </copyright>
 
     <legalnotice>
@@ -53,14 +57,9 @@
       MediaServer implementations, such as DLNA media profile guessing.
     </para>
 
-    <para>
-      Before using the GUPnP DLNA API, you must initialise GStreamer by calling
-      gst_init() or gst_init_check().
-    </para>
-
-    <xi:include href="xml/gupnp-dlna-discoverer.xml"/>
-    <xi:include href="xml/gupnp-dlna-information.xml"/>
+    <xi:include href="xml/gupnp-dlna-profile-guesser.xml"/>
     <xi:include href="xml/gupnp-dlna-profile.xml"/>
+    <xi:include href="xml/api-index-full.xml"/>
 
   </chapter>
 
