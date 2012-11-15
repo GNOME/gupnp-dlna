@@ -42,11 +42,10 @@
       <field name="profile" type="string">
         <value>lc</value>
       </field>
-      <!-- TODO: not exported in Gst yet
-      <field name="level" type="int">
-        <range min="1" max="2" />
+      <field name="level" type="string">
+        <value>1</value>
+        <value>2</value>
       </field>
-      -->
       <field name="channels" type="int">
         <range min="1" max="2" />
       </field>
