@@ -1,6 +1,6 @@
 AC_PREREQ([2.63])
-AC_INIT([gupnp-dlna],
-        [0.7.0],
+AC_INIT([gupnp-dlna-2.0],
+        [2.0.0],
         [https://bugzilla.gnome.org/enter_bug.cgi?product=gupnp&component=gupnp-dlna],
         [gupnp-dlna],
         [http://www.gupnp.org/])
@@ -37,29 +37,104 @@ AC_HEADER_STDC
 LT_PREREQ([2.2])
 LT_INIT([win32-dll])
 
-PKG_CHECK_MODULES(LIBXML, libxml-2.0 >= 2.5.0)
+PKG_CHECK_MODULES([LIBXML], [libxml-2.0 >= 2.5.0])
 
-GST_MAJORMINOR=1.0
-GST_REQ=1.0.0
-GSTPBU_REQ=1.0.0
+AM_PROG_CC_C_O
 
-PKG_CHECK_MODULES(GST, gstreamer-$GST_MAJORMINOR >= $GST_REQ)
-PKG_CHECK_MODULES(GST_PBU, gstreamer-pbutils-$GST_MAJORMINOR >= $GSTPBU_REQ)
-AC_SUBST(GST_MAJORMINOR)
+AC_ARG_WITH([default-metadata-backend],
+            [AS_HELP_STRING([--with-default-metadata-backend=your_backend],
+                            [set a default metadata backend @<:@default=gstreamer@:>@])])
 
-GST_CFLAGS="$GST_CFLAGS -DGST_USE_UNSTABLE_API"
-AC_SUBST(GST_CFLAGS)
+if test "x$with_default_metadata_backend" = 'x'
+then
+        with_default_metadata_backend='gstreamer'
+fi
 
-PKG_CHECK_MODULES(GLIB, glib-2.0 >= 2.24)
+if test "x$with_default_metadata_backend" = 'xyes' || test "x$with_default_metadata_backend" = 'xno'
+then
+        AC_MSG_WARN([Dubious default metadata backend name: $with_default_metadata_backend])
+fi
 
-# glib-genmarshal
-GLIB_GENMARSHAL=`pkg-config --variable=glib_genmarshal glib-2.0`
-AC_SUBST(GLIB_GENMARSHAL)
+GUPNP_DLNA_METADATA_BACKEND_CFLAGS="$GUPNP_DLNA_METADATA_BACKEND_CFLAGS -DGUPNP_DLNA_DEFAULT_METADATA_BACKEND=\\\"$with_default_metadata_backend\\\""
+
+AC_ARG_ENABLE([gstreamer-metadata-backend],
+              [AS_HELP_STRING([--enable-gstreamer-metadata-backend],
+                              [build a GStreamer metadata backend @<:@default=auto@:>@])],
+                              ,
+                              [enable_gstreamer_metadata_backend=auto])
+
+if test "x$enable_gstreamer_metadata_backend" != 'xno'
+then
+        gstreamer_found='yes'
+        GST_MAJORMINOR=0.10
+        GST_REQ=0.10.29.2
+        GSTPBU_REQ=0.10.32
+
+        PKG_CHECK_MODULES([GST],
+                          [gstreamer-$GST_MAJORMINOR >= $GST_REQ],
+                          ,
+                          [gstreamer_found='no'])
+        PKG_CHECK_MODULES([GST_PBU],
+                          [gstreamer-pbutils-$GST_MAJORMINOR >= $GSTPBU_REQ],
+                          ,
+                          [gstreamer_found='no'])
+
+        if test "x$gstreamer_found" = 'xyes'
+        then
+                AC_SUBST(GST_MAJORMINOR)
+
+                GST_CFLAGS="$GST_CFLAGS -DGST_USE_UNSTABLE_API"
+                AC_SUBST(GST_CFLAGS)
+                enable_gstreamer_metadata_backend='yes'
+        elif test "x$enable_gstreamer_metadata_backend" = 'xyes'
+        then
+                AC_MSG_ERROR([GStreamer $GST_MAJORMINOR not found.])
+        fi
+fi
+
+if test "x$enable_gstreamer_metadata_backend" = 'xyes'
+then
+        AM_CONDITIONAL(GSTREAMER_METADATA_BACKEND_ENABLED, true)
+else
+        AM_CONDITIONAL(GSTREAMER_METADATA_BACKEND_ENABLED, false)
+fi
+
+AC_ARG_WITH([default-metadata-backend-dir],
+            [AS_HELP_STRING([--with-default-metadata-backend-dir=your_directory],
+                            [set a default metadata backend directory @<:@default=$libdir/$PACKAGE_NAME@:>@])])
+
+if test "x$with_default_metadata_backend_dir" = 'x'
+then
+        with_default_metadata_backend_dir="$libdir/$PACKAGE_NAME"
+fi
+
+if test "x$with_default_metadata_backend_dir" = 'xyes' || test "x$with_default_metadata_backend_dir" = 'xno'
+then
+        AC_MSG_WARN([Dubious default metadata backend directory: $with_default_metadata_backend_dir])
+fi
+
+AC_SUBST(METADATA_DIRECTORY, $with_default_metadata_backend_dir)
+
+GUPNP_DLNA_METADATA_BACKEND_CFLAGS="$GUPNP_DLNA_METADATA_BACKEND_CFLAGS -DGUPNP_DLNA_DEFAULT_METADATA_BACKEND_DIR=\\\"$with_default_metadata_backend_dir\\\""
+
+AC_SUBST(GUPNP_DLNA_METADATA_BACKEND_CFLAGS)
+
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34])
+PKG_CHECK_MODULES([GOBJECT], [gobject-2.0])
+PKG_CHECK_MODULES([GMODULE], [gmodule-2.0])
+
+AC_SUBST(GLIB_CFLAGS)
+AC_SUBST(GLIB_LIBS)
+AC_SUBST(GOBJECT_CFLAGS)
+AC_SUBST(GOBJECT_LIBS)
+AC_SUBST(GMODULE_CFLAGS)
+AC_SUBST(GMODULE_LIBS)
 
 # Debugging
-AC_ARG_ENABLE(debug,
-	[  --enable-debug          enable debugging],,
-        enable_debug=no)
+AC_ARG_ENABLE([debug],
+              AS_HELP_STRING([--enable-debug], [enable debugging @<:@default=no@:>@]),
+              ,
+              [enable_debug=no])
 if test "x$enable_debug" = "xyes"; then
         CFLAGS="$CFLAGS -g -Wall"
 fi
@@ -76,18 +151,31 @@ AS_IF([test "x$found_introspection" = "xyes"],
 AM_CONDITIONAL([HAVE_VAPIGEN], [test "x$VAPIGEN" != "x"])
 
 GTK_DOC_CHECK([1.11],[--flavour no-tmpl])
+# for fixxref
+GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
+AC_SUBST(GLIB_PREFIX)
 
 AC_CONFIG_FILES([
 Makefile
 libgupnp-dlna/Makefile
 tools/Makefile
 tests/Makefile
-tests/test-discoverer.sh
+data/Makefile
+gupnp-dlna-2.0.pc
+gupnp-dlna-metadata-2.0.pc
 doc/Makefile
 doc/version.xml
-data/Makefile
-vala/Makefile
-gupnp-dlna-1.1.pc
-gupnp-dlna-1.1-uninstalled.pc
+doc/gupnp-dlna/Makefile
+doc/gupnp-dlna-metadata/Makefile
 ])
+AC_CONFIG_FILES([tests/test-discoverer.sh],
+                [chmod a+x tests/test-discoverer.sh])
 AC_OUTPUT
+
+echo
+echo 'Configuration status:'
+echo
+echo "Default metadata backend:           $with_default_metadata_backend"
+echo "Default metadata backend directory: $with_default_metadata_backend_dir"
+echo "Build GStreamer metadata backend:   $enable_gstreamer_metadata_backend"
+echo

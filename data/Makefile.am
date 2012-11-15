@@ -1,4 +1,4 @@
-shareddir = $(datadir)/gupnp-dlna
+include $(top_srcdir)/common.am
 
 dlnaschemas = dlna-profiles.rng
 dlnaprofiles = mp3.xml \

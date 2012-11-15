@@ -2,10 +2,10 @@ ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
 SUBDIRS = libgupnp-dlna tools tests data doc vala
 
-pkgconfig_DATA = gupnp-dlna-1.1.pc
+pkgconfig_DATA = gupnp-dlna-2.0.pc gupnp-dlna-metadata-2.0.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
-DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc
+DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection
 
 # Extra clean files so that maintainer-clean removes *everything*
 MAINTAINERCLEANFILES = aclocal.m4 compile config.guess config.sub configure depcomp install-sh ltmain.sh Makefile.in missing config.h.in
