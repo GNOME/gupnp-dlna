@@ -3,8 +3,10 @@
  *
  * Copyright (C) 2010 Nokia Corporation
  * Copyright (C) 2010 Collabora Multimedia
+ * Copyright (C) 2012 Intel Corporation
  *
  * Authors: Parthasarathi Susarla <partha.susarla@collabora.co.uk>
+ *          Krzesimir Nowak <krnowak@openismus.com>
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -26,115 +28,66 @@
 #endif
 
 #include <stdlib.h>
-#include <string.h>
 
 #include <glib.h>
 #include <glib-object.h>
-#include <gio/gio.h>
 
 #include <libgupnp-dlna/gupnp-dlna-profile.h>
-#include <libgupnp-dlna/gupnp-dlna-discoverer.h>
+#include <libgupnp-dlna/gupnp-dlna-profile-guesser.h>
 
-#include <gst/pbutils/pbutils.h>
-
-static gboolean verbose = FALSE, relaxed = FALSE;
-
-static void print_caps (const GstCaps *caps)
-{
-        int i;
-
-        for (i = 0; i < gst_caps_get_size (caps); i++) {
-                GstStructure *structure = gst_caps_get_structure (caps, i);
-                gchar *tmp = gst_structure_to_string (structure);
-
-                g_print ("%s`- %s\n", i ? "    " : "", tmp);
-
-                g_free (tmp);
-        }
-}
+static gboolean relaxed = FALSE;
 
 static void
-print_profile (GUPnPDLNAProfile *profile, gpointer unused)
+print_profile (GUPnPDLNAProfile *profile)
 {
-        GstEncodingProfile *enc_profile;
-        const GList *tmp;
-        gchar *caps_str;
-
-        enc_profile = gupnp_dlna_profile_get_encoding_profile (profile);
-        tmp = gst_encoding_container_profile_get_profiles
-                                        (GST_ENCODING_CONTAINER_PROFILE (enc_profile));
-
-        g_print ("%s %-30s%-35s",
+        g_print ("%s %-30s%-35s\n",
                  gupnp_dlna_profile_get_extended (profile) ? "*" : " ",
                  gupnp_dlna_profile_get_name (profile),
                  gupnp_dlna_profile_get_mime (profile));
-
-        if (verbose) {
-                caps_str = gst_caps_to_string
-                        (gst_encoding_profile_get_format (enc_profile));
-                g_print ("\n`- container: %s\n", caps_str);
-                g_free (caps_str);
-
-                while (tmp) {
-                        print_caps (gst_encoding_profile_get_format
-                                        (GST_ENCODING_PROFILE (tmp->data)));
-                        tmp = tmp->next;
-                }
-        }
-
-        g_print ("\n");
-        gst_encoding_profile_unref (enc_profile);
 }
 
 int
 main (int argc, char **argv)
 {
         GError *err = NULL;
-        GList *profiles = NULL;
-        GUPnPDLNADiscoverer *discover;
+        const GList *profiles = NULL;
+        GUPnPDLNAProfileGuesser *guesser;
 
         GOptionEntry options[] = {
-                {"verbose", 'v', 0, G_OPTION_ARG_NONE, &verbose,
-                 "Print (very) verbose output", NULL},
                 {"relaxed", 'r', 0, G_OPTION_ARG_NONE, &relaxed,
-                 "Read profiles in relaxed mode (only useful with -v)", NULL},
+                 "Read profiles in relaxed mode", NULL},
                 {NULL}
         };
 
         GOptionContext *ctx;
 
+#if !GLIB_CHECK_VERSION(2,35,0)
         g_type_init ();
+#endif
 
         ctx = g_option_context_new (" - program to list all the DLNA profiles supported by gupnp-dlna");
         g_option_context_add_main_entries (ctx, options, NULL);
-        g_option_context_add_group (ctx, gst_init_get_option_group ());
-
         if (!g_option_context_parse (ctx, &argc, &argv, &err)) {
 
                 g_print ("Error initializing: %s\n", err->message);
+                g_error_free (err);
                 exit (1);
         }
 
         g_option_context_free (ctx);
 
-        gst_init (&argc, &argv);
+        guesser = gupnp_dlna_profile_guesser_new (relaxed, TRUE);
+        profiles = gupnp_dlna_profile_guesser_list_profiles (guesser);
 
-        discover = gupnp_dlna_discoverer_new ((GstClockTime) GST_SECOND,
-                                              relaxed,
-                                              TRUE);
-
-        profiles = (GList *) gupnp_dlna_discoverer_list_profiles (discover);
-
-        if (!verbose) {
-                g_print ("  %-30s%s\n", "Name", "MIME type");
-                g_print ("---------------------------------------------------"
+        g_print ("  %-30s%s\n", "Name", "MIME type");
+        g_print ("---------------------------------------------------"
                          "---------------------\n");
-        }
-        g_list_foreach (profiles, (GFunc) print_profile, NULL);
+g_list_foreach ((GList *) profiles, (GFunc) print_profile, NULL);
         g_print ("\nProfiles with a '*' against their name are extended "
                  "(non-standard) profiles.\n\n");
 
-        g_object_unref (discover);
+        g_object_unref (guesser);
+        gupnp_dlna_profile_guesser_cleanup ();
 
         return 0;
 }
