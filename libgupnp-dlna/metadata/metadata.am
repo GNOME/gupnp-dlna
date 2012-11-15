@@ -1,0 +1,18 @@
+metadata_metadata_sources = \
+	metadata/gupnp-dlna-metadata-extractor.c
+
+metadata_general_sources = \
+	metadata/gupnp-dlna-audio-information.c \
+	metadata/gupnp-dlna-container-information.c \
+	metadata/gupnp-dlna-image-information.c \
+	metadata/gupnp-dlna-information.c \
+	metadata/gupnp-dlna-video-information.c
+
+metadata_semi_public_headers = \
+	metadata/gupnp-dlna-audio-information.h \
+	metadata/gupnp-dlna-container-information.h \
+	metadata/gupnp-dlna-image-information.h \
+	metadata/gupnp-dlna-information.h \
+	metadata/gupnp-dlna-metadata-extractor.h \
+	metadata/gupnp-dlna-values.h \
+	metadata/gupnp-dlna-video-information.h
