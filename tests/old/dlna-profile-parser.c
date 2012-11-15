@@ -33,7 +33,7 @@ static void usage (void)
 
 static void print_caps (const GstCaps *caps)
 {
-        int i;
+        guint i;
 
         for (i = 0; i < gst_caps_get_size (caps); i++) {
                 GstStructure *structure = gst_caps_get_structure (caps, i);
@@ -45,7 +45,8 @@ static void print_caps (const GstCaps *caps)
         }
 }
 
-static void print_profile (GUPnPDLNAProfile *profile, gpointer unused)
+static void print_profile (GUPnPDLNAProfile *profile,
+                           gpointer unused G_GNUC_UNUSED)
 {
         GstEncodingProfile *enc_profile;
         const GList *tmp;
@@ -72,7 +73,7 @@ static void print_profile (GUPnPDLNAProfile *profile, gpointer unused)
 }
 
 static void
-free_restrictions_struct (gpointer data, gpointer user_data)
+free_restrictions_struct (gpointer data, gpointer user_data G_GNUC_UNUSED)
 {
         GUPnPDLNARestrictions *restr = (GUPnPDLNARestrictions *)data;
         if (restr) {
@@ -103,7 +104,9 @@ main (int argc, char **argv)
 
         GOptionContext *ctx;
 
+#if !GLIB_CHECK_VERSION(2,35,0)
         g_type_init ();
+#endif
 
         ctx = g_option_context_new (" - test to parse dlna profiles");
         g_option_context_add_main_entries (ctx, options, NULL);

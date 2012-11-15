@@ -31,7 +31,9 @@
 static gboolean silent = FALSE;
 
 static void
-pad_added_cb (GstElement * uridecodebin, GstPad * pad, GstElement * encodebin)
+pad_added_cb (GstElement * uridecodebin G_GNUC_UNUSED,
+              GstPad * pad,
+              GstElement * encodebin)
 {
   GstPad *sinkpad;
 
@@ -60,8 +62,10 @@ pad_added_cb (GstElement * uridecodebin, GstPad * pad, GstElement * encodebin)
 }
 
 static gboolean
-autoplug_continue_cb (GstElement * uridecodebin, GstPad * somepad,
-    GstCaps * caps, GstElement * encodebin)
+autoplug_continue_cb (GstElement * uridecodebin G_GNUC_UNUSED,
+                      GstPad * somepad G_GNUC_UNUSED,
+                      GstCaps * caps,
+                      GstElement * encodebin)
 {
   GstPad *sinkpad;
 
@@ -74,7 +78,9 @@ autoplug_continue_cb (GstElement * uridecodebin, GstPad * somepad,
 }
 
 static void
-bus_message_cb (GstBus * bus, GstMessage * message, GMainLoop * mainloop)
+bus_message_cb (GstBus * bus G_GNUC_UNUSED,
+                GstMessage * message,
+                GMainLoop * mainloop)
 {
   switch (GST_MESSAGE_TYPE (message)) {
     case GST_MESSAGE_ERROR:
@@ -199,7 +205,9 @@ main (int argc, char **argv)
   GUPnPDLNAProfile *profile;
   gchar *inputuri;
 
+#if !GLIB_CHECK_VERSION(2,35,0)
   g_type_init ();
+#endif
 
   ctx = g_option_context_new ("- encode URIs with GstProfile and encodebin");
   g_option_context_add_main_entries (ctx, options, NULL);
