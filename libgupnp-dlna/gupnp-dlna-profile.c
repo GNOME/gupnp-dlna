@@ -163,7 +163,6 @@ gupnp_dlna_profile_class_init (GUPnPDLNAProfileClass *klass)
          *
          * Whether the DLNA profile is not a part of DLNA specification.
          */
-
         pspec = g_param_spec_boolean ("extended",
                                       "Extended mode property",
                                       "Indicates that this profile is not "
