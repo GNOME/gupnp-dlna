@@ -22,4 +22,9 @@
 
 * Bring the tests back to life. And make them being run on make check.
 
+* Don't export all functions out there. There should be some linker
+  flag that either takes a regexp for functions to export or takes a
+  file listing them. Otherwise using G_GNUC_INTERNAL for every
+  function not to be exported will be tedious.
+
 * Read TODO.old for some ideas.
