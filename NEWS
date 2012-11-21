@@ -1,3 +1,18 @@
+0.7.0
+=====
+- Port to GStreamer 1.0
+- Add parallel installability with gstreamer-0.10-based gupnp-dlna.
+
+All contributors to this release:
+
+Jens Georg <mail@jensge.org>
+Riko Yamada <rik0yamada@yahoo.co.jp>
+Dominique Leuenberger <dimstar@opensuse.org>
+
+Changes in API:
+ - so version bump
+ - API version bump to 1.1
+
 0.6.6
 =====
 - Fix minor issues found by static code analysis
