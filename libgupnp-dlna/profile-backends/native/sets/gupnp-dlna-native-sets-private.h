@@ -99,22 +99,11 @@ gupnp_dlna_native_value_list_is_superset
                                          GUPnPDLNANativeInfoValue *value,
                                          gboolean                 *unsupported);
 
-void
-gupnp_dlna_native_value_list_merge
-                     (GUPnPDLNANativeValueList                  *value_list,
-                      GUPnPDLNANativeValueList                  *mrg_value_list,
-                      GUPnPDLNANativeRestrictionMergeResolution  resolution);
-
 gboolean
 gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *value_list);
 
 GList *
 gupnp_dlna_native_value_list_get_list (GUPnPDLNANativeValueList *value_list);
-
-gboolean
-gupnp_dlna_native_value_list_mergeable
-                                     (GUPnPDLNANativeValueList *value_list,
-                                      GUPnPDLNANativeValueList *mrg_value_list);
 
 gchar *
 gupnp_dlna_native_value_list_to_string (GUPnPDLNANativeValueList *value_list);

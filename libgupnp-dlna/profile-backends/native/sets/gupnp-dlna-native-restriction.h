@@ -28,12 +28,6 @@
 
 G_BEGIN_DECLS
 
-typedef enum {
-        GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_TARGET,
-        GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_SOURCE,
-        GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_NONE
-} GUPnPDLNANativeRestrictionMergeResolution;
-
 typedef struct _GUPnPDLNANativeRestriction GUPnPDLNANativeRestriction;
 
 #define GUPNP_DLNA_NATIVE_RESTRICTION(x) \
@@ -54,11 +48,9 @@ gupnp_dlna_native_restriction_add_value_list
                                         const gchar                *name,
                                         GUPnPDLNANativeValueList   *list);
 
-gboolean
-gupnp_dlna_native_restriction_merge
-                        (GUPnPDLNANativeRestriction                *restriction,
-                         GUPnPDLNANativeRestriction                *merged,
-                         GUPnPDLNANativeRestrictionMergeResolution  override);
+void
+gupnp_dlna_native_restriction_merge (GUPnPDLNANativeRestriction *restriction,
+                                     GUPnPDLNANativeRestriction *merged);
 
 gboolean
 gupnp_dlna_native_restriction_is_empty

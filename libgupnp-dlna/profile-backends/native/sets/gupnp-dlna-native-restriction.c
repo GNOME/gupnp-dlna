@@ -103,109 +103,34 @@ gupnp_dlna_native_restriction_add_value_list
         return TRUE;
 }
 
-static gboolean
-check_merge_possibility (GUPnPDLNANativeRestriction *restriction,
-                         GUPnPDLNANativeRestriction *merged)
+void
+gupnp_dlna_native_restriction_merge (GUPnPDLNANativeRestriction *restriction,
+                                     GUPnPDLNANativeRestriction *merged)
 {
         GHashTableIter iter;
-        gpointer mrg_name_ptr;
-        gpointer mrg_value_list_ptr;
+        gpointer name_ptr;
+        gpointer value_list_ptr;
 
-        g_hash_table_iter_init (&iter, merged->entries);
-        while (g_hash_table_iter_next (&iter,
-                                       &mrg_name_ptr,
-                                       &mrg_value_list_ptr)) {
-                gpointer value_list_ptr;
+        g_return_if_fail (restriction != NULL);
+        g_return_if_fail (merged != NULL);
 
-                if (g_hash_table_lookup_extended (restriction->entries,
-                                                  mrg_name_ptr,
-                                                  NULL,
-                                                  &value_list_ptr)) {
-                        GUPnPDLNANativeValueList *value_list =
-                                    (GUPnPDLNANativeValueList *) value_list_ptr;
-                        GUPnPDLNANativeValueList *mrg_value_list =
-                                (GUPnPDLNANativeValueList *) mrg_value_list_ptr;
-
-                        if (!gupnp_dlna_native_value_list_mergeable
-                                        (value_list,
-                                         mrg_value_list))
-                                return FALSE;
-                }
-        }
-
-        return TRUE;
-}
-
-gboolean
-gupnp_dlna_native_restriction_merge
-                        (GUPnPDLNANativeRestriction                *restriction,
-                         GUPnPDLNANativeRestriction                *merged,
-                         GUPnPDLNANativeRestrictionMergeResolution  resolution)
-{
-        GHashTableIter iter;
-        gpointer mrg_name_ptr;
-        gpointer mrg_value_list_ptr;
-        gboolean change_mime;
-
-        g_return_val_if_fail (restriction != NULL, FALSE);
-        g_return_val_if_fail (merged != NULL, FALSE);
-
-        switch (resolution) {
-        case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_TARGET:
-                change_mime = (restriction->mime == NULL);
-
-                break;
-        case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_SOURCE:
-                change_mime = (merged->mime != NULL);
-
-                break;
-        case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_NONE:
-                change_mime = (restriction->mime == NULL &&
-                               merged->mime != NULL);
-
-                break;
-        default:
-                change_mime = FALSE;
-                g_critical ("Unknown conflict resolution: %d", resolution);
-        }
-        if (change_mime) {
-                g_free (restriction->mime);
+        if (restriction->mime == NULL) {
                 restriction->mime = merged->mime;
                 merged->mime = NULL;
         }
 
-        if (resolution == GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_NONE &&
-            !check_merge_possibility (restriction, merged))
-                return FALSE;
-
         g_hash_table_iter_init (&iter, merged->entries);
         while (g_hash_table_iter_next (&iter,
-                                       &mrg_name_ptr,
-                                       &mrg_value_list_ptr)) {
-                gpointer value_list_ptr;
-
-                if (g_hash_table_lookup_extended (restriction->entries,
-                                                  mrg_name_ptr,
-                                                  NULL,
-                                                  &value_list_ptr)) {
-                        GUPnPDLNANativeValueList *value_list =
-                                    (GUPnPDLNANativeValueList *) value_list_ptr;
-                        GUPnPDLNANativeValueList *mrg_value_list =
-                                (GUPnPDLNANativeValueList *) mrg_value_list_ptr;
-
-                        gupnp_dlna_native_value_list_merge (value_list,
-                                                            mrg_value_list,
-                                                            resolution);
-                } else {
+                                       &name_ptr,
+                                       &value_list_ptr)) {
+                if (!g_hash_table_contains (restriction->entries, name_ptr)) {
                         g_hash_table_iter_steal (&iter);
                         g_hash_table_insert (restriction->entries,
-                                             mrg_name_ptr,
-                                             mrg_value_list_ptr);
+                                             name_ptr,
+                                             value_list_ptr);
                 }
         }
         gupnp_dlna_native_restriction_free (merged);
-
-        return TRUE;
 }
 
 gboolean

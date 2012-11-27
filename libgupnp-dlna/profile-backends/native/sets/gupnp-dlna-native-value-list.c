@@ -201,60 +201,6 @@ gupnp_dlna_native_value_list_is_superset (GUPnPDLNANativeValueList *list,
 }
 
 gboolean
-gupnp_dlna_native_value_list_mergeable
-                                      (GUPnPDLNANativeValueList *value_list,
-                                       GUPnPDLNANativeValueList *mrg_value_list)
-{
-        if (value_list->type != mrg_value_list->type) {
-                return FALSE;
-        }
-
-        return TRUE;
-}
-
-void
-gupnp_dlna_native_value_list_merge
-                     (GUPnPDLNANativeValueList                  *value_list,
-                      GUPnPDLNANativeValueList                  *mrg_value_list,
-                      GUPnPDLNANativeRestrictionMergeResolution  resolution)
-{
-        g_return_if_fail (value_list != NULL);
-        g_return_if_fail (mrg_value_list != NULL);
-
-        switch (resolution) {
-        case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_TARGET:
-                /* do nothing */
-                break;
-        case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_SOURCE:
-                free_value_list (value_list);
-                value_list->values = mrg_value_list->values;
-                value_list->type = mrg_value_list->type;
-                mrg_value_list->values = NULL;
-
-                break;
-        case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_NONE:
-                if (!gupnp_dlna_native_value_list_mergeable (value_list,
-                                                             mrg_value_list)) {
-                        g_critical ("Tried to merge values of type '%s' into "
-                                    "values of type '%s'.",
-                                    gupnp_dlna_native_value_type_name
-                                        (mrg_value_list->type),
-                                    gupnp_dlna_native_value_type_name
-                                        (value_list->type));
-
-                        return;
-                }
-                value_list->values = g_list_concat (value_list->values,
-                                                    mrg_value_list->values);
-                mrg_value_list->values = NULL;
-
-                break;
-        default:
-                g_critical ("Unknown conflict resolution: %d", resolution);
-        }
-}
-
-gboolean
 gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *value_list)
 {
         g_return_val_if_fail (value_list != NULL, TRUE);

@@ -529,14 +529,9 @@ backend_post_restriction (GUPnPDLNAProfileLoader *loader,
                 GUPnPDLNANativeRestriction *parent =
                                       (GUPnPDLNANativeRestriction *) iter->data;
 
-                if (gupnp_dlna_native_restriction_merge
-                   (restriction,
-                    parent,
-                    GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_FROM_TARGET))
-                        iter->data = NULL;
-                else
-                        g_critical ("Failed to do restriction overriding "
-                                    "merge.");
+                gupnp_dlna_native_restriction_merge (restriction,
+                                                     parent);
+                iter->data = NULL;
         }
 
         description = gupnp_dlna_native_description_new (restriction, type);
