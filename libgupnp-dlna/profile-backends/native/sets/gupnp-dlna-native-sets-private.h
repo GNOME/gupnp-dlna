@@ -26,7 +26,7 @@
 #include "gupnp-dlna-native-value-type.h"
 #include "gupnp-dlna-native-value-list.h"
 #include "gupnp-dlna-native-info-value.h"
-#include "gupnp-dlna-native-restriction-private.h"
+#include "gupnp-dlna-restriction-private.h"
 
 G_BEGIN_DECLS
 
@@ -120,8 +120,7 @@ gupnp_dlna_native_info_value_get_value (GUPnPDLNANativeInfoValue *info);
 
 /* Restriction */
 GHashTable *
-gupnp_dlna_native_restriction_get_entries
-                                      (GUPnPDLNANativeRestriction *restriction);
+gupnp_dlna_restriction_get_entries (GUPnPDLNARestriction *restriction);
 
 G_END_DECLS
 

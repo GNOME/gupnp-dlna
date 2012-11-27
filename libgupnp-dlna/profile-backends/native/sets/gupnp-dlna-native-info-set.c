@@ -194,8 +194,8 @@ gupnp_dlna_native_info_set_add_unsupported_string
 
 gboolean
 gupnp_dlna_native_info_set_fits_restriction
-                                       (GUPnPDLNANativeInfoSet     *info_set,
-                                        GUPnPDLNANativeRestriction *restriction)
+                                       (GUPnPDLNANativeInfoSet *info_set,
+                                        GUPnPDLNARestriction   *restriction)
 {
         GHashTableIter iter;
         gpointer key;
@@ -206,12 +206,12 @@ gupnp_dlna_native_info_set_fits_restriction
         g_return_val_if_fail (restriction != NULL, FALSE);
 
         if (g_strcmp0 (info_set->mime,
-                       gupnp_dlna_native_restriction_get_mime (restriction)))
+                       gupnp_dlna_restriction_get_mime (restriction)))
                 return FALSE;
 
         unsupported_match = FALSE;
         g_hash_table_iter_init (&iter,
-                                gupnp_dlna_native_restriction_get_entries
+                                gupnp_dlna_restriction_get_entries
                                         (restriction));
         while (g_hash_table_iter_next (&iter, &key, &value)) {
                 GUPnPDLNANativeInfoValue *info_value;

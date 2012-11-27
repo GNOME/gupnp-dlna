@@ -13,5 +13,6 @@ sets_CFLAGS = \
 	$(GOBJECT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(GMODULE_CFLAGS) \
+	-I$(top_srcdir)/libgupnp-dlna \
 	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native \
 	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets

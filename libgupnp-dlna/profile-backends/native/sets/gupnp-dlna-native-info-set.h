@@ -23,8 +23,7 @@
 #define __GUPNP_DLNA_NATIVE_INFO_SET_H__
 
 #include <glib.h>
-
-#include "gupnp-dlna-native-restriction.h"
+#include "gupnp-dlna-restriction.h"
 
 G_BEGIN_DECLS
 
@@ -79,8 +78,8 @@ gupnp_dlna_native_info_set_add_unsupported_string
 
 gboolean
 gupnp_dlna_native_info_set_fits_restriction
-                                      (GUPnPDLNANativeInfoSet     *info_set,
-                                       GUPnPDLNANativeRestriction *restriction);
+                                      (GUPnPDLNANativeInfoSet *info_set,
+                                       GUPnPDLNARestriction   *restriction);
 
 gchar *
 gupnp_dlna_native_info_set_to_string (GUPnPDLNANativeInfoSet *info_set);

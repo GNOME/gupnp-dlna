@@ -3,8 +3,6 @@ sets_sources = \
 	profile-backends/native/sets/gupnp-dlna-native-info-set.h \
 	profile-backends/native/sets/gupnp-dlna-native-info-value.c \
 	profile-backends/native/sets/gupnp-dlna-native-info-value.h \
-	profile-backends/native/sets/gupnp-dlna-native-restriction.c \
-	profile-backends/native/sets/gupnp-dlna-native-restriction.h \
 	profile-backends/native/sets/gupnp-dlna-native-sets-private.h \
 	profile-backends/native/sets/gupnp-dlna-native-value.c \
 	profile-backends/native/sets/gupnp-dlna-native-value.h \

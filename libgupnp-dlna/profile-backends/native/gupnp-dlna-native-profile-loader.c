@@ -68,7 +68,7 @@ typedef struct {
 } GUPnPDLNANativeRestrictionData;
 
 typedef struct {
-        GUPnPDLNANativeRestriction     *restriction;
+        GUPnPDLNARestriction           *restriction;
         GUPnPDLNANativeRestrictionType  type;
 } GUPnPDLNANativeDescription;
 
@@ -104,7 +104,7 @@ gupnp_dlna_native_name_value_list_pair_free
 }
 
 static GUPnPDLNANativeDescription *
-gupnp_dlna_native_description_new (GUPnPDLNANativeRestriction     *restriction,
+gupnp_dlna_native_description_new (GUPnPDLNARestriction           *restriction,
                                    GUPnPDLNANativeRestrictionType  type)
 {
         GUPnPDLNANativeDescription *description =
@@ -122,7 +122,7 @@ gupnp_dlna_native_description_free (GUPnPDLNANativeDescription *description)
         if (description == NULL)
                 return;
 
-        gupnp_dlna_native_restriction_free (description->restriction);
+        gupnp_dlna_restriction_free (description->restriction);
         g_slice_free (GUPnPDLNANativeDescription, description);
 }
 
@@ -176,9 +176,8 @@ gupnp_dlna_native_restriction_data_free (GUPnPDLNANativeRestrictionData *data)
                  (data->name_list_pairs,
                   (GDestroyNotify) gupnp_dlna_native_name_value_list_pair_free);
         if (data->parents != NULL)
-                g_list_free_full
-                          (data->parents,
-                           (GDestroyNotify) gupnp_dlna_native_restriction_free);
+                g_list_free_full (data->parents,
+                                  (GDestroyNotify) gupnp_dlna_restriction_free);
         g_slice_free (GUPnPDLNANativeRestrictionData, data);
 }
 
@@ -345,7 +344,7 @@ backend_merge_restrictions (GUPnPDLNANativeProfileLoader *native_loader,
         GUPnPDLNANativeProfileData* data =
              (GUPnPDLNANativeProfileData *) priv->dlna_profile_data_stack->data;
         GList **target_list;
-        GUPnPDLNANativeRestriction *copy;
+        GUPnPDLNARestriction *copy;
 
         if (description == NULL || description->restriction == NULL)
                 return;
@@ -371,7 +370,7 @@ backend_merge_restrictions (GUPnPDLNANativeProfileLoader *native_loader,
                 g_assert_not_reached ();
         }
 
-        copy = gupnp_dlna_native_restriction_copy (description->restriction);
+        copy = gupnp_dlna_restriction_copy (description->restriction);
         *target_list = g_list_prepend (*target_list, copy);
 }
 
@@ -397,8 +396,8 @@ backend_collect_parents (GUPnPDLNANativeProfileLoader *native_loader,
         if (description != NULL && description->restriction != NULL) {
                 /* Collect parents in a list - we'll
                  * coalesce them later */
-                GUPnPDLNANativeRestriction *copy =
-                  gupnp_dlna_native_restriction_copy (description->restriction);
+                GUPnPDLNARestriction *copy =
+                  gupnp_dlna_restriction_copy (description->restriction);
 
                 data->parents = g_list_prepend (data->parents, copy);
         }
@@ -488,7 +487,7 @@ backend_post_restriction (GUPnPDLNAProfileLoader *loader,
         GUPnPDLNANativeProfileLoaderPrivate *priv = native_loader->priv;
         GUPnPDLNANativeRestrictionData *data =
           (GUPnPDLNANativeRestrictionData *) priv->restriction_data_stack->data;
-        GUPnPDLNANativeRestriction *restriction;
+        GUPnPDLNARestriction *restriction;
         GUPnPDLNANativeDescription *description;
         GUPnPDLNANativeRestrictionType type;
         GList *iter;
@@ -502,13 +501,13 @@ backend_post_restriction (GUPnPDLNAProfileLoader *loader,
         if (restriction_type == NULL)
                 goto out;
 
-        restriction = gupnp_dlna_native_restriction_new (name);
+        restriction = gupnp_dlna_restriction_new (name);
 
         for (iter = data->name_list_pairs; iter != NULL; iter = iter->next) {
                 GUPnPDLNANativeNameValueListPair *pair =
                                 (GUPnPDLNANativeNameValueListPair *) iter->data;
 
-                if (gupnp_dlna_native_restriction_add_value_list (restriction,
+                if (gupnp_dlna_restriction_add_value_list (restriction,
                                                                   pair->name,
                                                                   pair->list))
                         pair->list = NULL;
@@ -526,10 +525,10 @@ backend_post_restriction (GUPnPDLNAProfileLoader *loader,
         for (iter = data->parents; iter != NULL; iter = iter->next) {
                 /* Merge all the parent caps. The child overrides parent
                  * attributes */
-                GUPnPDLNANativeRestriction *parent =
-                                      (GUPnPDLNANativeRestriction *) iter->data;
+                GUPnPDLNARestriction *parent =
+                                        GUPNP_DLNA_RESTRICTION (iter->data);
 
-                gupnp_dlna_native_restriction_merge (restriction,
+                gupnp_dlna_restriction_merge (restriction,
                                                      parent);
                 iter->data = NULL;
         }
@@ -591,10 +590,10 @@ copy_restrictions_list (GList *list)
         GList *iter;
 
         for (iter = list; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeRestriction *restriction =
-                                     GUPNP_DLNA_NATIVE_RESTRICTION (iter->data);
-                GUPnPDLNANativeRestriction *copy =
-                               gupnp_dlna_native_restriction_copy (restriction);
+                GUPnPDLNARestriction *restriction =
+                                        GUPNP_DLNA_RESTRICTION (iter->data);
+                GUPnPDLNARestriction *copy =
+                                      gupnp_dlna_restriction_copy (restriction);
 
                 if (copy)
                         dup = g_list_prepend (dup, copy);
@@ -644,11 +643,11 @@ restrictions_list_is_empty (GList *list)
         GList *iter;
 
         for (iter = list; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeRestriction *restriction =
-                                     GUPNP_DLNA_NATIVE_RESTRICTION (iter->data);
+                GUPnPDLNARestriction *restriction =
+                                     GUPNP_DLNA_RESTRICTION (iter->data);
 
                 if (restriction != NULL &&
-                    !gupnp_dlna_native_restriction_is_empty (restriction))
+                    !gupnp_dlna_restriction_is_empty (restriction))
                         return FALSE;
         }
 

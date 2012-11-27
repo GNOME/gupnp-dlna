@@ -179,69 +179,69 @@ value_list_range (void)
 static void
 restriction_construction (void)
 {
-        GUPnPDLNANativeRestriction *r = gupnp_dlna_native_restriction_new
+        GUPnPDLNARestriction *r = gupnp_dlna_restriction_new
                                         (NULL);
-        GHashTable *e = gupnp_dlna_native_restriction_get_entries (r);
+        GHashTable *e = gupnp_dlna_restriction_get_entries (r);
 
-        g_assert_cmpstr (gupnp_dlna_native_restriction_get_mime (r), ==, NULL);
+        g_assert_cmpstr (gupnp_dlna_restriction_get_mime (r), ==, NULL);
         g_assert_cmpuint (g_hash_table_size (e), ==, 0);
-        gupnp_dlna_native_restriction_free (r);
+        gupnp_dlna_restriction_free (r);
 
-        r = gupnp_dlna_native_restriction_new ("mime");
-        e = gupnp_dlna_native_restriction_get_entries (r);
-        g_assert_cmpstr (gupnp_dlna_native_restriction_get_mime (r), ==, "mime");
+        r = gupnp_dlna_restriction_new ("mime");
+        e = gupnp_dlna_restriction_get_entries (r);
+        g_assert_cmpstr (gupnp_dlna_restriction_get_mime (r), ==, "mime");
         g_assert_cmpuint (g_hash_table_size (e), ==, 0);
-        gupnp_dlna_native_restriction_free (r);
+        gupnp_dlna_restriction_free (r);
 }
 
 static void
 restriction_empty (void)
 {
-        GUPnPDLNANativeRestriction *r =
-                                       gupnp_dlna_native_restriction_new (NULL);
+        GUPnPDLNARestriction *r =
+                                       gupnp_dlna_restriction_new (NULL);
         GUPnPDLNANativeValueList *list = gupnp_dlna_native_value_list_new
                                          (gupnp_dlna_native_value_type_bool ());
 
-        g_assert (gupnp_dlna_native_restriction_is_empty (r));
+        g_assert (gupnp_dlna_restriction_is_empty (r));
         gupnp_dlna_native_value_list_add_single (list, "true");
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r,
+        g_assert (gupnp_dlna_restriction_add_value_list (r,
                                                                 "bool",
                                                                 list));
-        g_assert (!gupnp_dlna_native_restriction_is_empty (r));
-        gupnp_dlna_native_restriction_free (r);
-        r = gupnp_dlna_native_restriction_new ("mime");
-        g_assert (!gupnp_dlna_native_restriction_is_empty (r));
-        gupnp_dlna_native_restriction_free (r);
+        g_assert (!gupnp_dlna_restriction_is_empty (r));
+        gupnp_dlna_restriction_free (r);
+        r = gupnp_dlna_restriction_new ("mime");
+        g_assert (!gupnp_dlna_restriction_is_empty (r));
+        gupnp_dlna_restriction_free (r);
 }
 
 static void
 restriction_adding_value_lists (void)
 {
-        GUPnPDLNANativeRestriction *r =
-                                       gupnp_dlna_native_restriction_new (NULL);
+        GUPnPDLNARestriction *r =
+                                       gupnp_dlna_restriction_new (NULL);
         GUPnPDLNANativeValueList *list = gupnp_dlna_native_value_list_new
                                          (gupnp_dlna_native_value_type_bool ());
 
-        g_assert (gupnp_dlna_native_restriction_is_empty (r));
+        g_assert (gupnp_dlna_restriction_is_empty (r));
         /* adding empty value list should fail */
-        g_assert (!gupnp_dlna_native_restriction_add_value_list (r,
+        g_assert (!gupnp_dlna_restriction_add_value_list (r,
                                                                  "bool",
                                                                  list));
-        g_assert (gupnp_dlna_native_restriction_is_empty (r));
+        g_assert (gupnp_dlna_restriction_is_empty (r));
         gupnp_dlna_native_value_list_add_single (list, "true");
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r,
+        g_assert (gupnp_dlna_restriction_add_value_list (r,
                                                                 "bool",
                                                                 list));
-        g_assert (!gupnp_dlna_native_restriction_is_empty (r));
+        g_assert (!gupnp_dlna_restriction_is_empty (r));
         list = gupnp_dlna_native_value_list_new
                                          (gupnp_dlna_native_value_type_bool ());
         gupnp_dlna_native_value_list_add_single (list, "false");
         /* adding value list with already existing name should fail */
-        g_assert (!gupnp_dlna_native_restriction_add_value_list (r,
+        g_assert (!gupnp_dlna_restriction_add_value_list (r,
                                                                  "bool",
                                                                  list));
         gupnp_dlna_native_value_list_free (list);
-        gupnp_dlna_native_restriction_free (r);
+        gupnp_dlna_restriction_free (r);
 }
 
 static void
@@ -278,35 +278,35 @@ info_set_adding_values (void)
 static void
 info_set_fit (void)
 {
-        GUPnPDLNANativeRestriction *r =
-                                     gupnp_dlna_native_restriction_new ("mime");
+        GUPnPDLNARestriction *r =
+                                     gupnp_dlna_restriction_new ("mime");
         GUPnPDLNANativeValueList *v = gupnp_dlna_native_value_list_new
                                           (gupnp_dlna_native_value_type_bool());
         GUPnPDLNANativeInfoSet *s;
 
         /* restriction */
         g_assert (gupnp_dlna_native_value_list_add_single (v, "true"));
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r, "b1", v));
+        g_assert (gupnp_dlna_restriction_add_value_list (r, "b1", v));
         v = gupnp_dlna_native_value_list_new
                                       (gupnp_dlna_native_value_type_fraction());
         g_assert (gupnp_dlna_native_value_list_add_single (v, "1/2"));
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r, "f1", v));
+        g_assert (gupnp_dlna_restriction_add_value_list (r, "f1", v));
         v = gupnp_dlna_native_value_list_new
                                       (gupnp_dlna_native_value_type_fraction());
         g_assert (gupnp_dlna_native_value_list_add_range (v, "1/4", "2/3"));
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r, "f2", v));
+        g_assert (gupnp_dlna_restriction_add_value_list (r, "f2", v));
         v = gupnp_dlna_native_value_list_new
                                            (gupnp_dlna_native_value_type_int());
         g_assert (gupnp_dlna_native_value_list_add_single (v, "13"));
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r, "i1", v));
+        g_assert (gupnp_dlna_restriction_add_value_list (r, "i1", v));
         v = gupnp_dlna_native_value_list_new
                                            (gupnp_dlna_native_value_type_int());
         g_assert (gupnp_dlna_native_value_list_add_range (v, "42", "55"));
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r, "i2", v));
+        g_assert (gupnp_dlna_restriction_add_value_list (r, "i2", v));
         v = gupnp_dlna_native_value_list_new
                                         (gupnp_dlna_native_value_type_string());
         g_assert (gupnp_dlna_native_value_list_add_single (v, "aaa"));
-        g_assert (gupnp_dlna_native_restriction_add_value_list (r, "s1", v));
+        g_assert (gupnp_dlna_restriction_add_value_list (r, "s1", v));
 
         /* info set with exactly fitting values and same mime*/
         s = gupnp_dlna_native_info_set_new ("mime");
@@ -395,7 +395,7 @@ info_set_fit (void)
         g_assert (gupnp_dlna_native_info_set_fits_restriction (s, r));
 
         gupnp_dlna_native_info_set_free (s);
-        gupnp_dlna_native_restriction_free (r);
+        gupnp_dlna_restriction_free (r);
 }
 
 int

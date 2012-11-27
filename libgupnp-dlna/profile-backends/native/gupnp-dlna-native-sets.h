@@ -24,7 +24,7 @@
 
 #include "gupnp-dlna-native-value-type.h"
 #include "gupnp-dlna-native-value-list.h"
-#include "gupnp-dlna-native-restriction-private.h"
+#include "gupnp-dlna-restriction-private.h"
 #include "gupnp-dlna-native-info-set.h"
 
 #endif /* __GUPNP_DLNA_NATIVE_SETS_H__ */

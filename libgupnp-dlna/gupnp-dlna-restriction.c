@@ -21,20 +21,19 @@
 
 #include <glib.h>
 
-#include "gupnp-dlna-native-restriction.h"
+#include "gupnp-dlna-restriction-private.h"
 #include "gupnp-dlna-native-value-list.h"
 #include "gupnp-dlna-native-sets-private.h"
 
-struct _GUPnPDLNANativeRestriction {
+struct _GUPnPDLNARestriction {
         gchar *mime;
         GHashTable *entries; /* <gchar *, GUPnPDLNANativeValueList *> */
 };
 
-GUPnPDLNANativeRestriction *
-gupnp_dlna_native_restriction_new (const gchar *mime)
+GUPnPDLNARestriction *
+gupnp_dlna_restriction_new (const gchar *mime)
 {
-        GUPnPDLNANativeRestriction *restriction =
-                                       g_slice_new (GUPnPDLNANativeRestriction);
+        GUPnPDLNARestriction *restriction = g_slice_new (GUPnPDLNARestriction);
 
         restriction->mime = g_strdup (mime);
         restriction->entries = g_hash_table_new_full
@@ -46,20 +45,20 @@ gupnp_dlna_native_restriction_new (const gchar *mime)
         return restriction;
 }
 
-GUPnPDLNANativeRestriction *
-gupnp_dlna_native_restriction_copy (GUPnPDLNANativeRestriction *restriction)
+GUPnPDLNARestriction *
+gupnp_dlna_restriction_copy (GUPnPDLNARestriction *restriction)
 {
-        GUPnPDLNANativeRestriction *dup;
+        GUPnPDLNARestriction *dup;
         GHashTableIter iter;
         gpointer key;
         gpointer value;
 
         g_return_val_if_fail (restriction != NULL, NULL);
 
-        dup = gupnp_dlna_native_restriction_new (restriction->mime);
+        dup = gupnp_dlna_restriction_new (restriction->mime);
         g_hash_table_iter_init (&iter, restriction->entries);
         while (g_hash_table_iter_next (&iter, &key, &value)) {
-                GUPnPDLNANativeValueList * dup_entry;
+                GUPnPDLNANativeValueList *dup_entry;
 
                 if (key == NULL || value == NULL)
                         continue;
@@ -74,20 +73,19 @@ gupnp_dlna_native_restriction_copy (GUPnPDLNANativeRestriction *restriction)
 }
 
 void
-gupnp_dlna_native_restriction_free (GUPnPDLNANativeRestriction *restriction)
+gupnp_dlna_restriction_free (GUPnPDLNARestriction *restriction)
 {
         if (restriction == NULL)
                 return;
         g_free (restriction->mime);
         g_hash_table_unref (restriction->entries);
-        g_slice_free (GUPnPDLNANativeRestriction, restriction);
+        g_slice_free (GUPnPDLNARestriction, restriction);
 }
 
 gboolean
-gupnp_dlna_native_restriction_add_value_list
-                                       (GUPnPDLNANativeRestriction *restriction,
-                                        const gchar                *name,
-                                        GUPnPDLNANativeValueList   *list)
+gupnp_dlna_restriction_add_value_list (GUPnPDLNARestriction     *restriction,
+                                       const gchar              *name,
+                                       GUPnPDLNANativeValueList *list)
 {
         g_return_val_if_fail (restriction != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
@@ -104,8 +102,8 @@ gupnp_dlna_native_restriction_add_value_list
 }
 
 void
-gupnp_dlna_native_restriction_merge (GUPnPDLNANativeRestriction *restriction,
-                                     GUPnPDLNANativeRestriction *merged)
+gupnp_dlna_restriction_merge (GUPnPDLNARestriction *restriction,
+                              GUPnPDLNARestriction *merged)
 {
         GHashTableIter iter;
         gpointer name_ptr;
@@ -130,11 +128,11 @@ gupnp_dlna_native_restriction_merge (GUPnPDLNANativeRestriction *restriction,
                                              value_list_ptr);
                 }
         }
-        gupnp_dlna_native_restriction_free (merged);
+        gupnp_dlna_restriction_free (merged);
 }
 
 gboolean
-gupnp_dlna_native_restriction_is_empty (GUPnPDLNANativeRestriction *restriction)
+gupnp_dlna_restriction_is_empty (GUPnPDLNARestriction *restriction)
 {
         g_return_val_if_fail (restriction != NULL, TRUE);
 
@@ -143,8 +141,7 @@ gupnp_dlna_native_restriction_is_empty (GUPnPDLNANativeRestriction *restriction)
 }
 
 gchar *
-gupnp_dlna_native_restriction_to_string
-                                       (GUPnPDLNANativeRestriction *restriction)
+gupnp_dlna_restriction_to_string (GUPnPDLNARestriction *restriction)
 {
         GString *str;
         GHashTableIter iter;
@@ -153,7 +150,7 @@ gupnp_dlna_native_restriction_to_string
 
         g_return_val_if_fail (restriction != NULL, NULL);
 
-        if (gupnp_dlna_native_restriction_is_empty (restriction))
+        if (gupnp_dlna_restriction_is_empty (restriction))
                 return g_strdup ("EMPTY");
 
         str = g_string_new (restriction->mime ? restriction->mime : "(null)");
@@ -169,7 +166,7 @@ gupnp_dlna_native_restriction_to_string
 }
 
 const gchar *
-gupnp_dlna_native_restriction_get_mime (GUPnPDLNANativeRestriction *restriction)
+gupnp_dlna_restriction_get_mime (GUPnPDLNARestriction *restriction)
 {
         g_return_val_if_fail (restriction != NULL, NULL);
 
@@ -177,8 +174,7 @@ gupnp_dlna_native_restriction_get_mime (GUPnPDLNANativeRestriction *restriction)
 }
 
 GHashTable *
-gupnp_dlna_native_restriction_get_entries
-                                       (GUPnPDLNANativeRestriction *restriction)
+gupnp_dlna_restriction_get_entries (GUPnPDLNARestriction *restriction)
 {
         g_return_val_if_fail (restriction != NULL, NULL);
 

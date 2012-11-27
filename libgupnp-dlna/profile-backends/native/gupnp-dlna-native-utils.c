@@ -28,7 +28,7 @@ gupnp_dlna_native_utils_free_restrictions (GList *list)
         if (list == NULL)
                 return;
         g_list_free_full (list,
-                          (GDestroyNotify) gupnp_dlna_native_restriction_free);
+                          (GDestroyNotify) gupnp_dlna_restriction_free);
 }
 
 gchar *
@@ -39,12 +39,12 @@ gupnp_dlna_native_utils_restrictions_list_to_string (GList *list)
         gchar *final_string;
 
         for (iter = list; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeRestriction *restriction =
-                                     GUPNP_DLNA_NATIVE_RESTRICTION (iter->data);
+                GUPnPDLNARestriction *restriction =
+                                        GUPNP_DLNA_RESTRICTION (iter->data);
 
                 if (restriction)
                         g_ptr_array_add (strings,
-                                         gupnp_dlna_native_restriction_to_string
+                                         gupnp_dlna_restriction_to_string
                                                             (restriction));
         }
 

@@ -19,29 +19,33 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GUPNP_DLNA_NATIVE_RESTRICTION_PRIVATE_H__
-#define __GUPNP_DLNA_NATIVE_RESTRICTION_PRIVATE_H__
+#ifndef __GUPNP_DLNA_RESTRICTION_H__
+#define __GUPNP_DLNA_RESTRICTION_H__
 
 #include <glib.h>
-#include <glib-object.h>
-#include "gupnp-dlna-native-restriction.h"
-#include "gupnp-dlna-native-value-list.h"
 
 G_BEGIN_DECLS
 
-GUPnPDLNANativeRestriction *
-gupnp_dlna_native_restriction_new (const gchar *mime);
+typedef struct _GUPnPDLNARestriction GUPnPDLNARestriction;
 
-gboolean
-gupnp_dlna_native_restriction_add_value_list
-                                       (GUPnPDLNANativeRestriction *restriction,
-                                        const gchar                *name,
-                                        GUPnPDLNANativeValueList   *list);
+#define GUPNP_DLNA_RESTRICTION(x) \
+        ((GUPnPDLNARestriction *) x)
+
+GUPnPDLNARestriction *
+gupnp_dlna_restriction_copy (GUPnPDLNARestriction *restriction);
 
 void
-gupnp_dlna_native_restriction_merge (GUPnPDLNANativeRestriction *restriction,
-                                     GUPnPDLNANativeRestriction *merged);
+gupnp_dlna_restriction_free (GUPnPDLNARestriction *restriction);
+
+gboolean
+gupnp_dlna_restriction_is_empty (GUPnPDLNARestriction *restriction);
+
+gchar *
+gupnp_dlna_restriction_to_string (GUPnPDLNARestriction *restriction);
+
+const gchar *
+gupnp_dlna_restriction_get_mime (GUPnPDLNARestriction *restriction);
 
 G_END_DECLS
 
-#endif /* __GUPNP_DLNA_NATIVE_RESTRICTION_PRIVATE_H__ */
+#endif /* __GUPNP_DLNA_RESTRICTION_H__ */

@@ -22,7 +22,6 @@
  */
 
 #include "gupnp-dlna-profile.h"
-#include "gupnp-dlna-native-restriction.h"
 
 /**
  * SECTION:gupnp-dlna-profile
@@ -111,7 +110,7 @@ free_restrictions (GList *list)
         if (list == NULL)
                 return;
         g_list_free_full (list,
-                          (GDestroyNotify) gupnp_dlna_native_restriction_free);
+                          (GDestroyNotify) gupnp_dlna_restriction_free);
 }
 
 static void

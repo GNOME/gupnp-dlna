@@ -83,8 +83,8 @@ match_profile (GUPnPDLNAProfile       *profile,
         g_free (restrictions_dump);
 
         for (iter = profile_restrictions; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeRestriction *restriction =
-                                     GUPNP_DLNA_NATIVE_RESTRICTION (iter->data);
+                GUPnPDLNARestriction *restriction =
+                                        GUPNP_DLNA_RESTRICTION (iter->data);
 
                 if (restriction != NULL &&
                     gupnp_dlna_native_info_set_fits_restriction
