@@ -27,4 +27,6 @@
   file listing them. Otherwise using G_GNUC_INTERNAL for every
   function not to be exported will be tedious.
 
+* Generate Vala API.
+
 * Read TODO.old for some ideas.
