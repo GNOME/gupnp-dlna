@@ -19,12 +19,23 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GUPNP_DLNA_NATIVE_SETS_H__
-#define __GUPNP_DLNA_NATIVE_SETS_H__
+#ifndef __GUPNP_DLNA_PROFILE_PRIVATE_H__
+#define __GUPNP_DLNA_PROFILE_PRIVATE_H__
 
-#include "gupnp-dlna-native-value-type.h"
-#include "gupnp-dlna-native-value-list.h"
-#include "gupnp-dlna-native-restriction-private.h"
-#include "gupnp-dlna-native-info-set.h"
+#include <glib-object.h>
+#include "gupnp-dlna-profile.h"
 
-#endif /* __GUPNP_DLNA_NATIVE_SETS_H__ */
+G_BEGIN_DECLS
+
+GUPnPDLNAProfile *
+gupnp_dlna_profile_new (const gchar *name,
+                        const gchar *mime,
+                        GList       *audio_restrictions,
+                        GList       *container_restrictions,
+                        GList       *image_restrictions,
+                        GList       *video_restrictions,
+                        gboolean     extended);
+
+G_END_DECLS
+
+#endif /* __GUPNP_DLNA_PROFILE_PRIVATE_H__ */

@@ -23,7 +23,7 @@
 
 #include <glib.h>
 
-#include "gupnp-dlna-native-profile.h"
+#include "gupnp-dlna-profile.h"
 #include "gupnp-dlna-native-profile-guesser-impl.h"
 #include "gupnp-dlna-information.h"
 #include "gupnp-dlna-audio-information.h"
@@ -43,23 +43,22 @@ struct _GUPnPDLNANativeProfileGuesserImplPrivate {
 
 
 static gboolean
-is_video_profile (GUPnPDLNANativeProfile *profile)
+is_video_profile (GUPnPDLNAProfile *profile)
 {
         GList *container_restrictions =
-                 gupnp_dlna_native_profile_get_container_restrictions (profile);
+                 gupnp_dlna_profile_get_container_restrictions (profile);
         GList *video_restrictions =
-                     gupnp_dlna_native_profile_get_video_restrictions (profile);
+                     gupnp_dlna_profile_get_video_restrictions (profile);
 
         return (container_restrictions != NULL && video_restrictions != NULL);
 }
 
 static gboolean
-match_profile (GUPnPDLNANativeProfile *profile,
+match_profile (GUPnPDLNAProfile       *profile,
                GUPnPDLNANativeInfoSet *stream_info_set,
                GList                  *profile_restrictions)
 {
-        GUPnPDLNAProfile *dlna_profile = GUPNP_DLNA_PROFILE (profile);
-        const gchar *name = gupnp_dlna_profile_get_name (dlna_profile);
+        const gchar *name = gupnp_dlna_profile_get_name (profile);
         GList *iter;
         gchar *stream_dump;
         gchar *restrictions_dump;
@@ -309,14 +308,14 @@ info_set_from_container_information (GUPnPDLNAContainerInformation *info)
 }
 
 static gboolean
-check_container_profile (GUPnPDLNAInformation   *info,
-                         GUPnPDLNANativeProfile *profile)
+check_container_profile (GUPnPDLNAInformation *info,
+                         GUPnPDLNAProfile     *profile)
 {
         GUPnPDLNAContainerInformation *container_info =
                         gupnp_dlna_information_get_container_information (info);
         gboolean matched = FALSE;
         GList *profile_restrictions =
-                 gupnp_dlna_native_profile_get_container_restrictions (profile);
+                 gupnp_dlna_profile_get_container_restrictions (profile);
 
         if (profile_restrictions != NULL && container_info != NULL) {
                 GUPnPDLNANativeInfoSet *stream_info_set =
@@ -405,8 +404,8 @@ info_set_from_audio_information (GUPnPDLNAAudioInformation *info)
 }
 
 static gboolean
-check_audio_profile (GUPnPDLNAInformation   *info,
-                     GUPnPDLNANativeProfile *profile)
+check_audio_profile (GUPnPDLNAInformation *info,
+                     GUPnPDLNAProfile     *profile)
 {
         GUPnPDLNANativeInfoSet *info_set;
         gboolean matched;
@@ -419,8 +418,7 @@ check_audio_profile (GUPnPDLNAInformation   *info,
         matched = FALSE;
         audio_info = gupnp_dlna_information_get_audio_information (info);
         info_set = info_set_from_audio_information (audio_info);
-        restrictions =
-                     gupnp_dlna_native_profile_get_audio_restrictions (profile);
+        restrictions = gupnp_dlna_profile_get_audio_restrictions (profile);
         if (match_profile (profile, info_set, restrictions))
                 matched = TRUE;
         else
@@ -497,7 +495,7 @@ info_set_from_video_information (GUPnPDLNAVideoInformation *info)
 
 static gboolean
 check_video_profile (GUPnPDLNAInformation *info,
-                     GUPnPDLNANativeProfile *profile)
+                     GUPnPDLNAProfile     *profile)
 {
         GUPnPDLNAVideoInformation *video_info =
                             gupnp_dlna_information_get_video_information (info);
@@ -510,8 +508,7 @@ check_video_profile (GUPnPDLNAInformation *info,
         if (video_info == NULL || audio_info == NULL)
                 goto out;
 
-        restrictions = gupnp_dlna_native_profile_get_video_restrictions
-                                        (profile);
+        restrictions = gupnp_dlna_profile_get_video_restrictions (profile);
         info_set = info_set_from_video_information (video_info);
         if (!match_profile (profile, info_set, restrictions)) {
                 g_debug ("Video did not match");
@@ -520,8 +517,7 @@ check_video_profile (GUPnPDLNAInformation *info,
         }
         gupnp_dlna_native_info_set_free (info_set);
 
-        restrictions = gupnp_dlna_native_profile_get_audio_restrictions
-                                        (profile);
+        restrictions = gupnp_dlna_profile_get_audio_restrictions (profile);
         info_set = info_set_from_audio_information (audio_info);
         if (!match_profile (profile, info_set, restrictions)) {
                 g_debug ("Audio did not match");
@@ -576,27 +572,24 @@ backend_guess_image_profile
         GUPnPDLNAImageInformation *image_info =
                             gupnp_dlna_information_get_image_information (info);
         GUPnPDLNANativeInfoSet *info_set;
-        GUPnPDLNAProfile *profile;
+        GUPnPDLNAProfile *found_profile;
 
         if (!image_info)
                 return NULL;
 
         info_set = info_set_from_image_information (image_info);
-        profile = NULL;
+        found_profile = NULL;
 
         for (iter = profiles; iter; iter = iter->next) {
-                GUPnPDLNANativeProfile *native_profile =
-                                        GUPNP_DLNA_NATIVE_PROFILE (iter->data);
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
                 GList *restrictions =
-                                gupnp_dlna_native_profile_get_image_restrictions
-                                        (native_profile);
+                            gupnp_dlna_profile_get_image_restrictions (profile);
 
                 g_debug ("Matching image against profile: %s",
-                         gupnp_dlna_profile_get_name
-                                        (GUPNP_DLNA_PROFILE (native_profile)));
+                         gupnp_dlna_profile_get_name (profile));
 
-                if (match_profile (native_profile, info_set, restrictions)) {
-                        profile = GUPNP_DLNA_PROFILE (native_profile);
+                if (match_profile (profile, info_set, restrictions)) {
+                        found_profile = profile;
 
                         break;
                 } else
@@ -605,7 +598,7 @@ backend_guess_image_profile
 
         gupnp_dlna_native_info_set_free (info_set);
 
-        return profile;
+        return found_profile;
 }
 
 static GUPnPDLNAProfile *
@@ -614,25 +607,23 @@ backend_guess_video_profile
                         GUPnPDLNAInformation        *info,
                         GList                       *profiles)
 {
-        GUPnPDLNAProfile *profile = NULL;
+        GUPnPDLNAProfile *found_profile = NULL;
         GList *iter;
 
         for (iter = profiles; iter; iter = iter->next) {
-                GUPnPDLNANativeProfile *native_profile =
-                                        GUPNP_DLNA_NATIVE_PROFILE (iter->data);
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
 
                 g_debug ("Matching video against profile: %s",
-                         gupnp_dlna_profile_get_name
-                                        (GUPNP_DLNA_PROFILE (native_profile)));
+                         gupnp_dlna_profile_get_name (profile));
 
-                if (check_video_profile (info, native_profile)) {
-                        profile = GUPNP_DLNA_PROFILE (native_profile);
+                if (check_video_profile (info, profile)) {
+                        found_profile = profile;
 
                         break;
                 }
         }
 
-        return profile;
+        return found_profile;
 }
 
 static GUPnPDLNAProfile *
@@ -642,25 +633,23 @@ backend_guess_audio_profile
                         GList                       *profiles)
 {
         GList *iter;
-        GUPnPDLNAProfile *profile = NULL;
+        GUPnPDLNAProfile *found_profile = NULL;
 
         for (iter = profiles; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeProfile *native_profile =
-                                        GUPNP_DLNA_NATIVE_PROFILE (iter->data);
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
 
                 g_debug ("Matching audio against profile: %s",
-                         gupnp_dlna_profile_get_name
-                                        (GUPNP_DLNA_PROFILE (native_profile)));
+                         gupnp_dlna_profile_get_name (profile));
 
-                if (check_audio_profile (info, native_profile) &&
-                    check_container_profile (info, native_profile)) {
-                        profile = GUPNP_DLNA_PROFILE (native_profile);
+                if (check_audio_profile (info, profile) &&
+                    check_container_profile (info, profile)) {
+                        found_profile = profile;
 
                         break;
                 }
         }
 
-        return profile;
+        return found_profile;
 }
 
 static void

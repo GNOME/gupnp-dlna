@@ -34,7 +34,8 @@ metadata_log_cflags = \
 
 common_cflags = \
 	$(GLIB_CFLAGS) \
-	$(GOBJECT_CFLAGS)
+	$(GOBJECT_CFLAGS) \
+	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
 
 metadata_cflags = \
 	-I$(top_srcdir)/libgupnp-dlna/metadata
@@ -125,7 +126,8 @@ libgupnp_dlna_incdir = \
 	$(includedir)/gupnp-dlna-2.0/libgupnp-dlna
 libgupnp_dlna_inc_HEADERS = \
 	gupnp-dlna-profile-guesser.h \
-	gupnp-dlna-profile.h
+	gupnp-dlna-profile.h \
+	profile-backends/native/sets/gupnp-dlna-native-restriction.h
 
 libgupnp_dlna_metadata_incdir = \
 	$(libgupnp_dlna_incdir)/metadata

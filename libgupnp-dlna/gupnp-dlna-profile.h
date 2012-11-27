@@ -87,6 +87,18 @@ gupnp_dlna_profile_get_mime (GUPnPDLNAProfile *profile);
 gboolean
 gupnp_dlna_profile_get_extended (GUPnPDLNAProfile *profile);
 
+GList *
+gupnp_dlna_profile_get_container_restrictions (GUPnPDLNAProfile *self);
+
+GList *
+gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *self);
+
+GList *
+gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *self);
+
+GList *
+gupnp_dlna_profile_get_video_restrictions (GUPnPDLNAProfile *self);
+
 G_END_DECLS
 
 #endif /* __GUPNP_DLNA_PROFILE_H__ */

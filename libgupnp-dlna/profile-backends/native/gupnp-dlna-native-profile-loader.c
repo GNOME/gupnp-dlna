@@ -25,7 +25,7 @@
 #include "config.h"
 #endif /* HAVE_CONFIG_H_ */
 #include "gupnp-dlna-native-profile-loader.h"
-#include "gupnp-dlna-native-profile.h"
+#include "gupnp-dlna-profile-private.h"
 #include "gupnp-dlna-native-sets.h"
 #include "gupnp-dlna-native-utils.h"
 
@@ -605,16 +605,16 @@ copy_restrictions_list (GList *list)
 
 static void
 merge_base_restrictions (GUPnPDLNANativeProfileData *data,
-                         GUPnPDLNANativeProfile     *profile)
+                         GUPnPDLNAProfile           *profile)
 {
         GList *audio_restrictions =
-                     gupnp_dlna_native_profile_get_audio_restrictions (profile);
+                     gupnp_dlna_profile_get_audio_restrictions (profile);
         GList *container_restrictions =
-                 gupnp_dlna_native_profile_get_container_restrictions (profile);
+                 gupnp_dlna_profile_get_container_restrictions (profile);
         GList *image_restrictions =
-                     gupnp_dlna_native_profile_get_image_restrictions (profile);
+                     gupnp_dlna_profile_get_image_restrictions (profile);
         GList *video_restrictions =
-                     gupnp_dlna_native_profile_get_video_restrictions (profile);
+                     gupnp_dlna_profile_get_video_restrictions (profile);
 
         if (audio_restrictions != NULL) {
                 GList *copy = copy_restrictions_list (audio_restrictions);
@@ -667,16 +667,15 @@ backend_create_profile (GUPnPDLNAProfileLoader *loader,
         GUPnPDLNANativeProfileLoaderPrivate *priv = native_loader->priv;
         GUPnPDLNANativeProfileData *data =
              (GUPnPDLNANativeProfileData *) priv->dlna_profile_data_stack->data;
-        GUPnPDLNANativeProfile *profile;
+        GUPnPDLNAProfile *profile;
         GList *audio_restrictions = NULL;
         GList *container_restrictions = NULL;
         GList *image_restrictions = NULL;
         GList *video_restrictions = NULL;
 
         /* Inherit from base profile, if it exists */
-        if (GUPNP_IS_DLNA_NATIVE_PROFILE (base))
-                merge_base_restrictions (data,
-                                         GUPNP_DLNA_NATIVE_PROFILE (base));
+        if (base != NULL)
+                merge_base_restrictions (data, base);
 
         /* The merged caps will be our new GUPnPDLNAProfile */
         if (!restrictions_list_is_empty (data->audios)) {
@@ -696,13 +695,13 @@ backend_create_profile (GUPnPDLNAProfileLoader *loader,
                 data->videos = NULL;
         }
 
-        profile = gupnp_dlna_native_profile_new (name,
-                                                 mime,
-                                                 audio_restrictions,
-                                                 container_restrictions,
-                                                 image_restrictions,
-                                                 video_restrictions,
-                                                 extended);
+        profile = gupnp_dlna_profile_new (name,
+                                          mime,
+                                          audio_restrictions,
+                                          container_restrictions,
+                                          image_restrictions,
+                                          video_restrictions,
+                                          extended);
 
         return GUPNP_DLNA_PROFILE (profile);
 }
@@ -734,51 +733,41 @@ backend_cleanup (GUPnPDLNAProfileLoader *loader G_GNUC_UNUSED,
 
         while (iter != NULL) {
                 GList *next = iter->next;
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
+                const gchar *name = gupnp_dlna_profile_get_name (profile);
 
-                if (GUPNP_IS_DLNA_NATIVE_PROFILE (iter->data)) {
-                        GUPnPDLNANativeProfile *profile =
-                                        GUPNP_DLNA_NATIVE_PROFILE (iter->data);
-                        const gchar *name = gupnp_dlna_profile_get_name
-                                        (GUPNP_DLNA_PROFILE (profile));
-
-                        if (name == NULL || name[0] == '\0') {
-                                profiles = g_list_delete_link (profiles, iter);
-                                g_object_unref (profile);
-                        } else {
-                                /* TODO: simplify restrictions in
-                                 * profile if possible.
-                                 */
-                        }
+                if (name == NULL || name[0] == '\0') {
+                        profiles = g_list_delete_link (profiles, iter);
+                        g_object_unref (profile);
                 } else {
-                        g_critical
-                                  ("Profile in list is not from this backend.");
+                        /* TODO: simplify restrictions in profile if
+                         * possible.
+                         */
                 }
 
                 iter = next;
         }
 
         for (iter = profiles; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeProfile *profile = GUPNP_DLNA_NATIVE_PROFILE
-                                        (iter->data);
-                GUPnPDLNAProfile *dlna_profile = GUPNP_DLNA_PROFILE (profile);
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
                 gchar *acaps =
                              gupnp_dlna_native_utils_restrictions_list_to_string
-                   (gupnp_dlna_native_profile_get_audio_restrictions (profile));
+                   (gupnp_dlna_profile_get_audio_restrictions (profile));
                 gchar *ccaps =
                              gupnp_dlna_native_utils_restrictions_list_to_string
-                           (gupnp_dlna_native_profile_get_container_restrictions
+                           (gupnp_dlna_profile_get_container_restrictions
                                         (profile));
                 gchar *icaps =
                              gupnp_dlna_native_utils_restrictions_list_to_string
-                   (gupnp_dlna_native_profile_get_image_restrictions (profile));
+                   (gupnp_dlna_profile_get_image_restrictions (profile));
                 gchar *vcaps =
                              gupnp_dlna_native_utils_restrictions_list_to_string
-                   (gupnp_dlna_native_profile_get_video_restrictions (profile));
+                   (gupnp_dlna_profile_get_video_restrictions (profile));
 
                 g_debug ("Loaded profile: %s\nMIME: %s\naudio caps: %s\n"
                          "container caps: %s\nimage caps: %s\nvideo caps: %s\n",
-                         gupnp_dlna_profile_get_name (dlna_profile),
-                         gupnp_dlna_profile_get_mime (dlna_profile),
+                         gupnp_dlna_profile_get_name (profile),
+                         gupnp_dlna_profile_get_mime (profile),
                          acaps,
                          ccaps,
                          icaps,
