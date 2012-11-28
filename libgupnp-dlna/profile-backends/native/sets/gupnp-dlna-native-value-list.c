@@ -19,7 +19,7 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "gupnp-dlna-native-value-list.h"
+#include "gupnp-dlna-native-value-list-private.h"
 #include "gupnp-dlna-native-value.h"
 #include "gupnp-dlna-native-sets-private.h"
 

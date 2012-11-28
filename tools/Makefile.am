@@ -7,7 +7,8 @@ AM_CFLAGS = \
 	$(GLIB_CFLAGS) \
 	$(GOBJECT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
-	$(GMODULE_CFLAGS)
+	$(GMODULE_CFLAGS) \
+	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
 LIBS = \
 	$(GLIB_LIBS) \
 	$(GOBJECT_LIBS) \

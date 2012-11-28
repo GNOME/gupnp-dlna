@@ -22,7 +22,6 @@
 #include <glib.h>
 
 #include "gupnp-dlna-restriction-private.h"
-#include "gupnp-dlna-native-value-list.h"
 #include "gupnp-dlna-native-sets-private.h"
 
 struct _GUPnPDLNARestriction {

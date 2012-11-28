@@ -23,27 +23,23 @@
 #define __GUPNP_DLNA_NATIVE_VALUE_LIST_H__
 
 #include <glib.h>
-
-#include "gupnp-dlna-native-value-type.h"
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
 typedef struct _GUPnPDLNANativeValueList GUPnPDLNANativeValueList;
 
 GUPnPDLNANativeValueList *
-gupnp_dlna_native_value_list_new (GUPnPDLNANativeValueType *type);
+gupnp_dlna_native_value_list_copy (GUPnPDLNANativeValueList *list);
 
 void
 gupnp_dlna_native_value_list_free (GUPnPDLNANativeValueList *list);
 
 gboolean
-gupnp_dlna_native_value_list_add_range (GUPnPDLNANativeValueList *list,
-                                        const gchar *min,
-                                        const gchar *max);
+gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *list);
 
-gboolean
-gupnp_dlna_native_value_list_add_single (GUPnPDLNANativeValueList *list,
-                                         const gchar *single);
+gchar *
+gupnp_dlna_native_value_list_to_string (GUPnPDLNANativeValueList *list);
 
 G_END_DECLS
 

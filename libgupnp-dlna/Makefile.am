@@ -128,7 +128,8 @@ libgupnp_dlna_incdir = \
 libgupnp_dlna_inc_HEADERS = \
 	gupnp-dlna-profile-guesser.h \
 	gupnp-dlna-profile.h \
-	gupnp-dlna-restriction.h
+	gupnp-dlna-restriction.h \
+	profile-backends/native/sets/gupnp-dlna-native-value-list.h
 
 libgupnp_dlna_metadata_incdir = \
 	$(libgupnp_dlna_incdir)/metadata
@@ -153,7 +154,9 @@ dist_noinst_HEADERS += \
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
 INTROSPECTION_SCANNER_ARGS =
-INTROSPECTION_COMPILER_ARGS = --includedir=$(top_srcdir)
+INTROSPECTION_COMPILER_ARGS = \
+	--includedir=$(top_srcdir) \
+	--includedir=$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
 
 if HAVE_INTROSPECTION
 
@@ -171,7 +174,7 @@ GUPnPDLNA_2_0_gir_SCANNERFLAGS = \
 	--warn-all \
 	--symbol-prefix=gupnp_dlna \
 	--identifier-prefix=GUPnPDLNA \
-	--add-include-path=$(top_srcdir)
+	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
 
 INTROSPECTION_GIRS += $(girs)
 

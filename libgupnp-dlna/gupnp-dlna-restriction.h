@@ -25,6 +25,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "gupnp-dlna-native-value-list.h"
+
 G_BEGIN_DECLS
 
 typedef struct _GUPnPDLNARestriction GUPnPDLNARestriction;
@@ -56,6 +58,9 @@ gupnp_dlna_restriction_to_string (GUPnPDLNARestriction *restriction);
 
 const gchar *
 gupnp_dlna_restriction_get_mime (GUPnPDLNARestriction *restriction);
+
+GHashTable *
+gupnp_dlna_restriction_get_entries (GUPnPDLNARestriction *restriction);
 
 G_END_DECLS
 

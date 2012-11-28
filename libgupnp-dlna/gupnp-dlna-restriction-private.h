@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include "gupnp-dlna-restriction.h"
-#include "gupnp-dlna-native-value-list.h"
+#include "gupnp-dlna-native-value-list-private.h"
 
 G_BEGIN_DECLS
 

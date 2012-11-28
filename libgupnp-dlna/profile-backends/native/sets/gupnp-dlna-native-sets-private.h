@@ -24,7 +24,7 @@
 
 #include <glib.h>
 #include "gupnp-dlna-native-value-type.h"
-#include "gupnp-dlna-native-value-list.h"
+#include "gupnp-dlna-native-value-list-private.h"
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-restriction-private.h"
 
@@ -90,23 +90,14 @@ gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
                                       GUPnPDLNANativeValueUnion *b);
 
 /* ValueList */
-GUPnPDLNANativeValueList *
-gupnp_dlna_native_value_list_copy (GUPnPDLNANativeValueList *list);
-
 gboolean
 gupnp_dlna_native_value_list_is_superset
                                         (GUPnPDLNANativeValueList *list,
                                          GUPnPDLNANativeInfoValue *value,
                                          gboolean                 *unsupported);
 
-gboolean
-gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *value_list);
-
 GList *
 gupnp_dlna_native_value_list_get_list (GUPnPDLNANativeValueList *value_list);
-
-gchar *
-gupnp_dlna_native_value_list_to_string (GUPnPDLNANativeValueList *value_list);
 
 void
 gupnp_dlna_native_value_list_sort_items (GUPnPDLNANativeValueList *value_list);
@@ -117,10 +108,6 @@ gupnp_dlna_native_info_value_get_type (GUPnPDLNANativeInfoValue *info);
 
 GUPnPDLNANativeValueUnion *
 gupnp_dlna_native_info_value_get_value (GUPnPDLNANativeInfoValue *info);
-
-/* Restriction */
-GHashTable *
-gupnp_dlna_restriction_get_entries (GUPnPDLNARestriction *restriction);
 
 G_END_DECLS
 
