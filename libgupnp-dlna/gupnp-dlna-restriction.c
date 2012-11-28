@@ -30,6 +30,11 @@ struct _GUPnPDLNARestriction {
         GHashTable *entries; /* <gchar *, GUPnPDLNANativeValueList *> */
 };
 
+G_DEFINE_BOXED_TYPE (GUPnPDLNARestriction,
+                     gupnp_dlna_restriction,
+                     gupnp_dlna_restriction_copy,
+                     gupnp_dlna_restriction_free)
+
 GUPnPDLNARestriction *
 gupnp_dlna_restriction_new (const gchar *mime)
 {

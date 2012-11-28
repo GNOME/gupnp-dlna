@@ -23,6 +23,7 @@
 #define __GUPNP_DLNA_RESTRICTION_H__
 
 #include <glib.h>
+#include <glib-object.h>
 
 G_BEGIN_DECLS
 
@@ -30,6 +31,16 @@ typedef struct _GUPnPDLNARestriction GUPnPDLNARestriction;
 
 #define GUPNP_DLNA_RESTRICTION(x) \
         ((GUPnPDLNARestriction *) x)
+
+/**
+ * GUPNP_TYPE_DLNA_RESTRICTION:
+ *
+ * The #GType for #GUPnPDLNARestriction.
+ */
+#define GUPNP_TYPE_DLNA_RESTRICTION (gupnp_dlna_restriction_get_type ())
+
+GType
+gupnp_dlna_restriction_get_type (void) G_GNUC_CONST;
 
 GUPnPDLNARestriction *
 gupnp_dlna_restriction_copy (GUPnPDLNARestriction *restriction);
