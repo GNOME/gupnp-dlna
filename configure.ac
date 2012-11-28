@@ -89,6 +89,8 @@ then
         elif test "x$enable_gstreamer_metadata_backend" = 'xyes'
         then
                 AC_MSG_ERROR([GStreamer $GST_MAJORMINOR not found.])
+        else
+                enable_gstreamer_metadata_backend='no'
         fi
 fi
 
