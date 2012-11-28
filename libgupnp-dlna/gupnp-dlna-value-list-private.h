@@ -19,31 +19,31 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GUPNP_DLNA_NATIVE_VALUE_LIST_PRIVATE_H__
-#define __GUPNP_DLNA_NATIVE_VALUE_LIST_PRIVATE_H__
+#ifndef __GUPNP_DLNA_VALUE_LIST_PRIVATE_H__
+#define __GUPNP_DLNA_VALUE_LIST_PRIVATE_H__
 
 #include <glib.h>
 
-#include "gupnp-dlna-native-value-list.h"
+#include "gupnp-dlna-value-list.h"
 #include "gupnp-dlna-native-value-type.h"
 
 G_BEGIN_DECLS
 
-GUPnPDLNANativeValueList *
-gupnp_dlna_native_value_list_new (GUPnPDLNANativeValueType *type);
+GUPnPDLNAValueList *
+gupnp_dlna_value_list_new (GUPnPDLNANativeValueType *type);
 
 void
-gupnp_dlna_native_value_list_free (GUPnPDLNANativeValueList *list);
+gupnp_dlna_value_list_free (GUPnPDLNAValueList *list);
 
 gboolean
-gupnp_dlna_native_value_list_add_range (GUPnPDLNANativeValueList *list,
-                                        const gchar *min,
-                                        const gchar *max);
+gupnp_dlna_value_list_add_range (GUPnPDLNAValueList *list,
+                                 const gchar        *min,
+                                 const gchar        *max);
 
 gboolean
-gupnp_dlna_native_value_list_add_single (GUPnPDLNANativeValueList *list,
-                                         const gchar *single);
+gupnp_dlna_value_list_add_single (GUPnPDLNAValueList *list,
+                                  const gchar        *single);
 
 G_END_DECLS
 
-#endif /* __GUPNP_DLNA_NATIVE_VALUE_LIST_PRIVATE_H__ */
+#endif /* __GUPNP_DLNA_VALUE_LIST_PRIVATE_H__ */

@@ -112,7 +112,8 @@ libgupnp_dlna_2_0_la_SOURCES = \
 	gupnp-dlna-field-value.c \
 	gupnp-dlna-profile-backend.c \
 	gupnp-dlna-profile.c \
-	gupnp-dlna-restriction.c
+	gupnp-dlna-restriction.c \
+	gupnp-dlna-value-list.c
 libgupnp_dlna_2_0_la_LIBADD = \
 	$(gupnp_libadd) \
 	libloader.la \
@@ -129,7 +130,7 @@ libgupnp_dlna_inc_HEADERS = \
 	gupnp-dlna-profile-guesser.h \
 	gupnp-dlna-profile.h \
 	gupnp-dlna-restriction.h \
-	profile-backends/native/sets/gupnp-dlna-native-value-list.h
+	gupnp-dlna-value-list.h
 
 libgupnp_dlna_metadata_incdir = \
 	$(libgupnp_dlna_incdir)/metadata
@@ -147,7 +148,9 @@ dist_noinst_HEADERS += \
 	gupnp-dlna-metadata-backend.h \
 	gupnp-dlna-profile-backend.h \
 	gupnp-dlna-profile-loader.h \
-	gupnp-dlna-profile-guesser-impl.h
+	gupnp-dlna-profile-guesser-impl.h \
+	gupnp-dlna-restriction-private.h \
+	gupnp-dlna-value-list-private.h
 
 
 # INTROSPECTION

@@ -215,7 +215,7 @@ gupnp_dlna_native_info_set_fits_restriction
                                         (restriction));
         while (g_hash_table_iter_next (&iter, &key, &value)) {
                 GUPnPDLNANativeInfoValue *info_value;
-                GUPnPDLNANativeValueList *value_list;
+                GUPnPDLNAValueList *value_list;
                 gboolean unsupported;
 
                 if (!g_hash_table_lookup_extended (info_set->entries,
@@ -223,8 +223,8 @@ gupnp_dlna_native_info_set_fits_restriction
                                                    NULL,
                                                    (gpointer *) &info_value))
                         return FALSE;
-                value_list = (GUPnPDLNANativeValueList *) value;
-                if (!gupnp_dlna_native_value_list_is_superset (value_list,
+                value_list = (GUPnPDLNAValueList *) value;
+                if (!gupnp_dlna_value_list_is_superset (value_list,
                                                                info_value,
                                                                &unsupported))
                         return FALSE;

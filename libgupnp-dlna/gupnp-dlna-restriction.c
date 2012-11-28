@@ -26,7 +26,7 @@
 
 struct _GUPnPDLNARestriction {
         gchar *mime;
-        GHashTable *entries; /* <gchar *, GUPnPDLNANativeValueList *> */
+        GHashTable *entries; /* <gchar *, GUPnPDLNAValueList *> */
 };
 
 G_DEFINE_BOXED_TYPE (GUPnPDLNARestriction,
@@ -44,7 +44,7 @@ gupnp_dlna_restriction_new (const gchar *mime)
                            (g_str_hash,
                             g_str_equal,
                             g_free,
-                            (GDestroyNotify) gupnp_dlna_native_value_list_free);
+                            (GDestroyNotify) gupnp_dlna_value_list_free);
 
         return restriction;
 }
@@ -62,11 +62,11 @@ gupnp_dlna_restriction_copy (GUPnPDLNARestriction *restriction)
         dup = gupnp_dlna_restriction_new (restriction->mime);
         g_hash_table_iter_init (&iter, restriction->entries);
         while (g_hash_table_iter_next (&iter, &key, &value)) {
-                GUPnPDLNANativeValueList *dup_entry;
+                GUPnPDLNAValueList *dup_entry;
 
                 if (key == NULL || value == NULL)
                         continue;
-                dup_entry = gupnp_dlna_native_value_list_copy (value);
+                dup_entry = gupnp_dlna_value_list_copy (value);
 
                 if (dup_entry == NULL)
                         continue;
@@ -87,19 +87,19 @@ gupnp_dlna_restriction_free (GUPnPDLNARestriction *restriction)
 }
 
 gboolean
-gupnp_dlna_restriction_add_value_list (GUPnPDLNARestriction     *restriction,
-                                       const gchar              *name,
-                                       GUPnPDLNANativeValueList *list)
+gupnp_dlna_restriction_add_value_list (GUPnPDLNARestriction *restriction,
+                                       const gchar          *name,
+                                       GUPnPDLNAValueList   *list)
 {
         g_return_val_if_fail (restriction != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
         g_return_val_if_fail (list != NULL, FALSE);
 
-        if (gupnp_dlna_native_value_list_is_empty (list))
+        if (gupnp_dlna_value_list_is_empty (list))
                 return FALSE;
         if (g_hash_table_contains (restriction->entries, name))
                 return FALSE;
-        gupnp_dlna_native_value_list_sort_items (list);
+        gupnp_dlna_value_list_sort_items (list);
         g_hash_table_insert (restriction->entries, g_strdup (name), list);
 
         return TRUE;
@@ -160,7 +160,7 @@ gupnp_dlna_restriction_to_string (GUPnPDLNARestriction *restriction)
         str = g_string_new (restriction->mime ? restriction->mime : "(null)");
         g_hash_table_iter_init (&iter, restriction->entries);
         while (g_hash_table_iter_next (&iter, &key, &value)) {
-                gchar *raw = gupnp_dlna_native_value_list_to_string (value);
+                gchar *raw = gupnp_dlna_value_list_to_string (value);
 
                 g_string_append_printf (str, ", %s=%s", (gchar *) key, raw);
                 g_free (raw);

@@ -6,8 +6,5 @@ sets_sources = \
 	profile-backends/native/sets/gupnp-dlna-native-sets-private.h \
 	profile-backends/native/sets/gupnp-dlna-native-value.c \
 	profile-backends/native/sets/gupnp-dlna-native-value.h \
-	profile-backends/native/sets/gupnp-dlna-native-value-list.c \
-	profile-backends/native/sets/gupnp-dlna-native-value-list.h \
-	profile-backends/native/sets/gupnp-dlna-native-value-list-private.h \
 	profile-backends/native/sets/gupnp-dlna-native-value-type.c \
 	profile-backends/native/sets/gupnp-dlna-native-value-type.h

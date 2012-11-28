@@ -19,28 +19,28 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GUPNP_DLNA_NATIVE_VALUE_LIST_H__
-#define __GUPNP_DLNA_NATIVE_VALUE_LIST_H__
+#ifndef __GUPNP_DLNA_VALUE_LIST_H__
+#define __GUPNP_DLNA_VALUE_LIST_H__
 
 #include <glib.h>
 #include <glib-object.h>
 
 G_BEGIN_DECLS
 
-typedef struct _GUPnPDLNANativeValueList GUPnPDLNANativeValueList;
+typedef struct _GUPnPDLNAValueList GUPnPDLNAValueList;
 
-GUPnPDLNANativeValueList *
-gupnp_dlna_native_value_list_copy (GUPnPDLNANativeValueList *list);
+GUPnPDLNAValueList *
+gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list);
 
 void
-gupnp_dlna_native_value_list_free (GUPnPDLNANativeValueList *list);
+gupnp_dlna_value_list_free (GUPnPDLNAValueList *list);
 
 gboolean
-gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *list);
+gupnp_dlna_value_list_is_empty (GUPnPDLNAValueList *list);
 
 gchar *
-gupnp_dlna_native_value_list_to_string (GUPnPDLNANativeValueList *list);
+gupnp_dlna_value_list_to_string (GUPnPDLNAValueList *list);
 
 G_END_DECLS
 
-#endif /* __GUPNP_DLNA_NATIVE_VALUE_LIST_H__ */
+#endif /* __GUPNP_DLNA_VALUE_LIST_H__ */

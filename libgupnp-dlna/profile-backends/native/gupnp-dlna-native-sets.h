@@ -23,7 +23,7 @@
 #define __GUPNP_DLNA_NATIVE_SETS_H__
 
 #include "gupnp-dlna-native-value-type.h"
-#include "gupnp-dlna-native-value-list-private.h"
+#include "gupnp-dlna-value-list-private.h"
 #include "gupnp-dlna-restriction-private.h"
 #include "gupnp-dlna-native-info-set.h"
 

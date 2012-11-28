@@ -19,24 +19,24 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "gupnp-dlna-native-value-list-private.h"
+#include "gupnp-dlna-value-list-private.h"
 #include "gupnp-dlna-native-value.h"
 #include "gupnp-dlna-native-sets-private.h"
 
-struct _GUPnPDLNANativeValueList {
+struct _GUPnPDLNAValueList {
         GUPnPDLNANativeValueType *type;
         GList                    *values; /* <GUPnPDLNANativeValue *> */
         gboolean                  sorted;
 };
 
-GUPnPDLNANativeValueList *
-gupnp_dlna_native_value_list_new (GUPnPDLNANativeValueType *type)
+GUPnPDLNAValueList *
+gupnp_dlna_value_list_new (GUPnPDLNANativeValueType *type)
 {
-        GUPnPDLNANativeValueList *list;
+        GUPnPDLNAValueList *list;
 
         g_return_val_if_fail (type != NULL, NULL);
 
-        list = g_slice_new (GUPnPDLNANativeValueList);
+        list = g_slice_new (GUPnPDLNAValueList);
         list->type = type;
         list->values = NULL;
         list->sorted = FALSE;
@@ -52,7 +52,7 @@ free_value (GUPnPDLNANativeValue     *value,
 }
 
 static void
-free_value_list (GUPnPDLNANativeValueList *list)
+free_value_list (GUPnPDLNAValueList *list)
 {
         if (list->values) {
                 g_list_foreach (list->values,
@@ -64,13 +64,13 @@ free_value_list (GUPnPDLNANativeValueList *list)
 }
 
 void
-gupnp_dlna_native_value_list_free (GUPnPDLNANativeValueList *list)
+gupnp_dlna_value_list_free (GUPnPDLNAValueList *list)
 {
         if (!list)
                 return;
 
         free_value_list (list);
-        g_slice_free (GUPnPDLNANativeValueList, list);
+        g_slice_free (GUPnPDLNAValueList, list);
 }
 
 static gint
@@ -82,7 +82,7 @@ value_compare (GUPnPDLNANativeValue     *a,
 }
 
 static gboolean
-insert_value (GUPnPDLNANativeValueList *list,
+insert_value (GUPnPDLNAValueList *list,
               GUPnPDLNANativeValue *value)
 {
         if (value) {
@@ -101,7 +101,7 @@ insert_value (GUPnPDLNANativeValueList *list,
 }
 
 gboolean
-gupnp_dlna_native_value_list_add_single (GUPnPDLNANativeValueList *list,
+gupnp_dlna_value_list_add_single (GUPnPDLNAValueList *list,
                                          const gchar *single)
 {
         GUPnPDLNANativeValue *value;
@@ -115,7 +115,7 @@ gupnp_dlna_native_value_list_add_single (GUPnPDLNANativeValueList *list,
 }
 
 gboolean
-gupnp_dlna_native_value_list_add_range (GUPnPDLNANativeValueList *list,
+gupnp_dlna_value_list_add_range (GUPnPDLNAValueList *list,
                                         const gchar *min,
                                         const gchar *max)
 {
@@ -136,15 +136,15 @@ gupnp_dlna_native_value_list_add_range (GUPnPDLNANativeValueList *list,
 }
 
 /* private */
-GUPnPDLNANativeValueList *
-gupnp_dlna_native_value_list_copy (GUPnPDLNANativeValueList *list)
+GUPnPDLNAValueList *
+gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list)
 {
-        GUPnPDLNANativeValueList *dup;
+        GUPnPDLNAValueList *dup;
 
         if (list) {
                 GList *iter;
 
-                dup = gupnp_dlna_native_value_list_new (list->type);
+                dup = gupnp_dlna_value_list_new (list->type);
                 for (iter = list->values; iter != NULL; iter = iter->next) {
                         GUPnPDLNANativeValue *base =
                                         (GUPnPDLNANativeValue *) iter->data;
@@ -167,7 +167,7 @@ gupnp_dlna_native_value_list_copy (GUPnPDLNANativeValueList *list)
 }
 
 gboolean
-gupnp_dlna_native_value_list_is_superset (GUPnPDLNANativeValueList *list,
+gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList *list,
                                           GUPnPDLNANativeInfoValue *value,
                                           gboolean                 *unsupported)
 {
@@ -201,7 +201,7 @@ gupnp_dlna_native_value_list_is_superset (GUPnPDLNANativeValueList *list,
 }
 
 gboolean
-gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *value_list)
+gupnp_dlna_value_list_is_empty (GUPnPDLNAValueList *value_list)
 {
         g_return_val_if_fail (value_list != NULL, TRUE);
 
@@ -209,7 +209,7 @@ gupnp_dlna_native_value_list_is_empty (GUPnPDLNANativeValueList *value_list)
 }
 
 GList *
-gupnp_dlna_native_value_list_get_list (GUPnPDLNANativeValueList *value_list)
+gupnp_dlna_value_list_get_list (GUPnPDLNAValueList *value_list)
 {
         g_return_val_if_fail (value_list != NULL, NULL);
 
@@ -217,7 +217,7 @@ gupnp_dlna_native_value_list_get_list (GUPnPDLNANativeValueList *value_list)
 }
 
 static gchar *
-list_to_string (GUPnPDLNANativeValueList *value_list)
+list_to_string (GUPnPDLNAValueList *value_list)
 {
         GList *iter;
         GPtrArray* strings = g_ptr_array_new_with_free_func (g_free);
@@ -241,7 +241,7 @@ list_to_string (GUPnPDLNANativeValueList *value_list)
 }
 
 gchar *
-gupnp_dlna_native_value_list_to_string (GUPnPDLNANativeValueList *value_list)
+gupnp_dlna_value_list_to_string (GUPnPDLNAValueList *value_list)
 {
         GString *str;
         gchar *val_str;
@@ -271,7 +271,7 @@ gupnp_dlna_native_value_list_to_string (GUPnPDLNANativeValueList *value_list)
 }
 
 void
-gupnp_dlna_native_value_list_sort_items (GUPnPDLNANativeValueList *value_list)
+gupnp_dlna_value_list_sort_items (GUPnPDLNAValueList *value_list)
 {
         g_return_if_fail (value_list != NULL);
 

@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include "gupnp-dlna-restriction.h"
-#include "gupnp-dlna-native-value-list-private.h"
+#include "gupnp-dlna-value-list-private.h"
 
 G_BEGIN_DECLS
 
@@ -33,9 +33,9 @@ GUPnPDLNARestriction *
 gupnp_dlna_restriction_new (const gchar *mime);
 
 gboolean
-gupnp_dlna_restriction_add_value_list (GUPnPDLNARestriction     *restriction,
-                                       const gchar              *name,
-                                       GUPnPDLNANativeValueList *list);
+gupnp_dlna_restriction_add_value_list (GUPnPDLNARestriction *restriction,
+                                       const gchar          *name,
+                                       GUPnPDLNAValueList   *list);
 
 void
 gupnp_dlna_restriction_merge (GUPnPDLNARestriction *restriction,

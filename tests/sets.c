@@ -35,145 +35,145 @@ value_type_not_null (void)
 static void
 value_list_single (void)
 {
-        GUPnPDLNANativeValueList *list;
+        GUPnPDLNAValueList *list;
         gboolean result;
 
         /* bool */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                      (gupnp_dlna_native_value_type_bool ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_single (list, "true");
+        result = gupnp_dlna_value_list_add_single (list, "true");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "false");
+        result = gupnp_dlna_value_list_add_single (list, "false");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "wrong");
+        result = gupnp_dlna_value_list_add_single (list, "wrong");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 
         /* fraction */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                  (gupnp_dlna_native_value_type_fraction ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_single (list, "1/2");
+        result = gupnp_dlna_value_list_add_single (list, "1/2");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "15/3");
+        result = gupnp_dlna_value_list_add_single (list, "15/3");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "wrong");
+        result = gupnp_dlna_value_list_add_single (list, "wrong");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_single (list, "1/0");
+        result = gupnp_dlna_value_list_add_single (list, "1/0");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_single (list, "1/2/3");
+        result = gupnp_dlna_value_list_add_single (list, "1/2/3");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_single (list, "wrong/bad");
+        result = gupnp_dlna_value_list_add_single (list, "wrong/bad");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 
         /* int */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                       (gupnp_dlna_native_value_type_int ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_single (list, "1");
+        result = gupnp_dlna_value_list_add_single (list, "1");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "-15");
+        result = gupnp_dlna_value_list_add_single (list, "-15");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "wrong");
+        result = gupnp_dlna_value_list_add_single (list, "wrong");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_single (list, "1.4");
+        result = gupnp_dlna_value_list_add_single (list, "1.4");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 
         /* string */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                    (gupnp_dlna_native_value_type_string ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_single (list, "1");
+        result = gupnp_dlna_value_list_add_single (list, "1");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "-15");
+        result = gupnp_dlna_value_list_add_single (list, "-15");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "wrong");
+        result = gupnp_dlna_value_list_add_single (list, "wrong");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_single (list, "1.4");
+        result = gupnp_dlna_value_list_add_single (list, "1.4");
         g_assert (result == TRUE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 }
 
 static void
 value_list_range (void)
 {
-        GUPnPDLNANativeValueList *list;
+        GUPnPDLNAValueList *list;
         gboolean result;
 
         /* bool ranges have no sense. */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                      (gupnp_dlna_native_value_type_bool ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_range (list, "true", "true");
+        result = gupnp_dlna_value_list_add_range (list, "true", "true");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "false", "true");
+        result = gupnp_dlna_value_list_add_range (list, "false", "true");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "false", "false");
+        result = gupnp_dlna_value_list_add_range (list, "false", "false");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "false", "true");
+        result = gupnp_dlna_value_list_add_range (list, "false", "true");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "false", "wrong");
+        result = gupnp_dlna_value_list_add_range (list, "false", "wrong");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "wrong", "true");
+        result = gupnp_dlna_value_list_add_range (list, "wrong", "true");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "wrong", "bad");
+        result = gupnp_dlna_value_list_add_range (list, "wrong", "bad");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 
         /* fraction */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                  (gupnp_dlna_native_value_type_fraction ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_range (list, "1/2", "3/4");
+        result = gupnp_dlna_value_list_add_range (list, "1/2", "3/4");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_range (list, "-8/3", "15/3");
+        result = gupnp_dlna_value_list_add_range (list, "-8/3", "15/3");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_range (list, "wrong", "bad");
+        result = gupnp_dlna_value_list_add_range (list, "wrong", "bad");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1/0", "-4/3");
+        result = gupnp_dlna_value_list_add_range (list, "1/0", "-4/3");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1/2/3", "3/2");
+        result = gupnp_dlna_value_list_add_range (list, "1/2/3", "3/2");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "a/b", "c/d");
+        result = gupnp_dlna_value_list_add_range (list, "a/b", "c/d");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1/2", "1/4");
+        result = gupnp_dlna_value_list_add_range (list, "1/2", "1/4");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1/2", "-1/2");
+        result = gupnp_dlna_value_list_add_range (list, "1/2", "-1/2");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 
         /* int */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                       (gupnp_dlna_native_value_type_int ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_range (list, "1", "3");
+        result = gupnp_dlna_value_list_add_range (list, "1", "3");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_range (list, "-15", "15");
+        result = gupnp_dlna_value_list_add_range (list, "-15", "15");
         g_assert (result == TRUE);
-        result = gupnp_dlna_native_value_list_add_range (list, "wrong", "bad");
+        result = gupnp_dlna_value_list_add_range (list, "wrong", "bad");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1.4", "3");
+        result = gupnp_dlna_value_list_add_range (list, "1.4", "3");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1", "-3");
+        result = gupnp_dlna_value_list_add_range (list, "1", "-3");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 
         /* string ranges have no sense */
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                    (gupnp_dlna_native_value_type_string ());
         g_assert (list != NULL);
-        result = gupnp_dlna_native_value_list_add_range (list, "1", "3");
+        result = gupnp_dlna_value_list_add_range (list, "1", "3");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "-15", "x");
+        result = gupnp_dlna_value_list_add_range (list, "-15", "x");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "wrong", "bad");
+        result = gupnp_dlna_value_list_add_range (list, "wrong", "bad");
         g_assert (result == FALSE);
-        result = gupnp_dlna_native_value_list_add_range (list, "1.4", "-1");
+        result = gupnp_dlna_value_list_add_range (list, "1.4", "-1");
         g_assert (result == FALSE);
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
 }
 
 static void
@@ -199,11 +199,11 @@ restriction_empty (void)
 {
         GUPnPDLNARestriction *r =
                                        gupnp_dlna_restriction_new (NULL);
-        GUPnPDLNANativeValueList *list = gupnp_dlna_native_value_list_new
+        GUPnPDLNAValueList *list = gupnp_dlna_value_list_new
                                          (gupnp_dlna_native_value_type_bool ());
 
         g_assert (gupnp_dlna_restriction_is_empty (r));
-        gupnp_dlna_native_value_list_add_single (list, "true");
+        gupnp_dlna_value_list_add_single (list, "true");
         g_assert (gupnp_dlna_restriction_add_value_list (r,
                                                                 "bool",
                                                                 list));
@@ -219,7 +219,7 @@ restriction_adding_value_lists (void)
 {
         GUPnPDLNARestriction *r =
                                        gupnp_dlna_restriction_new (NULL);
-        GUPnPDLNANativeValueList *list = gupnp_dlna_native_value_list_new
+        GUPnPDLNAValueList *list = gupnp_dlna_value_list_new
                                          (gupnp_dlna_native_value_type_bool ());
 
         g_assert (gupnp_dlna_restriction_is_empty (r));
@@ -228,19 +228,19 @@ restriction_adding_value_lists (void)
                                                                  "bool",
                                                                  list));
         g_assert (gupnp_dlna_restriction_is_empty (r));
-        gupnp_dlna_native_value_list_add_single (list, "true");
+        gupnp_dlna_value_list_add_single (list, "true");
         g_assert (gupnp_dlna_restriction_add_value_list (r,
                                                                 "bool",
                                                                 list));
         g_assert (!gupnp_dlna_restriction_is_empty (r));
-        list = gupnp_dlna_native_value_list_new
+        list = gupnp_dlna_value_list_new
                                          (gupnp_dlna_native_value_type_bool ());
-        gupnp_dlna_native_value_list_add_single (list, "false");
+        gupnp_dlna_value_list_add_single (list, "false");
         /* adding value list with already existing name should fail */
         g_assert (!gupnp_dlna_restriction_add_value_list (r,
                                                                  "bool",
                                                                  list));
-        gupnp_dlna_native_value_list_free (list);
+        gupnp_dlna_value_list_free (list);
         gupnp_dlna_restriction_free (r);
 }
 
@@ -280,32 +280,32 @@ info_set_fit (void)
 {
         GUPnPDLNARestriction *r =
                                      gupnp_dlna_restriction_new ("mime");
-        GUPnPDLNANativeValueList *v = gupnp_dlna_native_value_list_new
+        GUPnPDLNAValueList *v = gupnp_dlna_value_list_new
                                           (gupnp_dlna_native_value_type_bool());
         GUPnPDLNANativeInfoSet *s;
 
         /* restriction */
-        g_assert (gupnp_dlna_native_value_list_add_single (v, "true"));
+        g_assert (gupnp_dlna_value_list_add_single (v, "true"));
         g_assert (gupnp_dlna_restriction_add_value_list (r, "b1", v));
-        v = gupnp_dlna_native_value_list_new
+        v = gupnp_dlna_value_list_new
                                       (gupnp_dlna_native_value_type_fraction());
-        g_assert (gupnp_dlna_native_value_list_add_single (v, "1/2"));
+        g_assert (gupnp_dlna_value_list_add_single (v, "1/2"));
         g_assert (gupnp_dlna_restriction_add_value_list (r, "f1", v));
-        v = gupnp_dlna_native_value_list_new
+        v = gupnp_dlna_value_list_new
                                       (gupnp_dlna_native_value_type_fraction());
-        g_assert (gupnp_dlna_native_value_list_add_range (v, "1/4", "2/3"));
+        g_assert (gupnp_dlna_value_list_add_range (v, "1/4", "2/3"));
         g_assert (gupnp_dlna_restriction_add_value_list (r, "f2", v));
-        v = gupnp_dlna_native_value_list_new
+        v = gupnp_dlna_value_list_new
                                            (gupnp_dlna_native_value_type_int());
-        g_assert (gupnp_dlna_native_value_list_add_single (v, "13"));
+        g_assert (gupnp_dlna_value_list_add_single (v, "13"));
         g_assert (gupnp_dlna_restriction_add_value_list (r, "i1", v));
-        v = gupnp_dlna_native_value_list_new
+        v = gupnp_dlna_value_list_new
                                            (gupnp_dlna_native_value_type_int());
-        g_assert (gupnp_dlna_native_value_list_add_range (v, "42", "55"));
+        g_assert (gupnp_dlna_value_list_add_range (v, "42", "55"));
         g_assert (gupnp_dlna_restriction_add_value_list (r, "i2", v));
-        v = gupnp_dlna_native_value_list_new
+        v = gupnp_dlna_value_list_new
                                         (gupnp_dlna_native_value_type_string());
-        g_assert (gupnp_dlna_native_value_list_add_single (v, "aaa"));
+        g_assert (gupnp_dlna_value_list_add_single (v, "aaa"));
         g_assert (gupnp_dlna_restriction_add_value_list (r, "s1", v));
 
         /* info set with exactly fitting values and same mime*/

@@ -59,7 +59,7 @@ typedef struct {
 
 typedef struct {
         gchar                    *name;
-        GUPnPDLNANativeValueList *list;
+        GUPnPDLNAValueList *list;
 } GUPnPDLNANativeNameValueListPair;
 
 typedef struct {
@@ -80,8 +80,8 @@ struct _GUPnPDLNANativeProfileLoaderPrivate {
 };
 
 static GUPnPDLNANativeNameValueListPair *
-gupnp_dlna_native_name_value_list_pair_new (const gchar              *name,
-                                            GUPnPDLNANativeValueList *list)
+gupnp_dlna_native_name_value_list_pair_new (const gchar        *name,
+                                            GUPnPDLNAValueList *list)
 {
         GUPnPDLNANativeNameValueListPair *pair =
                                  g_slice_new (GUPnPDLNANativeNameValueListPair);
@@ -99,7 +99,7 @@ gupnp_dlna_native_name_value_list_pair_free
         if (pair == NULL)
                 return;
         g_free (pair->name);
-        gupnp_dlna_native_value_list_free (pair->list);
+        gupnp_dlna_value_list_free (pair->list);
         g_slice_free (GUPnPDLNANativeNameValueListPair, pair);
 }
 
@@ -264,26 +264,24 @@ value_type_from_string (const gchar *type)
 }
 
 static void
-append_value_to_list (GUPnPDLNAFieldValue      *value,
-                      GUPnPDLNANativeValueList *list)
+append_value_to_list (GUPnPDLNAFieldValue *value,
+                      GUPnPDLNAValueList  *list)
 {
         if (value == NULL)
                 return;
 
         switch (value->type) {
         case GUPNP_DLNA_FIELD_VALUE_TYPE_RANGE:
-                if (!gupnp_dlna_native_value_list_add_range
-                                        (list,
-                                         value->value.range.min,
-                                         value->value.range.max))
+                if (!gupnp_dlna_value_list_add_range (list,
+                                                      value->value.range.min,
+                                                      value->value.range.max))
                         g_warning ("Failed to add range value (%s, %s).",
                                    value->value.range.min,
                                    value->value.range.max);
                 break;
         case GUPNP_DLNA_FIELD_VALUE_TYPE_SINGLE:
-                if (!gupnp_dlna_native_value_list_add_single
-                                        (list,
-                                         value->value.single))
+                if (!gupnp_dlna_value_list_add_single (list,
+                                                       value->value.single))
                         g_warning ("Failed to add single value (%s).",
                                    value->value.single);
 
@@ -304,7 +302,7 @@ backend_post_field (GUPnPDLNAProfileLoader *loader,
         GUPnPDLNANativeProfileLoaderPrivate *priv;
         GUPnPDLNANativeRestrictionData *restriction_data;
         GUPnPDLNANativeNameValueListPair *pair;
-        GUPnPDLNANativeValueList *value_list;
+        GUPnPDLNAValueList *value_list;
         GUPnPDLNANativeValueType* value_type;
         GList *iter;
 
@@ -321,7 +319,7 @@ backend_post_field (GUPnPDLNAProfileLoader *loader,
         priv = native_loader->priv;
         restriction_data =
           (GUPnPDLNANativeRestrictionData *) priv->restriction_data_stack->data;
-        value_list = gupnp_dlna_native_value_list_new (value_type);
+        value_list = gupnp_dlna_value_list_new (value_type);
 
         for (iter = values; iter != NULL; iter = iter->next) {
                 GUPnPDLNAFieldValue *field_value =

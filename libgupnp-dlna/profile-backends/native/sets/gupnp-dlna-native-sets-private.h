@@ -24,7 +24,7 @@
 
 #include <glib.h>
 #include "gupnp-dlna-native-value-type.h"
-#include "gupnp-dlna-native-value-list-private.h"
+#include "gupnp-dlna-value-list-private.h"
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-restriction-private.h"
 
@@ -91,16 +91,15 @@ gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
 
 /* ValueList */
 gboolean
-gupnp_dlna_native_value_list_is_superset
-                                        (GUPnPDLNANativeValueList *list,
-                                         GUPnPDLNANativeInfoValue *value,
-                                         gboolean                 *unsupported);
+gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList       *list,
+                                   GUPnPDLNANativeInfoValue *value,
+                                   gboolean                 *unsupported);
 
 GList *
-gupnp_dlna_native_value_list_get_list (GUPnPDLNANativeValueList *value_list);
+gupnp_dlna_value_list_get_list (GUPnPDLNAValueList *value_list);
 
 void
-gupnp_dlna_native_value_list_sort_items (GUPnPDLNANativeValueList *value_list);
+gupnp_dlna_value_list_sort_items (GUPnPDLNAValueList *value_list);
 
 /* InfoValue */
 GUPnPDLNANativeValueType *
