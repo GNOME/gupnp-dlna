@@ -23,6 +23,7 @@
 #define __GUPNP_DLNA_NATIVE_VALUE_H__
 
 #include <glib.h>
+#include <glib-object.h>
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-native-value-type.h"
 
@@ -64,6 +65,10 @@ gint
 gupnp_dlna_native_value_compare (GUPnPDLNANativeValue     *base,
                                  GUPnPDLNANativeValue     *other,
                                  GUPnPDLNANativeValueType *type);
+
+GValue *
+gupnp_dlna_native_value_to_g_value (GUPnPDLNANativeValue     *base,
+                                    GUPnPDLNANativeValueType *type);
 
 G_END_DECLS
 

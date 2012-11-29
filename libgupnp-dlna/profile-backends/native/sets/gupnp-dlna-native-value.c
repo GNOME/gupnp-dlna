@@ -41,6 +41,11 @@ struct _GUPnPDLNANativeValueVTable {
 
         GUPnPDLNANativeValueUnion *
         (* get_sort_value) (GUPnPDLNANativeValue *base);
+
+        gboolean
+        (* to_g_value) (GUPnPDLNANativeValue     *base,
+                        GUPnPDLNANativeValueType *type,
+                        GValue                   *g_value);
 };
 
 /* single */
@@ -70,12 +75,18 @@ single_to_string (GUPnPDLNANativeValue     *base,
 static GUPnPDLNANativeValueUnion *
 single_get_sort_value (GUPnPDLNANativeValue *base);
 
+static gboolean
+single_to_g_value (GUPnPDLNANativeValue     *base,
+                   GUPnPDLNANativeValueType *type,
+                   GValue                   *g_value);
+
 static GUPnPDLNANativeValueVTable single_vtable = {
         single_is_superset,
         single_copy,
         single_free,
         single_to_string,
-        single_get_sort_value
+        single_get_sort_value,
+        single_to_g_value
 };
 
 static gboolean
@@ -140,6 +151,18 @@ single_get_sort_value (GUPnPDLNANativeValue *base)
         return &value->value;
 }
 
+static gboolean
+single_to_g_value (GUPnPDLNANativeValue     *base,
+                   GUPnPDLNANativeValueType *type,
+                   GValue                   *g_value)
+{
+        GUPnPDLNANativeValueSingle *value = (GUPnPDLNANativeValueSingle *) base;
+
+        gupnp_dlna_native_value_type_to_g_value (type, &value->value, g_value);
+
+        return TRUE;
+}
+
 /* range */
 typedef struct _GUPnPDLNANativeValueRange GUPnPDLNANativeValueRange;
 
@@ -168,12 +191,18 @@ range_to_string (GUPnPDLNANativeValue     *base,
 static GUPnPDLNANativeValueUnion *
 range_get_sort_value (GUPnPDLNANativeValue *base);
 
+static gboolean
+range_to_g_value (GUPnPDLNANativeValue     *base,
+                  GUPnPDLNANativeValueType *type,
+                  GValue                   *g_value);
+
 static GUPnPDLNANativeValueVTable range_vtable = {
         range_is_superset,
         range_copy,
         range_free,
         range_to_string,
-        range_get_sort_value
+        range_get_sort_value,
+        range_to_g_value
 };
 
 static gboolean
@@ -256,6 +285,30 @@ range_get_sort_value (GUPnPDLNANativeValue *base)
 
         return &range->min;
 }
+
+static gboolean
+range_to_g_value (GUPnPDLNANativeValue     *base,
+                  GUPnPDLNANativeValueType *type,
+                  GValue                   *g_value)
+{
+        GValue from = G_VALUE_INIT;
+        GValue to = G_VALUE_INIT;
+        GUPnPDLNANativeValueRange *range = (GUPnPDLNANativeValueRange *) base;
+        gboolean result;
+
+        gupnp_dlna_native_value_type_to_g_value (type, &range->min, &from);
+        gupnp_dlna_native_value_type_to_g_value (type, &range->max, &to);
+        result = gupnp_dlna_native_value_type_flatten (type,
+                                                       g_value,
+                                                       &from,
+                                                       &to);
+        g_value_unset (&from);
+        g_value_unset (&to);
+
+        return result;
+}
+
+/* API */
 
 GUPnPDLNANativeValue *
 gupnp_dlna_native_value_new_single (GUPnPDLNANativeValueType *type,
@@ -390,4 +443,23 @@ gupnp_dlna_native_value_compare (GUPnPDLNANativeValue     *base,
                                                      base_union,
                                                      other_union);
 
+}
+
+GValue *
+gupnp_dlna_native_value_to_g_value (GUPnPDLNANativeValue     *base,
+                                    GUPnPDLNANativeValueType *type)
+{
+        GValue *g_value;
+
+        g_return_val_if_fail (base->vtable != NULL, NULL);
+        g_return_val_if_fail (base->vtable->to_g_value != NULL, NULL);
+
+        g_value = g_slice_new0 (GValue);
+
+        if (base->vtable->to_g_value (base, type, g_value)) {
+                g_slice_free (GValue, g_value);
+                g_value = NULL;
+        }
+
+        return g_value;
 }
