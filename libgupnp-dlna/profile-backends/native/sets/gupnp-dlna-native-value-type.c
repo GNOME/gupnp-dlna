@@ -231,7 +231,7 @@ bool_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return g_strdup (value->bool_value ? "true" : "false");
 }
 
-gint
+static gint
 bool_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
               GUPnPDLNANativeValueUnion *a,
               GUPnPDLNANativeValueUnion *b)
@@ -348,7 +348,7 @@ fraction_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
                                 value->fraction_value.denominator);
 }
 
-gint
+static gint
 fraction_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
                   GUPnPDLNANativeValueUnion *a,
                   GUPnPDLNANativeValueUnion *b)
@@ -440,7 +440,7 @@ int_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return g_strdup_printf ("%d", value->int_value);
 }
 
-gint
+static gint
 int_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
              GUPnPDLNANativeValueUnion *a,
              GUPnPDLNANativeValueUnion *b)
@@ -530,7 +530,7 @@ string_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return g_strdup (value->string_value);
 }
 
-gint
+static gint
 string_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
                 GUPnPDLNANativeValueUnion *a,
                 GUPnPDLNANativeValueUnion *b)
