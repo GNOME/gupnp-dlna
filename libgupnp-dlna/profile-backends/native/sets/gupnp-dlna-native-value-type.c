@@ -88,8 +88,8 @@ get_int (const gchar *raw,
 
 /* TODO: replace it with better implementation */
 static void
-equalize_denominators (GUPnPDLNANativeFraction *first,
-                       GUPnPDLNANativeFraction *second)
+equalize_denominators (GUPnPDLNAFraction *first,
+                       GUPnPDLNAFraction *second)
 {
         gint common;
 
@@ -104,8 +104,8 @@ equalize_denominators (GUPnPDLNANativeFraction *first,
 }
 
 static gboolean
-fraction_equal (GUPnPDLNANativeFraction first,
-                GUPnPDLNANativeFraction second)
+fraction_equal (GUPnPDLNAFraction first,
+                GUPnPDLNAFraction second)
 {
         equalize_denominators (&first, &second);
 
@@ -113,11 +113,11 @@ fraction_equal (GUPnPDLNANativeFraction first,
 }
 
 static gboolean
-fraction_in_range (GUPnPDLNANativeFraction min,
-                   GUPnPDLNANativeFraction max,
-                   GUPnPDLNANativeFraction value)
+fraction_in_range (GUPnPDLNAFraction min,
+                   GUPnPDLNAFraction max,
+                   GUPnPDLNAFraction value)
 {
-        GUPnPDLNANativeFraction value_dup = value;
+        GUPnPDLNAFraction value_dup = value;
 
         equalize_denominators (&min, &value);
         if (min.numerator > value.numerator)
@@ -142,8 +142,8 @@ int_comparison (gint a,
 }
 
 static gint
-fraction_comparison (GUPnPDLNANativeFraction a,
-                     GUPnPDLNANativeFraction b)
+fraction_comparison (GUPnPDLNAFraction a,
+                     GUPnPDLNAFraction b)
 {
         equalize_denominators (&a, &b);
 
@@ -151,8 +151,8 @@ fraction_comparison (GUPnPDLNANativeFraction a,
 }
 
 static gboolean
-fraction_range_valid (GUPnPDLNANativeFraction min,
-                      GUPnPDLNANativeFraction max)
+fraction_range_valid (GUPnPDLNAFraction min,
+                      GUPnPDLNAFraction max)
 {
         equalize_denominators (&min, &max);
 

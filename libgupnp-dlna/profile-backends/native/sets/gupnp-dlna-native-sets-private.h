@@ -25,6 +25,7 @@
 #include <glib.h>
 #include "gupnp-dlna-native-value-type.h"
 #include "gupnp-dlna-value-list-private.h"
+#include "gupnp-dlna-g-values-private.h"
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-restriction-private.h"
 
@@ -32,16 +33,10 @@ G_BEGIN_DECLS
 
 /* private */
 typedef union _GUPnPDLNANativeValueUnion GUPnPDLNANativeValueUnion;
-typedef struct _GUPnPDLNANativeFraction GUPnPDLNANativeFraction;
-
-struct _GUPnPDLNANativeFraction {
-        gint numerator;
-        gint denominator;
-};
 
 union _GUPnPDLNANativeValueUnion {
         gboolean bool_value;
-        GUPnPDLNANativeFraction fraction_value;
+        GUPnPDLNAFraction fraction_value;
         gint int_value;
         gchar *string_value;
 };

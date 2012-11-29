@@ -150,7 +150,8 @@ dist_noinst_HEADERS += \
 	gupnp-dlna-profile-loader.h \
 	gupnp-dlna-profile-guesser-impl.h \
 	gupnp-dlna-restriction-private.h \
-	gupnp-dlna-value-list-private.h
+	gupnp-dlna-value-list-private.h \
+	gupnp-dlna-g-values-private.h
 
 
 # INTROSPECTION
