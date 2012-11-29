@@ -84,6 +84,17 @@ gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
                                       GUPnPDLNANativeValueUnion *a,
                                       GUPnPDLNANativeValueUnion *b);
 
+void
+gupnp_dlna_native_value_type_to_g_value (GUPnPDLNANativeValueType  *type,
+                                         GUPnPDLNANativeValueUnion *value,
+                                         GValue                    *g_value);
+
+gboolean
+gupnp_dlna_native_value_type_flatten (GUPnPDLNANativeValueType *type,
+                                      GValue *target,
+                                      GValue *from,
+                                      GValue *to);
+
 /* ValueList */
 gboolean
 gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList       *list,

@@ -65,6 +65,20 @@ struct _GUPnPDLNANativeValueType {
         (* compare) (GUPnPDLNANativeValueType  *type,
                      GUPnPDLNANativeValueUnion *a,
                      GUPnPDLNANativeValueUnion *b);
+
+        GType
+        (* get_g_type) (GUPnPDLNANativeValueType  *type);
+
+        void
+        (* to_g_value) (GUPnPDLNANativeValueType  *type,
+                        GUPnPDLNANativeValueUnion *value,
+                        GValue                    *g_value);
+
+        gboolean
+        (* flatten) (GUPnPDLNANativeValueType *type,
+                     GValue                   *target,
+                     GValue                   *min,
+                     GValue                   *max);
 };
 
 /* utils */
@@ -245,6 +259,29 @@ bool_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
                 return -1;
 }
 
+static GType
+bool_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+{
+        return G_TYPE_BOOLEAN;
+}
+
+static void
+bool_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+                 GUPnPDLNANativeValueUnion *value,
+                 GValue                    *g_value)
+{
+        g_value_set_boolean (g_value, value->bool_value);
+}
+
+static gboolean
+bool_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+              GValue                    *target G_GNUC_UNUSED,
+              GValue                    *from G_GNUC_UNUSED,
+              GValue                    *to G_GNUC_UNUSED)
+{
+        return FALSE;
+}
+
 static GUPnPDLNANativeValueType bool_type_impl = {
         bool_init,
         bool_copy,
@@ -254,7 +291,10 @@ static GUPnPDLNANativeValueType bool_type_impl = {
         bool_name,
         bool_verify_range,
         bool_to_string,
-        bool_compare
+        bool_compare,
+        bool_get_g_type,
+        bool_to_g_value,
+        bool_flatten
 };
 
 /* fraction */
@@ -356,6 +396,39 @@ fraction_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return fraction_comparison (a->fraction_value, b->fraction_value);
 }
 
+static GType
+fraction_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+{
+        return GUPNP_TYPE_DLNA_FRACTION;
+}
+
+static void
+fraction_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+                     GUPnPDLNANativeValueUnion *value,
+                     GValue                    *g_value)
+{
+        g_value_set_boxed (g_value, &value->fraction_value);
+}
+
+static gboolean
+fraction_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+                  GValue                    *target,
+                  GValue                    *from,
+                  GValue                    *to)
+{
+        GUPnPDLNAFraction *fraction_min =
+                                 GUPNP_DLNA_FRACTION (g_value_get_boxed (from));
+        GUPnPDLNAFraction *fraction_max =
+                                   GUPNP_DLNA_FRACTION (g_value_get_boxed (to));
+
+        g_value_init (target, GUPNP_TYPE_DLNA_FRACTION_RANGE);
+        g_value_take_boxed (target,
+                            gupnp_dlna_fraction_range_new_take (fraction_min,
+                                                                fraction_max));
+
+        return TRUE;
+}
+
 static GUPnPDLNANativeValueType fraction_type_impl = {
         fraction_init,
         fraction_copy,
@@ -365,7 +438,10 @@ static GUPnPDLNANativeValueType fraction_type_impl = {
         fraction_name,
         fraction_verify_range,
         fraction_to_string,
-        fraction_compare
+        fraction_compare,
+        fraction_get_g_type,
+        fraction_to_g_value,
+        fraction_flatten
 };
 
 /* int */
@@ -448,6 +524,34 @@ int_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return int_comparison (a->int_value, b->int_value);
 }
 
+static GType
+int_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+{
+        return G_TYPE_INT;
+}
+
+static void
+int_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+                GUPnPDLNANativeValueUnion *value,
+                GValue                    *g_value)
+{
+        g_value_set_int (g_value, value->int_value);
+}
+
+static gboolean
+int_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+             GValue                    *target,
+             GValue                    *from,
+             GValue                    *to)
+{
+        g_value_init (target, GUPNP_TYPE_DLNA_INT_RANGE);
+        g_value_take_boxed (target,
+                            gupnp_dlna_int_range_new (g_value_get_int (from),
+                                                      g_value_get_int (to)));
+
+        return TRUE;
+}
+
 static GUPnPDLNANativeValueType int_type_impl = {
         int_init,
         int_copy,
@@ -457,7 +561,10 @@ static GUPnPDLNANativeValueType int_type_impl = {
         int_name,
         int_verify_range,
         int_to_string,
-        int_compare
+        int_compare,
+        int_get_g_type,
+        int_to_g_value,
+        int_flatten
 };
 
 /* string */
@@ -538,6 +645,29 @@ string_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return g_strcmp0 (a->string_value, b->string_value);
 }
 
+static GType
+string_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+{
+        return G_TYPE_STRING;
+}
+
+static void
+string_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+                   GUPnPDLNANativeValueUnion *value,
+                   GValue                    *g_value)
+{
+        g_value_set_string (g_value, value->string_value);
+}
+
+static gboolean
+string_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+                GValue                    *target G_GNUC_UNUSED,
+                GValue                    *from G_GNUC_UNUSED,
+                GValue                    *to G_GNUC_UNUSED)
+{
+        return FALSE;
+}
+
 static GUPnPDLNANativeValueType string_type_impl = {
         string_init,
         string_copy,
@@ -547,7 +677,10 @@ static GUPnPDLNANativeValueType string_type_impl = {
         string_name,
         string_verify_range,
         string_to_string,
-        string_compare
+        string_compare,
+        string_get_g_type,
+        string_to_g_value,
+        string_flatten
 };
 
 GUPnPDLNANativeValueType *
@@ -683,4 +816,46 @@ gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
         g_return_val_if_fail (type->compare != NULL, 0);
 
         return type->compare (type, a, b);
+}
+
+void
+gupnp_dlna_native_value_type_to_g_value (GUPnPDLNANativeValueType  *type,
+                                         GUPnPDLNANativeValueUnion *value,
+                                         GValue                    *g_value)
+{
+        g_return_if_fail (type != NULL);
+        g_return_if_fail (value != NULL);
+        g_return_if_fail (g_value != NULL);
+        g_return_if_fail (type->get_g_type != NULL);
+        g_return_if_fail (type->to_g_value != NULL);
+        g_return_if_fail (G_IS_VALUE (g_value) == FALSE);
+
+        g_value_init (g_value, type->get_g_type (type));
+        type->to_g_value (type, value, g_value);
+}
+
+gboolean
+gupnp_dlna_native_value_type_flatten (GUPnPDLNANativeValueType *type,
+                                      GValue *target,
+                                      GValue *from,
+                                      GValue *to)
+{
+        GType native_value_type_g_type;
+
+        g_return_val_if_fail (type != NULL, FALSE);
+        g_return_val_if_fail (target != NULL, FALSE);
+        g_return_val_if_fail (from != NULL, FALSE);
+        g_return_val_if_fail (to != NULL, FALSE);
+        g_return_val_if_fail (type->flatten != NULL, FALSE);
+        g_return_val_if_fail (type->get_g_type != NULL, FALSE);
+        g_return_val_if_fail (G_IS_VALUE (target) == FALSE, FALSE);
+
+        native_value_type_g_type = type->get_g_type (type);
+
+        g_return_val_if_fail (G_VALUE_HOLDS (from, native_value_type_g_type),
+                              FALSE);
+        g_return_val_if_fail (G_VALUE_HOLDS (to, native_value_type_g_type),
+                              FALSE);
+
+        return type->flatten (type, target, from, to);
 }
