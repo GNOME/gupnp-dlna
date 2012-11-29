@@ -25,6 +25,8 @@
 #include <glib.h>
 #include <glib-object.h>
 
+#include "gupnp-dlna-g-values.h"
+
 G_BEGIN_DECLS
 
 struct _GUPnPDLNAFraction
@@ -32,6 +34,26 @@ struct _GUPnPDLNAFraction
         gint numerator;
         gint denominator;
 };
+
+struct _GUPnPDLNAFractionRange
+{
+        GUPnPDLNAFraction *min;
+        GUPnPDLNAFraction *max;
+};
+
+struct _GUPnPDLNAIntRange
+{
+        gint min;
+        gint max;
+};
+
+GUPnPDLNAFractionRange *
+gupnp_dlna_fraction_range_new_take (GUPnPDLNAFraction *min,
+                                    GUPnPDLNAFraction *max);
+
+GUPnPDLNAIntRange *
+gupnp_dlna_int_range_new (gint min,
+                          gint max);
 
 G_END_DECLS
 

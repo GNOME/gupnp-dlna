@@ -113,7 +113,8 @@ libgupnp_dlna_2_0_la_SOURCES = \
 	gupnp-dlna-profile-backend.c \
 	gupnp-dlna-profile.c \
 	gupnp-dlna-restriction.c \
-	gupnp-dlna-value-list.c
+	gupnp-dlna-value-list.c \
+	gupnp-dlna-g-values.c
 libgupnp_dlna_2_0_la_LIBADD = \
 	$(gupnp_libadd) \
 	libloader.la \
@@ -130,7 +131,8 @@ libgupnp_dlna_inc_HEADERS = \
 	gupnp-dlna-profile-guesser.h \
 	gupnp-dlna-profile.h \
 	gupnp-dlna-restriction.h \
-	gupnp-dlna-value-list.h
+	gupnp-dlna-value-list.h \
+	gupnp-dlna-g-values.h
 
 libgupnp_dlna_metadata_incdir = \
 	$(libgupnp_dlna_incdir)/metadata
