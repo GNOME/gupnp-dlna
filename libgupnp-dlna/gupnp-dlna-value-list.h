@@ -29,6 +29,19 @@ G_BEGIN_DECLS
 
 typedef struct _GUPnPDLNAValueList GUPnPDLNAValueList;
 
+#define GUPNP_DLNA_VALUE_LIST(x) \
+        ((GUPnPDLNAValueList *) x)
+
+/**
+ * GUPNP_TYPE_DLNA_VALUE_LIST:
+ *
+ * The #GType for #GUPnPDLNAValueList.
+ */
+#define GUPNP_TYPE_DLNA_VALUE_LIST (gupnp_dlna_value_list_get_type ())
+
+GType
+gupnp_dlna_value_list_get_type (void) G_GNUC_CONST;
+
 GUPnPDLNAValueList *
 gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list);
 

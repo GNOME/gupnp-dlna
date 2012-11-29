@@ -29,6 +29,11 @@ struct _GUPnPDLNAValueList {
         gboolean                  sorted;
 };
 
+G_DEFINE_BOXED_TYPE (GUPnPDLNAValueList,
+                     gupnp_dlna_value_list,
+                     gupnp_dlna_value_list_copy,
+                     gupnp_dlna_value_list_free)
+
 GUPnPDLNAValueList *
 gupnp_dlna_value_list_new (GUPnPDLNANativeValueType *type)
 {
