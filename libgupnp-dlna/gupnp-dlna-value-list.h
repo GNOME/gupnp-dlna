@@ -54,6 +54,9 @@ gupnp_dlna_value_list_is_empty (GUPnPDLNAValueList *list);
 gchar *
 gupnp_dlna_value_list_to_string (GUPnPDLNAValueList *list);
 
+GList *
+gupnp_dlna_value_list_get_g_values (GUPnPDLNAValueList *list);
+
 G_END_DECLS
 
 #endif /* __GUPNP_DLNA_VALUE_LIST_H__ */

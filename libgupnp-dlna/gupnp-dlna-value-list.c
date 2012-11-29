@@ -288,3 +288,24 @@ gupnp_dlna_value_list_sort_items (GUPnPDLNAValueList *value_list)
                 value_list->sorted = TRUE;
         }
 }
+
+GList *
+gupnp_dlna_value_list_get_g_values (GUPnPDLNAValueList *list)
+{
+        GList *g_values;
+        GList *iter;
+
+        g_return_val_if_fail (list != NULL, NULL);
+
+        g_values = NULL;
+        for (iter = list->values; iter != NULL; iter = iter->next) {
+                GValue *g_value =
+                                gupnp_dlna_native_value_to_g_value (iter->data,
+                                                                    list->type);
+
+                if (g_value)
+                        g_values = g_list_prepend (g_values, g_value);
+        }
+
+        return g_list_reverse (g_values);
+}
