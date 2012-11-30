@@ -183,7 +183,7 @@ gupnp_dlna_gst_container_information_set_property (GObject      *object,
                 g_clear_pointer (&priv->info,
                                  gupnp_dlna_gst_discoverer_info_unref);
                 priv->info =
-                        GST_DISCOVERER_INFO (gst_value_dup_mini_object (value));
+                        GST_DISCOVERER_INFO (g_value_dup_object (value));
                 break;
 
         default:
@@ -204,7 +204,7 @@ gupnp_dlna_gst_container_information_get_property (GObject    *object,
 
         switch (property_id) {
         case PROP_INFO:
-                gst_value_set_mini_object (value, GST_MINI_OBJECT (priv->info));
+                g_value_set_object (value, G_OBJECT (priv->info));
                 break;
 
         default:
@@ -235,12 +235,12 @@ gupnp_dlna_gst_container_information_class_init
         info_class->get_variant = backend_get_variant;
         info_class->get_mime = backend_get_mime;
 
-        pspec = gst_param_spec_mini_object ("info",
-                                            "info",
-                                            "discoverer info",
-                                            GST_TYPE_DISCOVERER_INFO,
-                                            G_PARAM_READWRITE |
-                                            G_PARAM_CONSTRUCT);
+        pspec = g_param_spec_object ("info",
+                                     "info",
+                                     "discoverer info",
+                                     GST_TYPE_DISCOVERER_INFO,
+                                     G_PARAM_READWRITE |
+                                     G_PARAM_CONSTRUCT);
         g_object_class_install_property (object_class,
                                          PROP_INFO,
                                          pspec);

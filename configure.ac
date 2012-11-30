@@ -66,9 +66,9 @@ AC_ARG_ENABLE([gstreamer-metadata-backend],
 if test "x$enable_gstreamer_metadata_backend" != 'xno'
 then
         gstreamer_found='yes'
-        GST_MAJORMINOR=0.10
-        GST_REQ=0.10.29.2
-        GSTPBU_REQ=0.10.32
+        GST_MAJORMINOR=1.0
+        GST_REQ=1.0
+        GSTPBU_REQ=1.0
 
         PKG_CHECK_MODULES([GST],
                           [gstreamer-$GST_MAJORMINOR >= $GST_REQ],
