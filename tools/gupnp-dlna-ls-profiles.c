@@ -103,7 +103,9 @@ main (int argc, char **argv)
 
         GOptionContext *ctx;
 
+#if !GLIB_CHECK_VERSION(2,35,0)
         g_type_init ();
+#endif
 
         ctx = g_option_context_new (" - program to list all the DLNA profiles supported by gupnp-dlna");
         g_option_context_add_main_entries (ctx, options, NULL);
