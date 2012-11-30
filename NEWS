@@ -1,3 +1,10 @@
+0.8.0
+=====
+- Relax PNG depth requirements to work around a GStreamer issue.
+
+All contributors to this release:
+  Jens Georg <jensg@openismus.com>
+
 0.7.0
 =====
 - Port to GStreamer 1.0
