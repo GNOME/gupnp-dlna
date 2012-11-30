@@ -1,3 +1,22 @@
+0.9.0
+=====
+- Make DLNA profile handling independant from GStreamer.
+- Add plugin architecture to support different meta-data extraction back-ends.
+- Make GStreamer default implementation of meta-data extraction back-end.
+- Split API docs into users and back-end implementers API.
+
+All contributors to this release:
+  Krzesimir Nowak <krnowak@openismus.com>
+  Jens Georg <jensg@openismus.com>
+
+Changes in API:
+ - so version bump
+ - API version bump to 2.0
+
+Changes in dependencies:
+ - GStreamer 1.0
+ - GLib >= 2.34
+
 0.7.0
 =====
 - Port to GStreamer 1.0
