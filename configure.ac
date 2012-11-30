@@ -167,6 +167,7 @@ doc/Makefile
 doc/version.xml
 doc/gupnp-dlna/Makefile
 doc/gupnp-dlna-metadata/Makefile
+vala/Makefile
 ])
 AC_CONFIG_FILES([tests/test-discoverer.sh],
                 [chmod a+x tests/test-discoverer.sh])
