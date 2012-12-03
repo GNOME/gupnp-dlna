@@ -45,8 +45,9 @@ value_new (GUPnPDLNANativeValueType *type,
                 g_slice_free (GUPnPDLNANativeInfoValue, info_value);
                 info_value = NULL;
         }
+        else
+                info_value->unsupported = FALSE;
         g_free (raw);
-        info_value->unsupported = FALSE;
 
         return info_value;
 }
