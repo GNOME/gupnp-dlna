@@ -230,6 +230,8 @@ gupnp_dlna_native_value_list_merge
                 value_list->values = mrg_value_list->values;
                 value_list->type = mrg_value_list->type;
                 mrg_value_list->values = NULL;
+
+                break;
         case GUPNP_DLNA_NATIVE_RESTRICTION_MERGE_RESOLUTION_NONE:
                 if (!gupnp_dlna_native_value_list_mergeable (value_list,
                                                              mrg_value_list)) {
