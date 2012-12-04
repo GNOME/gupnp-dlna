@@ -35,9 +35,13 @@ load_metadata_backend (void)
         static gsize backend_chosen = 0;
 
         if (g_once_init_enter (&backend_chosen)) {
-                const gchar *backend = g_getenv ("GUPNP_DLNA_METADATA_BACKEND");
+                gchar **environment = g_get_environ ();
+                const gchar *backend =
+                               g_environ_getenv (environment,
+                                                 "GUPNP_DLNA_METADATA_BACKEND");
                 const gchar *backend_dir =
-                                   g_getenv ("GUPNP_DLNA_METADATA_BACKEND_DIR");
+                           g_environ_getenv (environment,
+                                             "GUPNP_DLNA_METADATA_BACKEND_DIR");
                 GModule *module;
                 gchar *module_path;
                 gpointer get_default_extractor = NULL;
@@ -83,6 +87,7 @@ load_metadata_backend (void)
                 g_free (module_path);
                 if (module)
                         g_module_close (module);
+                g_strfreev (environment);
                 g_once_init_leave (&backend_chosen, loaded);
         }
 
