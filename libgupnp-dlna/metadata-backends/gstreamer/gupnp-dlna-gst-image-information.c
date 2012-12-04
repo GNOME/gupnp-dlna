@@ -19,6 +19,9 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include "config.h"
+#endif /* HAVE_CONFIG_H_ */
 #include "gupnp-dlna-gst-image-information.h"
 #include "gupnp-dlna-gst-info-utils.h"
 

@@ -119,7 +119,7 @@ GUPNP_DLNA_METADATA_BACKEND_CFLAGS="$GUPNP_DLNA_METADATA_BACKEND_CFLAGS -DGUPNP_
 
 AC_SUBST(GUPNP_DLNA_METADATA_BACKEND_CFLAGS)
 
-PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.34])
+PKG_CHECK_MODULES([GLIB], [glib-2.0 >= 2.32])
 PKG_CHECK_MODULES([GOBJECT], [gobject-2.0])
 PKG_CHECK_MODULES([GMODULE], [gmodule-2.0])
 
@@ -129,6 +129,40 @@ AC_SUBST(GOBJECT_CFLAGS)
 AC_SUBST(GOBJECT_LIBS)
 AC_SUBST(GMODULE_CFLAGS)
 AC_SUBST(GMODULE_LIBS)
+
+# Check for g_clear_pointer
+have_g_clear_pointer='no'
+PKG_CHECK_EXISTS([glib-2.0 >= 2.34],
+                 [have_g_clear_pointer='yes'])
+AS_VAR_IF([have_g_clear_pointer], [no],
+          [GUPNP_DLNA_TEMP_CFLAGS="$CFLAGS"
+           CFLAGS="$CFLAGS $GLIB_CFLAGS"
+           GUPNP_DLNA_TEMP_LIBS="$LIBS"
+           LIBS="$LIBS $GLIB_LIBS"
+           AC_LANG([C])
+           AC_LINK_IFELSE([AC_LANG_PROGRAM([[
+                                             #include <glib.h>
+                                           ]],
+                                           [[
+                                             gchar *test = g_malloc (2);
+                                             g_clear_pointer (&test, g_free);
+                                             return (test == NULL)
+                                           ]])],
+                          [have_g_clear_pointer='yes'])
+          LIBS="$GUPNP_DLNA_TEMP_LIBS"
+          CFLAGS="$GUPNP_DLNA_TEMP_CFLAGS"])
+
+AS_VAR_IF([have_g_clear_pointer], [no],
+          [AC_DEFINE([g_clear_pointer(ptr, func)],
+                     [\
+                      G_STMT_START { \
+                        if (ptr != NULL && func != NULL) { \
+                          gpointer g_clear_pointer_tmp_var = *ptr; \
+                          *ptr = NULL; \
+                          func (g_clear_pointer_tmp_var); \
+                        } \
+                      } G_STMT_END],
+                     [Naive g_clear_pointer implementation.])])
 
 # Debugging
 AC_ARG_ENABLE([debug],
