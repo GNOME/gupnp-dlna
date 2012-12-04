@@ -273,14 +273,20 @@ append_value_to_list (GUPnPDLNAFieldValue      *value,
 
         switch (value->type) {
         case GUPNP_DLNA_FIELD_VALUE_TYPE_RANGE:
-                gupnp_dlna_native_value_list_add_range (list,
-                                                        value->value.range.min,
-                                                        value->value.range.max);
-
+                if (!gupnp_dlna_native_value_list_add_range
+                                        (list,
+                                         value->value.range.min,
+                                         value->value.range.max))
+                        g_warning ("Failed to add range value (%s, %s).",
+                                   value->value.range.min,
+                                   value->value.range.max);
                 break;
         case GUPNP_DLNA_FIELD_VALUE_TYPE_SINGLE:
-                gupnp_dlna_native_value_list_add_single (list,
-                                                         value->value.single);
+                if (!gupnp_dlna_native_value_list_add_single
+                                        (list,
+                                         value->value.single))
+                        g_warning ("Failed to add single value (%s).",
+                                   value->value.single);
 
                 break;
         default:
