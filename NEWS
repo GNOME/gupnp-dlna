@@ -1,3 +1,24 @@
+0.9.1
+=====
+- Fix a potential crash in profile guessing.
+- Fix issues from static code check.
+- Lower GLib dependency to 2.32.
+
+All contributors to this release:
+  Krzesimir Nowak <krnowak@openismus.com>
+  Mark Ryan <mark.d.ryan@intel.com>
+  Jens Georg <jensg@openismus.com>
+
+Bugs fixed in this release:
+ - https://bugzilla.gnome.org/show_bug.cgi?id=689596
+ - https://bugzilla.gnome.org/show_bug.cgi?id=689598
+ - https://bugzilla.gnome.org/show_bug.cgi?id=689612
+ - https://bugzilla.gnome.org/show_bug.cgi?id=689615
+ - https://bugzilla.gnome.org/show_bug.cgi?id=689616
+
+Changes in dependencies:
+ - GLib >= 2.32
+
 0.9.0
 =====
 - Make DLNA profile handling independant from GStreamer.
