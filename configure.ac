@@ -135,7 +135,8 @@ have_g_clear_pointer='no'
 PKG_CHECK_EXISTS([glib-2.0 >= 2.34],
                  [have_g_clear_pointer='yes'])
 AS_VAR_IF([have_g_clear_pointer], [no],
-          [GUPNP_DLNA_TEMP_CFLAGS="$CFLAGS"
+          [AC_MSG_CHECKING([for g_clear_pointer])
+           GUPNP_DLNA_TEMP_CFLAGS="$CFLAGS"
            CFLAGS="$CFLAGS $GLIB_CFLAGS"
            GUPNP_DLNA_TEMP_LIBS="$LIBS"
            LIBS="$LIBS $GLIB_LIBS"
@@ -150,7 +151,8 @@ AS_VAR_IF([have_g_clear_pointer], [no],
                                            ]])],
                           [have_g_clear_pointer='yes'])
           LIBS="$GUPNP_DLNA_TEMP_LIBS"
-          CFLAGS="$GUPNP_DLNA_TEMP_CFLAGS"])
+          CFLAGS="$GUPNP_DLNA_TEMP_CFLAGS"
+          AC_MSG_RESULT([$have_g_clear_pointer])])
 
 AS_VAR_IF([have_g_clear_pointer], [no],
           [AC_DEFINE([g_clear_pointer(ptr, func)],
