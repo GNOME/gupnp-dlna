@@ -180,8 +180,7 @@ GOBJECT_INTROSPECTION_CHECK([0.6.4])
 # vapigen
 AS_IF([test "x$found_introspection" = "xyes"],
       [
-       dnl we need 0.18 for included GStreamer 1.0 vapis
-       VALA_PROG_VAPIGEN([0.18])
+       VALA_PROG_VAPIGEN([0.14])
       ]
 )
 AM_CONDITIONAL([HAVE_VAPIGEN], [test "x$VAPIGEN" != "x"])
