@@ -8,10 +8,6 @@ gupnp-dlna-2.0.stamp: $(builddir)/../libgupnp-dlna/GUPnPDLNA-2.0.gir \
 		$(srcdir)/gupnp-dlna-2.0-custom.vala
 	$(AM_V_GEN)$(VAPIGEN) --metadatadir=$(srcdir) \
 			      --library=gupnp-dlna-2.0 \
-			      --pkg gstreamer-1.0 \
-			      --pkg gstreamer-pbutils-1.0 \
-			      --pkg gstreamer-base-1.0 \
-			      --pkg gstreamer-video-1.0 \
 			      $(builddir)/../libgupnp-dlna/GUPnPDLNA-2.0.gir \
 			      $(srcdir)/gupnp-dlna-2.0-custom.vala && \
 	echo timestmap > $(@F)
