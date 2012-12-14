@@ -1,3 +1,15 @@
+0.9.2
+=====
+- Remove the old gupnp-dlna-1.1.pc.in file.
+- Remove gupnp and gstreamer-* dependencies from VAPI file generation.
+- Lower vapigen requirements.
+
+All contributors to this release:
+  Jens Georg <jensg@openismus.com>
+
+Changes in dependencies:
+ - vapigen >= 0.14 instead of 0.18
+
 0.9.1
 =====
 - Fix a potential crash in profile guessing.
