@@ -1,2 +1,2 @@
-rofile cheader_filename="libgupnp-dlna/gupnp-dlna-profile.h"
+Profile cheader_filename="libgupnp-dlna/gupnp-dlna-profile.h"
 ProfileGuesser cheader_filename="libgupnp-dlna/gupnp-dlna-profile-guesser.h"
