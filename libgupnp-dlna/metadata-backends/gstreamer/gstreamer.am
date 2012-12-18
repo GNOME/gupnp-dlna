@@ -1,6 +1,8 @@
 gst_metadata_backend_libadd = \
 	$(common_libadd) \
-	$(GST_PBU_LIBS)
+	$(GST) \
+	$(GST_PBU_LIBS) \
+	libgupnp-dlna-2.0.la
 gst_metadata_backend_cflags = \
 	$(common_cflags) \
 	$(GST_CFLAGS) \
