@@ -164,8 +164,8 @@ gupnp_dlna_profile_guesser_class_init
          * GUPnPDLNAProfileGuesser::done:
          * @profile_guesser: The #GUPnPDLNAProfileGuesser.
          * @uri: URI for which profile was guessed.
-         * @dlna: The results as #GUPnPDLNAProfile.
-         * @error: Contains details of the error if discovery failed,
+         * @dlna:(allow-none)(transfer none): The results as #GUPnPDLNAProfile.
+         * @error:(allow-none): Contains details of the error if discovery failed,
          * else is %NULL.
          *
          * Will be emitted when guessing DLNA profile for a URI has finished.
