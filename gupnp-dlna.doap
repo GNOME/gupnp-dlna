@@ -24,13 +24,6 @@ such as media profile guessing, transcoding to a given profile, etc.</descriptio
 
   <maintainer>
     <foaf:Person>
-      <foaf:name>Zeeshan Ali (Khattak)</foaf:name>
-      <foaf:mbox rdf:resource="mailto:zeeshanak@gnome.org" />
-      <gnome:userid>zeeshanak</gnome:userid>
-    </foaf:Person>
-  </maintainer>
-  <maintainer>
-    <foaf:Person>
       <foaf:name>Jens Georg</foaf:name>
       <foaf:mbox rdf:resource="mailto:jens@ge.org" />
       <gnome:userid>jensgeorg</gnome:userid>
