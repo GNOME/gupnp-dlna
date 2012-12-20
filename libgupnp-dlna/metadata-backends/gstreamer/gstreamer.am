@@ -16,7 +16,8 @@ metadata_LTLIBRARIES += \
 	$(gstreamer_metadata_backend)
 
 metadata_backends_gstreamer_libgstreamer_la_LDFLAGS = \
-	$(convenience_ldflags)
+	$(convenience_ldflags) \
+	-shared -fPIC -module -avoid-version -Wl,-z,defs
 metadata_backends_gstreamer_libgstreamer_la_SOURCES = \
 	metadata-backends/gstreamer/gupnp-dlna-gst-audio-information.c \
 	metadata-backends/gstreamer/gupnp-dlna-gst-container-information.c \
