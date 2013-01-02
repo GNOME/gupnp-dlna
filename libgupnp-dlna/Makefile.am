@@ -108,7 +108,11 @@ libmetadata_la_CFLAGS = \
 libgupnp_dlna_2_0_la_LDFLAGS = \
 	$(gupnp_ldflags)
 libgupnp_dlna_2_0_la_SOURCES = \
-	$(metadata_general_sources) \
+	gupnp-dlna-audio-information.c \
+	gupnp-dlna-container-information.c \
+	gupnp-dlna-image-information.c \
+	gupnp-dlna-information.c \
+	gupnp-dlna-video-information.c \
 	gupnp-dlna-field-value.c \
 	gupnp-dlna-profile-backend.c \
 	gupnp-dlna-profile.c \
@@ -132,18 +136,18 @@ libgupnp_dlna_inc_HEADERS = \
 	gupnp-dlna-profile.h \
 	gupnp-dlna-restriction.h \
 	gupnp-dlna-value-list.h \
-	gupnp-dlna-g-values.h
+	gupnp-dlna-g-values.h \
+	gupnp-dlna-audio-information.h \
+	gupnp-dlna-container-information.h \
+	gupnp-dlna-image-information.h \
+	gupnp-dlna-video-information.h \
+	gupnp-dlna-information.h \
+	gupnp-dlna-values.h
 
 libgupnp_dlna_metadata_incdir = \
 	$(libgupnp_dlna_incdir)/metadata
 libgupnp_dlna_metadata_inc_HEADERS = \
-	metadata/gupnp-dlna-audio-information.h \
-	metadata/gupnp-dlna-container-information.h \
-	metadata/gupnp-dlna-image-information.h \
-	metadata/gupnp-dlna-video-information.h \
-	metadata/gupnp-dlna-information.h \
-	metadata/gupnp-dlna-metadata-extractor.h \
-	metadata/gupnp-dlna-values.h
+	metadata/gupnp-dlna-metadata-extractor.h
 
 dist_noinst_HEADERS += \
 	gupnp-dlna-field-value.h \
@@ -170,7 +174,16 @@ girs = GUPnPDLNA-2.0.gir
 
 introspection_sources = \
 	$(libgupnp_dlna_inc_HEADERS) \
-	$(libgupnp_dlna_inc_HEADERS:.h=.c)
+	gupnp-dlna-profile-guesser.c \
+	gupnp-dlna-profile.c \
+	gupnp-dlna-restriction.c \
+	gupnp-dlna-value-list.c \
+	gupnp-dlna-g-values.c \
+	gupnp-dlna-audio-information.c \
+	gupnp-dlna-container-information.c \
+	gupnp-dlna-image-information.c \
+	gupnp-dlna-video-information.c \
+	gupnp-dlna-information.c
 
 GUPnPDLNA-2.0.gir: libgupnp-dlna-2.0.la
 GUPnPDLNA_2_0_gir_FILES = $(introspection_sources)
