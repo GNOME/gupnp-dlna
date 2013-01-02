@@ -3,7 +3,7 @@
  *
  * Copyright (C) 2010 Nokia Corporation
  * Copyright (C) 2010 Collabora Multimedia
- * Copyright (C) 2012 Intel Corporation
+ * Copyright (C) 2012, 2013 Intel Corporation
  *
  * Authors: Parthasarathi Susarla <partha.susarla@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -55,8 +55,8 @@ typedef struct
 
 static void
 print_dlna_profile (GUPnPDLNAProfile *profile,
-                    const gchar *uri,
-                    GError *err)
+                    const gchar      *uri,
+                    GError           *err)
 {
         g_print ("\nURI: %s\n", uri);
         if (err) {
@@ -72,10 +72,10 @@ print_dlna_profile (GUPnPDLNAProfile *profile,
 
 static void
 guesser_done (GUPnPDLNAProfileGuesser *guesser G_GNUC_UNUSED,
-              const gchar *uri,
-              GUPnPDLNAProfile *profile,
-              GError *err,
-              GMainLoop *ml)
+              const gchar             *uri
+              GUPnPDLNAProfile        *profile,
+              GError                  *err,
+              GMainLoop               *ml)
 {
         print_dlna_profile (profile, uri, err);
         --files_to_guess;
@@ -97,11 +97,11 @@ is_uri (const gchar *filename)
 
 static void
 process_file (GUPnPDLNAProfileGuesser *guesser,
-              const gchar *filename);
+              const gchar             *filename);
 
 static void
 process_directory (GUPnPDLNAProfileGuesser *guesser,
-                   const gchar *directory)
+                   const gchar             *directory)
 {
         GError *err = NULL;
         GDir *dir = g_dir_open (directory, 0, &err);
@@ -130,7 +130,7 @@ process_directory (GUPnPDLNAProfileGuesser *guesser,
 
 static void
 process_file (GUPnPDLNAProfileGuesser *guesser,
-              const gchar *filename)
+              const gchar             *filename)
 {
         gchar *uri;
 
@@ -215,7 +215,8 @@ async_idle_loop (PrivStruct *ps)
 
 /* Main */
 int
-main (int argc, char **argv)
+main (int argc,
+      char **argv)
 {
         GUPnPDLNAProfileGuesser *guesser;
         gboolean relaxed_mode = FALSE;
