@@ -387,7 +387,7 @@ gupnp_dlna_profile_guesser_guess_profile_sync
  *
  * Returns: (transfer none): A #GUPnPDLNAProfile object on success,
  * %NULL otherwise.
- **/
+ */
 GUPnPDLNAProfile *
 gupnp_dlna_profile_guesser_get_profile (GUPnPDLNAProfileGuesser *guesser,
                                         const gchar             *name)
@@ -422,7 +422,7 @@ gupnp_dlna_profile_guesser_get_profile (GUPnPDLNAProfileGuesser *guesser,
  *
  * Returns: (transfer none) (element-type GUPnPDLNAProfile): A #GList
  * of #GUPnPDLNAProfile on success, %NULL otherwise.
- **/
+ */
 GList *
 gupnp_dlna_profile_guesser_list_profiles (GUPnPDLNAProfileGuesser *guesser)
 {
