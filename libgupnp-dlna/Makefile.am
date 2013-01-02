@@ -90,7 +90,8 @@ libguesser_la_LIBADD = \
 libguesser_la_CFLAGS = \
 	$(guesser_log_cflags) \
 	$(metadata_cflags) \
-	$(common_cflags)
+	$(common_cflags) \
+	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native
 
 libmetadata_la_SOURCES = \
 	gupnp-dlna-metadata-backend.c \

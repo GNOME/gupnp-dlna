@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -20,7 +20,6 @@
  */
 
 #include "gupnp-dlna-native-profile-loader.h"
-#include "gupnp-dlna-native-profile-guesser-impl.h"
 #include "gupnp-dlna-native-profile-backend.h"
 
 GUPnPDLNAProfileLoader *
@@ -30,11 +29,4 @@ gupnp_dlna_native_profile_backend_get_loader (gboolean relaxed_mode,
         return GUPNP_DLNA_PROFILE_LOADER
                 (gupnp_dlna_native_profile_loader_new (relaxed_mode,
                                                        extended_mode));
-}
-
-GUPnPDLNAProfileGuesserImpl *
-gupnp_dlna_native_profile_backend_get_guesser_impl (void)
-{
-        return GUPNP_DLNA_PROFILE_GUESSER_IMPL
-                (gupnp_dlna_native_profile_guesser_impl_new ());
 }

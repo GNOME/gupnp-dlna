@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation
+ * Copyright (C) 2012, 2013 Intel Corporation
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -24,75 +24,27 @@
 #ifndef __GUPNP_DLNA_PROFILE_GUESSER_IMPL_H__
 #define __GUPNP_DLNA_PROFILE_GUESSER_IMPL_H__
 
+#include <glib.h>
 #include <glib-object.h>
+
 #include "gupnp-dlna-profile.h"
 #include "gupnp-dlna-information.h"
 
 G_BEGIN_DECLS
 
-#define GUPNP_TYPE_DLNA_PROFILE_GUESSER_IMPL \
-        (gupnp_dlna_profile_guesser_impl_get_type())
-
-#define GUPNP_DLNA_PROFILE_GUESSER_IMPL(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE_GUESSER_IMPL, \
-                                     GUPnPDLNAProfileGuesserImpl))
-
-#define GUPNP_DLNA_PROFILE_GUESSER_IMPL_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE_GUESSER_IMPL, \
-                                  GUPnPDLNAProfileGuesserImplClass))
-
-#define GUPNP_IS_DLNA_PROFILE_GUESSER_IMPL(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE_GUESSER_IMPL))
-
-#define GUPNP_IS_DLNA_PROFILE_GUESSER_IMPL_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE_GUESSER_IMPL))
-
-#define GUPNP_DLNA_PROFILE_GUESSER_IMPL_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_PROFILE_GUESSER_IMPL, \
-                                    GUPnPDLNAProfileGuesserImplClass))
-
-typedef struct _GUPnPDLNAProfileGuesserImplPrivate
-                GUPnPDLNAProfileGuesserImplPrivate;
-
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAProfileGuesserImplPrivate *priv;
-} GUPnPDLNAProfileGuesserImpl;
-
-typedef struct {
-        GObjectClass parent_class;
-
-        /* virtuals */
-        GUPnPDLNAProfile *
-        (* guess_image_profile) (GUPnPDLNAProfileGuesserImpl *guesser_impl,
-                                 GUPnPDLNAInformation        *info,
-                                 GList                       *profiles);
-
-        GUPnPDLNAProfile *
-        (* guess_video_profile) (GUPnPDLNAProfileGuesserImpl *guesser_impl,
-                                 GUPnPDLNAInformation        *info,
-                                 GList                       *profiles);
-
-        GUPnPDLNAProfile *
-        (* guess_audio_profile) (GUPnPDLNAProfileGuesserImpl *guesser_impl,
-                                 GUPnPDLNAInformation        *info,
-                                 GList                       *profiles);
-} GUPnPDLNAProfileGuesserImplClass;
-
-GType
-gupnp_dlna_profile_guesser_impl_get_type (void) G_GNUC_CONST;
+GUPnPDLNAProfile *
+gupnp_dlna_profile_guesser_impl_guess_image_profile
+                                        (GUPnPDLNAInformation *info,
+                                         GList                *profiles);
 
 GUPnPDLNAProfile *
-gupnp_dlna_profile_guesser_impl_guess_profile
-                                     (GUPnPDLNAProfileGuesserImpl *guesser_impl,
-                                      GUPnPDLNAInformation        *info,
-                                      GList                       *profiles);
+gupnp_dlna_profile_guesser_impl_guess_video_profile
+                                        (GUPnPDLNAInformation *info,
+                                         GList                *profiles);
+GUPnPDLNAProfile *
+gupnp_dlna_profile_guesser_impl_guess_audio_profile
+                                        (GUPnPDLNAInformation *info,
+                                         GList                *profiles);
 
 G_END_DECLS
 

@@ -2,8 +2,6 @@ native_profile_backend = \
 	profile-backends/native/libnativeprofilebackend.la
 native_loader = \
 	profile-backends/native/libnativeloader.la
-native_guesser = \
-	profile-backends/native/libnativeguesser.la
 
 native_cflags = \
 	$(common_cflags) \
@@ -11,8 +9,7 @@ native_cflags = \
 
 noinst_LTLIBRARIES += \
 	$(native_profile_backend) \
-	$(native_loader) \
-	$(native_guesser)
+	$(native_loader)
 
 gupnp_cflags += \
 	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native
@@ -30,27 +27,16 @@ profile_backends_native_libnativeloader_la_CFLAGS = \
 	$(loader_log_cflags) \
 	$(native_cflags)
 
-profile_backends_native_libnativeguesser_la_SOURCES = \
-	$(sets_sources) \
-	profile-backends/native/gupnp-dlna-native-profile-guesser-impl.c \
-	profile-backends/native/gupnp-dlna-native-profile-guesser-impl.h
-profile_backends_native_libnativeguesser_la_LIBADD = \
-	$(common_libadd)
-profile_backends_native_libnativeguesser_la_CFLAGS = \
-	$(guesser_log_cflags) \
-	$(native_cflags) \
-	$(metadata_cflags)
-
 profile_backends_native_libnativeprofilebackend_la_SOURCES = \
 	profile-backends/native/gupnp-dlna-native-profile-backend.c \
 	profile-backends/native/gupnp-dlna-native-profile-backend.h \
 	profile-backends/native/gupnp-dlna-native-sets.h \
 	profile-backends/native/gupnp-dlna-native-utils.c \
-	profile-backends/native/gupnp-dlna-native-utils.h
+	profile-backends/native/gupnp-dlna-native-utils.h \
+	$(sets_sources)
 profile_backends_native_libnativeprofilebackend_la_LIBADD = \
 	$(common_libadd) \
-	$(native_loader) \
-	$(native_guesser)
+	$(native_loader)
 profile_backends_native_libnativeprofilebackend_la_CFLAGS = \
 	$(general_log_cflags) \
 	$(native_cflags) \

@@ -389,18 +389,36 @@ gupnp_dlna_profile_guesser_guess_profile_from_info
                                         (GUPnPDLNAProfileGuesser *guesser,
                                          GUPnPDLNAInformation    *info)
 {
-        GUPnPDLNAProfileGuesserImpl *guesser_impl;
         GList *profiles;
+        GUPnPDLNAVideoInformation *video_info;
+        GUPnPDLNAAudioInformation *audio_info;
+        GUPnPDLNAImageInformation *image_info;
+        GUPnPDLNAProfile *profile;
 
         g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
         g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
 
-        guesser_impl = gupnp_dlna_profile_backend_get_guesser_impl ();
         profiles = gupnp_dlna_profile_guesser_list_profiles (guesser);
+        video_info = gupnp_dlna_information_get_video_information (info);
+        audio_info = gupnp_dlna_information_get_audio_information (info);
+        image_info = gupnp_dlna_information_get_image_information (info);
 
-        return gupnp_dlna_profile_guesser_impl_guess_profile (guesser_impl,
-                                                              info,
-                                                              profiles);
+        if (image_info)
+                profile = gupnp_dlna_profile_guesser_impl_guess_image_profile
+                                        (info,
+                                         profiles);
+        else if (video_info)
+                profile = gupnp_dlna_profile_guesser_impl_guess_video_profile
+                                        (info,
+                                         profiles);
+        else if (audio_info)
+                profile = gupnp_dlna_profile_guesser_impl_guess_audio_profile
+                                        (info,
+                                         profiles);
+        else
+                profile = NULL;
+
+        return profile;
 }
 
 /**

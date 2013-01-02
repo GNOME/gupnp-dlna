@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -31,9 +31,6 @@ G_BEGIN_DECLS
 GUPnPDLNAProfileLoader *
 gupnp_dlna_profile_backend_get_loader (gboolean relaxed_mode,
                                        gboolean extended_mode);
-
-GUPnPDLNAProfileGuesserImpl *
-gupnp_dlna_profile_backend_get_guesser_impl (void);
 
 G_END_DECLS
 
