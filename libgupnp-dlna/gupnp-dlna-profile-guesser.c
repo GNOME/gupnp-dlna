@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -299,16 +299,21 @@ gupnp_dlna_profile_guesser_guess_profile_async
                                         guint                     timeout_in_ms,
                                         GError                  **error)
 {
-        GUPnPDLNAMetadataExtractor *extractor =
-                                   gupnp_dlna_metadata_backend_get_extractor ();
+        GUPnPDLNAMetadataExtractor *extractor;
         gboolean queued;
-        GError *extractor_error = NULL;
-        guint id =
-                g_signal_connect_swapped (extractor,
-                                          "done",
-                                          G_CALLBACK (gupnp_dlna_discovered_cb),
-                                          guesser);
+        GError *extractor_error;
+        guint id;
 
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), FALSE);
+        g_return_val_if_fail (uri != NULL, FALSE);
+        g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
+
+        extractor = gupnp_dlna_metadata_backend_get_extractor ();
+        extractor_error = NULL;
+        id = g_signal_connect_swapped (extractor,
+                                       "done",
+                                       G_CALLBACK (gupnp_dlna_discovered_cb),
+                                       guesser);
         queued = gupnp_dlna_metadata_extractor_extract_async (extractor,
                                                               uri,
                                                               timeout_in_ms,
@@ -342,15 +347,22 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                                         guint                     timeout_in_ms,
                                         GError                  **error)
 {
-        GError *extraction_error = NULL;
-        GUPnPDLNAMetadataExtractor *extractor =
-                                   gupnp_dlna_metadata_backend_get_extractor ();
-        GUPnPDLNAInformation *info =
-                 gupnp_dlna_metadata_extractor_extract_sync (extractor,
-                                                             uri,
-                                                             timeout_in_ms,
-                                                             &extraction_error);
-        GUPnPDLNAProfile *profile = NULL;
+        GError *extraction_error;
+        GUPnPDLNAMetadataExtractor *extractor;
+        GUPnPDLNAInformation *info;
+        GUPnPDLNAProfile *profile;
+
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
+        g_return_val_if_fail (uri != NULL, NULL);
+        g_return_val_if_fail (error == NULL || *error == NULL, NULL);
+
+        extraction_error = NULL;
+        extractor = gupnp_dlna_metadata_backend_get_extractor ();
+        info = gupnp_dlna_metadata_extractor_extract_sync (extractor,
+                                                           uri,
+                                                           timeout_in_ms,
+                                                           &extraction_error);
+        profile = NULL;
 
         if (extraction_error)
                 g_propagate_error (error,
@@ -385,6 +397,7 @@ gupnp_dlna_profile_guesser_get_profile (GUPnPDLNAProfileGuesser *guesser,
         GUPnPDLNAProfileGuesserPrivate *priv;
 
         g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
+        g_return_val_if_fail (name != NULL, NULL);
 
         priv = guesser->priv;
 
