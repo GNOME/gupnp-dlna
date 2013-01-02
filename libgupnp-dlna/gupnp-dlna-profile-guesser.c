@@ -246,19 +246,6 @@ unref_extractor_in_idle (GUPnPDLNAMetadataExtractor *extractor)
         return FALSE;
 }
 
-static GUPnPDLNAProfile *
-guess_profile (GUPnPDLNAProfileGuesser *guesser,
-               GUPnPDLNAInformation    *info)
-{
-        GUPnPDLNAProfileGuesserImpl *guesser_impl =
-                                 gupnp_dlna_profile_backend_get_guesser_impl ();
-        GList *profiles = gupnp_dlna_profile_guesser_list_profiles (guesser);
-
-        return gupnp_dlna_profile_guesser_impl_guess_profile (guesser_impl,
-                                                              info,
-                                                              profiles);
-}
-
 static void
 gupnp_dlna_discovered_cb (GUPnPDLNAProfileGuesser *guesser,
                           GUPnPDLNAInformation    *info,
@@ -271,7 +258,9 @@ gupnp_dlna_discovered_cb (GUPnPDLNAProfileGuesser *guesser,
         const gchar *uri = NULL;
 
         if (!error) {
-                profile = guess_profile (guesser, info);
+                profile = gupnp_dlna_profile_guesser_guess_profile_from_info
+                                        (guesser,
+                                         info);
         }
         if (info)
                 uri = gupnp_dlna_information_get_uri (info);
@@ -368,7 +357,9 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                 g_propagate_error (error,
                                    extraction_error);
         else
-                profile = guess_profile (guesser, info);
+                profile = gupnp_dlna_profile_guesser_guess_profile_from_info
+                                        (guesser,
+                                         info);
 
         if (info)
                 g_object_unref (info);
@@ -376,6 +367,35 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                 g_object_unref (extractor);
 
         return profile;
+}
+
+/**
+ * gupnp_dlna_profile_guesser_guess_profile_from_info:
+ * @guesser: The #GUPnPDLNAProfileGuesser object.
+ * @info: The #GUPnPDLNAInformation object.
+ *
+ * Guesses the profile which fits to passed @info.
+ *
+ * Returns: (transfer none): A #GUPnPDLNAProfile object on success,
+ * %NULL otherwise.
+ */
+GUPnPDLNAProfile *
+gupnp_dlna_profile_guesser_guess_profile_from_info
+                                        (GUPnPDLNAProfileGuesser *guesser,
+                                         GUPnPDLNAInformation    *info)
+{
+        GUPnPDLNAProfileGuesserImpl *guesser_impl;
+        GList *profiles;
+
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
+        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+
+        guesser_impl = gupnp_dlna_profile_backend_get_guesser_impl ();
+        profiles = gupnp_dlna_profile_guesser_list_profiles (guesser);
+
+        return gupnp_dlna_profile_guesser_impl_guess_profile (guesser_impl,
+                                                              info,
+                                                              profiles);
 }
 
 /**

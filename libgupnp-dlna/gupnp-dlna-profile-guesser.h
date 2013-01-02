@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation
+ * Copyright (C) 2012, 2013 Intel Corporation
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -26,6 +26,7 @@
 
 #include <glib-object.h>
 #include "gupnp-dlna-profile.h"
+#include "gupnp-dlna-information.h"
 
 G_BEGIN_DECLS
 
@@ -97,6 +98,11 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                                         const gchar              *uri,
                                         guint                     timeout_in_ms,
                                         GError                  **error);
+
+GUPnPDLNAProfile *
+gupnp_dlna_profile_guesser_guess_profile_from_info
+                                        (GUPnPDLNAProfileGuesser *guesser,
+                                         GUPnPDLNAInformation    *info);
 
 /* Get a GUPnPDLNAProfile by name */
 GUPnPDLNAProfile *
