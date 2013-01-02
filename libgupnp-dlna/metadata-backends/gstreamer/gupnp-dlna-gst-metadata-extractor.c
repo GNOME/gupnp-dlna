@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -71,20 +71,19 @@ gupnp_dlna_discovered_cb (GUPnPDLNAMetadataExtractor *self,
         GstDiscoverer *discoverer = GST_DISCOVERER (user_data);
         GUPnPDLNAInformation *gupnp_info = NULL;
 
-        if (!error)
+        if (error)
+                gupnp_info = GUPNP_DLNA_INFORMATION
+                                  (gupnp_dlna_gst_information_new_empty_with_uri
+                                        (gst_discoverer_info_get_uri (info)));
+        else
                 gupnp_info = GUPNP_DLNA_INFORMATION
                             (gupnp_dlna_gst_information_new_from_discoverer_info
                                         (gst_discoverer_info_get_uri (info),
                                          info));
-        else
-                gupnp_info = GUPNP_DLNA_INFORMATION
-                                  (gupnp_dlna_gst_information_new_empty_with_uri
-                                        (gst_discoverer_info_get_uri (info)));
         gupnp_dlna_metadata_extractor_emit_done (self,
                                                  gupnp_info,
                                                  error);
-        if (gupnp_info)
-                g_object_unref (gupnp_info);
+        g_object_unref (gupnp_info);
         g_idle_add ((GSourceFunc) unref_discoverer_in_idle, discoverer);
 }
 

@@ -97,6 +97,7 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                                        (GUPnPDLNAProfileGuesser  *guesser,
                                         const gchar              *uri,
                                         guint                     timeout_in_ms,
+                                        GUPnPDLNAInformation    **dlna_info,
                                         GError                  **error);
 
 GUPnPDLNAProfile *

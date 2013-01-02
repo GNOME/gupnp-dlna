@@ -72,11 +72,13 @@ print_dlna_profile (GUPnPDLNAProfile *profile,
 
 static void
 guesser_done (GUPnPDLNAProfileGuesser *guesser G_GNUC_UNUSED,
-              const gchar             *uri
+              GUPnPDLNAInformation    *info,
               GUPnPDLNAProfile        *profile,
               GError                  *err,
               GMainLoop               *ml)
 {
+        const gchar *uri = gupnp_dlna_information_get_uri (info);
+
         print_dlna_profile (profile, uri, err);
         --files_to_guess;
         if (!files_to_guess)
@@ -188,7 +190,7 @@ process_file (GUPnPDLNAProfileGuesser *guesser,
                 }
         } else {
                 GError *err = NULL;
-                GUPnPDLNAProfile *profile = gupnp_dlna_profile_guesser_guess_profile_sync (guesser, uri, timeout, &err);
+                GUPnPDLNAProfile *profile = gupnp_dlna_profile_guesser_guess_profile_sync (guesser, uri, timeout, NULL, &err);
 
                 if (err) {
                         g_warning ("Unable to read file: %s\n",

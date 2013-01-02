@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -82,9 +82,9 @@ gupnp_dlna_metadata_extractor_class_init
         /**
          * GUPnPDLNAMetadataExtractor::done:
          * @extractor: The #GUPnPDLNAMetadataExtractor.
-         * @info: The results as #GUPnPDLNAInformation.
-         * @error: contains details of the error if discovery fails,
-         * else is %NULL.
+         * @info: (transfer none): The results as #GUPnPDLNAInformation.
+         * @error: (allow-none) (transfer none): Contains details of
+         * the error if discovery fails, otherwise is %NULL.
          *
          * Will be emitted when all information on a URI could be
          * discovered.
@@ -196,14 +196,14 @@ gupnp_dlna_metadata_extractor_extract_sync
 /**
  * gupnp_dlna_metadata_extractor_emit_done:
  * @extractor: A #GUPnPDLNAMetadataExtractor object.
- * @info: A #GUPnPDLNAInformation about discovered URI.
- * @error: A #GError.
+ * @info: (transfer none): A #GUPnPDLNAInformation about discovered URI.
+ * @error: (allow-none) (transfer none): A #GError.
  *
  * Emits ::done signal. This function is intended to be used by
- * subclasses of #GUPnPDLNAMetadataExtractor. It would be good to
- * always pass a meaningful @info, even in case of error. That way a
- * receiver of this signal can know which URI discovery failed by
- * using gupnp_dlna_information_get_uri().
+ * subclasses of #GUPnPDLNAMetadataExtractor. It is required to always
+ * pass a meaningful @info, even in case of error. That way a receiver
+ * of this signal can know which URI discovery failed by using
+ * gupnp_dlna_information_get_uri().
  */
 void
 gupnp_dlna_metadata_extractor_emit_done (GUPnPDLNAMetadataExtractor *extractor,
@@ -211,6 +211,7 @@ gupnp_dlna_metadata_extractor_emit_done (GUPnPDLNAMetadataExtractor *extractor,
                                          GError                     *error)
 {
         g_return_if_fail (GUPNP_IS_DLNA_METADATA_EXTRACTOR (extractor));
+        g_return_if_fail (GUPNP_IS_DLNA_INFORMATION (info));
 
         g_signal_emit (extractor, signals[DONE], 0, info, error);
 }

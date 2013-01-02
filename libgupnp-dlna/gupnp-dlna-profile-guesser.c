@@ -163,9 +163,9 @@ gupnp_dlna_profile_guesser_class_init
         /**
          * GUPnPDLNAProfileGuesser::done:
          * @profile_guesser: The #GUPnPDLNAProfileGuesser.
-         * @uri: URI for which profile was guessed.
-         * @dlna:(allow-none)(transfer none): The results as #GUPnPDLNAProfile.
-         * @error:(allow-none): Contains details of the error if discovery failed,
+         * @info: (transfer none): URI metadata as #GUPnPDLNAInformation.
+         * @dlna: (allow-none) (transfer none): The results as #GUPnPDLNAProfile.
+         * @error: (allow-none): Contains details of the error if discovery failed,
          * else is %NULL.
          *
          * Will be emitted when guessing DLNA profile for a URI has finished.
@@ -180,7 +180,7 @@ gupnp_dlna_profile_guesser_class_init
                               g_cclosure_marshal_generic,
                               G_TYPE_NONE,
                               3,
-                              G_TYPE_STRING,
+                              GUPNP_TYPE_DLNA_INFORMATION,
                               GUPNP_TYPE_DLNA_PROFILE,
                               G_TYPE_ERROR);
 
@@ -255,16 +255,13 @@ gupnp_dlna_discovered_cb (GUPnPDLNAProfileGuesser *guesser,
         GUPnPDLNAProfile *profile = NULL;
         GUPnPDLNAMetadataExtractor *extractor =
                                       GUPNP_DLNA_METADATA_EXTRACTOR (user_data);
-        const gchar *uri = NULL;
 
         if (!error) {
                 profile = gupnp_dlna_profile_guesser_guess_profile_from_info
                                         (guesser,
                                          info);
         }
-        if (info)
-                uri = gupnp_dlna_information_get_uri (info);
-        g_signal_emit (guesser, signals[DONE], 0, uri, profile, error);
+        g_signal_emit (guesser, signals[DONE], 0, info, profile, error);
 
         g_idle_add ((GSourceFunc) unref_extractor_in_idle, extractor);
 }
@@ -323,7 +320,9 @@ gupnp_dlna_profile_guesser_guess_profile_async
  * @guesser: #GUPnPDLNAProfileGuesser object to use for guessing.
  * @uri: URI of media.
  * @timeout_in_ms: Timeout of guessing in miliseconds.
- * @error: #GError object or %NULL.
+ * @dlna_info: (allow-none) (transfer full) (out): A place where to
+ * store DLNA information or %NULL.
+ * @error: (allow-none): #GError object or %NULL.
  *
  * Synchronously guesses DLNA profile for given @uri.
  *
@@ -334,6 +333,7 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                                        (GUPnPDLNAProfileGuesser  *guesser,
                                         const gchar              *uri,
                                         guint                     timeout_in_ms,
+                                        GUPnPDLNAInformation    **dlna_info,
                                         GError                  **error)
 {
         GError *extraction_error;
@@ -343,6 +343,7 @@ gupnp_dlna_profile_guesser_guess_profile_sync
 
         g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
         g_return_val_if_fail (uri != NULL, NULL);
+        g_return_val_if_fail (dlna_info == NULL || *dlna_info == NULL, NULL);
         g_return_val_if_fail (error == NULL || *error == NULL, NULL);
 
         extraction_error = NULL;
@@ -361,8 +362,12 @@ gupnp_dlna_profile_guesser_guess_profile_sync
                                         (guesser,
                                          info);
 
-        if (info)
-                g_object_unref (info);
+        if (info) {
+                if (dlna_info)
+                        *dlna_info = info;
+                else
+                        g_object_unref (info);
+        }
         if (extractor)
                 g_object_unref (extractor);
 
