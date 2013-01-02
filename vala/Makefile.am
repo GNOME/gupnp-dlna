@@ -10,7 +10,7 @@ gupnp-dlna-2.0.stamp: $(builddir)/../libgupnp-dlna/GUPnPDLNA-2.0.gir \
 			      --library=gupnp-dlna-2.0 \
 			      $(builddir)/../libgupnp-dlna/GUPnPDLNA-2.0.gir \
 			      $(srcdir)/gupnp-dlna-2.0-custom.vala && \
-	echo timestmap > $(@F)
+	echo timestamp > $(@F)
 
 vapidir = $(datadir)/vala/vapi
 vapi_DATA = gupnp-dlna-2.0.vapi $(srcdir)/gupnp-dlna-2.0.deps
