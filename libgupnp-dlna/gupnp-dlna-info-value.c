@@ -21,27 +21,24 @@
 
 #include <string.h> /* for memset */
 
-#include "gupnp-dlna-native-info-value.h"
+#include "gupnp-dlna-info-value.h"
 
 /* private */
-struct _GUPnPDLNANativeInfoValue {
+struct _GUPnPDLNAInfoValue {
         GUPnPDLNAValueType  *type;
         GUPnPDLNAValueUnion  value;
-        gboolean unsupported;
+        gboolean             unsupported;
 };
 
-static GUPnPDLNANativeInfoValue *
+static GUPnPDLNAInfoValue *
 value_new (GUPnPDLNAValueType *type,
            gchar *raw)
 {
-        GUPnPDLNANativeInfoValue *info_value =
-                                        g_slice_new (GUPnPDLNANativeInfoValue);
+        GUPnPDLNAInfoValue *info_value = g_slice_new (GUPnPDLNAInfoValue);
 
         info_value->type = type;
-        if (!gupnp_dlna_value_type_init (type,
-                                                &info_value->value,
-                                                raw)) {
-                g_slice_free (GUPnPDLNANativeInfoValue, info_value);
+        if (!gupnp_dlna_value_type_init (type, &info_value->value, raw)) {
+                g_slice_free (GUPnPDLNAInfoValue, info_value);
                 info_value = NULL;
         }
         else
@@ -51,11 +48,10 @@ value_new (GUPnPDLNAValueType *type,
         return info_value;
 }
 
-static GUPnPDLNANativeInfoValue *
+static GUPnPDLNAInfoValue *
 value_unsupported (GUPnPDLNAValueType *type)
 {
-        GUPnPDLNANativeInfoValue *info_value =
-                                        g_slice_new (GUPnPDLNANativeInfoValue);
+        GUPnPDLNAInfoValue *info_value = g_slice_new (GUPnPDLNAInfoValue);
 
         info_value->type = type;
         memset (&info_value->value, 0, sizeof (GUPnPDLNAValueUnion));
@@ -64,22 +60,22 @@ value_unsupported (GUPnPDLNAValueType *type)
         return info_value;
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_bool (gboolean value)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_bool (gboolean value)
 {
         return value_new (gupnp_dlna_value_type_bool (),
                           g_strdup (value ? "true" : "false"));
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_unsupported_bool (void)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_unsupported_bool (void)
 {
         return value_unsupported (gupnp_dlna_value_type_bool ());
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_fraction (gint numerator,
-                                           gint denominator)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_fraction (gint numerator,
+                                    gint denominator)
 {
         return value_new (gupnp_dlna_value_type_fraction (),
                           g_strdup_printf ("%d/%d",
@@ -87,84 +83,84 @@ gupnp_dlna_native_info_value_new_fraction (gint numerator,
                                            denominator));
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_unsupported_fraction (void)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_unsupported_fraction (void)
 {
         return value_unsupported (gupnp_dlna_value_type_fraction ());
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_int (gint value)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_int (gint value)
 {
         return value_new (gupnp_dlna_value_type_int (),
                           g_strdup_printf ("%d", value));
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_unsupported_int (void)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_unsupported_int (void)
 {
         return value_unsupported (gupnp_dlna_value_type_int ());
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_string (const gchar *value)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_string (const gchar *value)
 {
         return value_new (gupnp_dlna_value_type_string (),
                           g_strdup (value));
 }
 
-GUPnPDLNANativeInfoValue *
-gupnp_dlna_native_info_value_new_unsupported_string (void)
+GUPnPDLNAInfoValue *
+gupnp_dlna_info_value_new_unsupported_string (void)
 {
         return value_unsupported (gupnp_dlna_value_type_string ());
 }
 
 void
-gupnp_dlna_native_info_value_free (GUPnPDLNANativeInfoValue *info_value)
+gupnp_dlna_info_value_free (GUPnPDLNAInfoValue *info_value)
 {
         if (info_value == NULL)
                 return;
 
         if (!info_value->unsupported)
                 gupnp_dlna_value_type_clean (info_value->type,
-                                                    &info_value->value);
-        g_slice_free (GUPnPDLNANativeInfoValue, info_value);
+                                             &info_value->value);
+        g_slice_free (GUPnPDLNAInfoValue, info_value);
 }
 
 GUPnPDLNAValueType *
-gupnp_dlna_native_info_value_get_type (GUPnPDLNANativeInfoValue *info)
+gupnp_dlna_info_value_get_type (GUPnPDLNAInfoValue *info_value)
 {
-        g_return_val_if_fail (info != NULL, NULL);
+        g_return_val_if_fail (info_value != NULL, NULL);
 
-        return info->type;
+        return info_value->type;
 }
 
 GUPnPDLNAValueUnion *
-gupnp_dlna_native_info_value_get_value (GUPnPDLNANativeInfoValue *info)
+gupnp_dlna_info_value_get_value (GUPnPDLNAInfoValue *info_value)
 {
-        g_return_val_if_fail (info != NULL, NULL);
+        g_return_val_if_fail (info_value != NULL, NULL);
 
-        if (info->unsupported)
+        if (info_value->unsupported)
                 return NULL;
         else
-                return &info->value;
+                return &info_value->value;
 }
 
 gchar *
-gupnp_dlna_native_info_value_to_string (GUPnPDLNANativeInfoValue *info)
+gupnp_dlna_info_value_to_string (GUPnPDLNAInfoValue *info_value)
 {
         const gchar *type;
         gchar *raw;
         gchar *str;
 
-        g_return_val_if_fail (info != NULL, NULL);
+        g_return_val_if_fail (info_value != NULL, NULL);
 
-        type = gupnp_dlna_value_type_name (info->type);
-        if (info->unsupported)
+        type = gupnp_dlna_value_type_name (info_value->type);
+        if (info_value->unsupported)
                 raw = g_strdup ("<UNSUPPORTED>");
         else
-                raw = gupnp_dlna_value_type_to_string (info->type,
-                                                              &info->value);
+                raw = gupnp_dlna_value_type_to_string (info_value->type,
+                                                       &info_value->value);
         str = g_strdup_printf ("(%s)%s", type, raw);
         g_free (raw);
 
@@ -172,9 +168,9 @@ gupnp_dlna_native_info_value_to_string (GUPnPDLNANativeInfoValue *info)
 }
 
 gboolean
-gupnp_dlna_native_info_value_is_unsupported (GUPnPDLNANativeInfoValue *info)
+gupnp_dlna_info_value_is_unsupported (GUPnPDLNAInfoValue *info_value)
 {
-        g_return_val_if_fail (info != NULL, FALSE);
+        g_return_val_if_fail (info_value != NULL, FALSE);
 
-        return info->unsupported;
+        return info_value->unsupported;
 }

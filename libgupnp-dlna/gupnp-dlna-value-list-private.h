@@ -24,7 +24,7 @@
 
 #include <glib.h>
 
-#include "gupnp-dlna-native-info-value.h"
+#include "gupnp-dlna-info-value.h"
 #include "gupnp-dlna-value-list.h"
 #include "gupnp-dlna-value-type.h"
 
@@ -46,9 +46,9 @@ gupnp_dlna_value_list_add_single (GUPnPDLNAValueList *list,
                                   const gchar        *single);
 
 gboolean
-gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList       *list,
-                                   GUPnPDLNANativeInfoValue *value,
-                                   gboolean                 *unsupported);
+gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList *list,
+                                   GUPnPDLNAInfoValue *value,
+                                   gboolean           *unsupported);
 
 GList *
 gupnp_dlna_value_list_get_list (GUPnPDLNAValueList *value_list);

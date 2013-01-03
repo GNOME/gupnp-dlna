@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "gupnp-dlna-native-info-value.h"
+#include "gupnp-dlna-info-value.h"
 #include "gupnp-dlna-value-type.h"
 
 G_BEGIN_DECLS
@@ -48,7 +48,7 @@ gupnp_dlna_native_value_new_ranged (GUPnPDLNAValueType *type,
 
 gboolean
 gupnp_dlna_native_value_is_superset (GUPnPDLNANativeValue     *base,
-                                     GUPnPDLNANativeInfoValue *single);
+                                     GUPnPDLNAInfoValue *single);
 
 GUPnPDLNANativeValue *
 gupnp_dlna_native_value_copy (GUPnPDLNANativeValue     *base,

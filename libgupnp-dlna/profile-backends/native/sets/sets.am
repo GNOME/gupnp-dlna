@@ -1,7 +1,5 @@
 sets_sources = \
 	profile-backends/native/sets/gupnp-dlna-native-info-set.c \
 	profile-backends/native/sets/gupnp-dlna-native-info-set.h \
-	profile-backends/native/sets/gupnp-dlna-native-info-value.c \
-	profile-backends/native/sets/gupnp-dlna-native-info-value.h \
 	profile-backends/native/sets/gupnp-dlna-native-value.c \
 	profile-backends/native/sets/gupnp-dlna-native-value.h

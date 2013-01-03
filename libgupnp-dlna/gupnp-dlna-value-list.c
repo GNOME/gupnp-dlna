@@ -21,12 +21,12 @@
 
 #include "gupnp-dlna-value-list-private.h"
 #include "gupnp-dlna-native-value.h"
-#include "gupnp-dlna-native-info-value.h"
+#include "gupnp-dlna-info-value.h"
 
 struct _GUPnPDLNAValueList {
         GUPnPDLNAValueType *type;
-        GList                    *values; /* <GUPnPDLNANativeValue *> */
-        gboolean                  sorted;
+        GList              *values; /* <GUPnPDLNANativeValue *> */
+        gboolean            sorted;
 };
 
 G_DEFINE_BOXED_TYPE (GUPnPDLNAValueList,
@@ -172,9 +172,9 @@ gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list)
 }
 
 gboolean
-gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList       *list,
-                                   GUPnPDLNANativeInfoValue *value,
-                                   gboolean                 *unsupported)
+gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList *list,
+                                   GUPnPDLNAInfoValue *value,
+                                   gboolean           *unsupported)
 {
         GList *iter;
 
@@ -182,10 +182,10 @@ gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList       *list,
         g_return_val_if_fail (value != NULL, FALSE);
         g_return_val_if_fail (unsupported != NULL, FALSE);
 
-        if (list->type != gupnp_dlna_native_info_value_get_type (value))
+        if (list->type != gupnp_dlna_info_value_get_type (value))
                 return FALSE;
 
-        if (gupnp_dlna_native_info_value_is_unsupported (value)) {
+        if (gupnp_dlna_info_value_is_unsupported (value)) {
                 *unsupported = TRUE;
 
                 return TRUE;

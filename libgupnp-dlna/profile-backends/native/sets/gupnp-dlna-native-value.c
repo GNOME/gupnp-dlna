@@ -25,7 +25,7 @@
 struct _GUPnPDLNANativeValueVTable {
         gboolean
         (* is_superset) (GUPnPDLNANativeValue     *base,
-                         GUPnPDLNANativeInfoValue *info);
+                         GUPnPDLNAInfoValue *info);
 
         GUPnPDLNANativeValue *
         (* copy) (GUPnPDLNANativeValue     *base,
@@ -58,7 +58,7 @@ struct _GUPnPDLNANativeValueSingle {
 
 static gboolean
 single_is_superset (GUPnPDLNANativeValue     *base,
-                    GUPnPDLNANativeInfoValue *info);
+                    GUPnPDLNAInfoValue *info);
 
 static GUPnPDLNANativeValue *
 single_copy (GUPnPDLNANativeValue     *base,
@@ -91,13 +91,13 @@ static GUPnPDLNANativeValueVTable single_vtable = {
 
 static gboolean
 single_is_superset (GUPnPDLNANativeValue     *base,
-                    GUPnPDLNANativeInfoValue *info)
+                    GUPnPDLNAInfoValue *info)
 {
         GUPnPDLNANativeValueSingle *value = (GUPnPDLNANativeValueSingle *) base;
         GUPnPDLNAValueType *info_type =
-                                   gupnp_dlna_native_info_value_get_type (info);
+                                   gupnp_dlna_info_value_get_type (info);
         GUPnPDLNAValueUnion *info_value =
-                                  gupnp_dlna_native_info_value_get_value (info);
+                                  gupnp_dlna_info_value_get_value (info);
 
         return gupnp_dlna_value_type_is_equal (info_type,
                                                       &value->value,
@@ -174,7 +174,7 @@ struct _GUPnPDLNANativeValueRange {
 
 static gboolean
 range_is_superset (GUPnPDLNANativeValue     *base,
-                   GUPnPDLNANativeInfoValue *info);
+                   GUPnPDLNAInfoValue *info);
 
 static GUPnPDLNANativeValue *
 range_copy (GUPnPDLNANativeValue     *base,
@@ -207,13 +207,13 @@ static GUPnPDLNANativeValueVTable range_vtable = {
 
 static gboolean
 range_is_superset (GUPnPDLNANativeValue     *base,
-                   GUPnPDLNANativeInfoValue *info)
+                   GUPnPDLNAInfoValue *info)
 {
         GUPnPDLNANativeValueRange *range = (GUPnPDLNANativeValueRange *) base;
         GUPnPDLNAValueType *info_type =
-                                   gupnp_dlna_native_info_value_get_type (info);
+                                   gupnp_dlna_info_value_get_type (info);
         GUPnPDLNAValueUnion *info_value =
-                                  gupnp_dlna_native_info_value_get_value (info);
+                                  gupnp_dlna_info_value_get_value (info);
 
         return gupnp_dlna_value_type_is_in_range (info_type,
                                                          &range->min,
@@ -367,7 +367,7 @@ gupnp_dlna_native_value_new_ranged (GUPnPDLNAValueType *type,
 
 gboolean
 gupnp_dlna_native_value_is_superset (GUPnPDLNANativeValue     *base,
-                                     GUPnPDLNANativeInfoValue *single)
+                                     GUPnPDLNAInfoValue *single)
 {
         g_return_val_if_fail (base != NULL, FALSE);
         g_return_val_if_fail (single != NULL, FALSE);
