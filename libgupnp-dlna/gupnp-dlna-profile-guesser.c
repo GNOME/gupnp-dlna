@@ -24,7 +24,6 @@
 #include "gupnp-dlna-profile-guesser.h"
 #include "gupnp-dlna-profile-guesser-impl.h"
 #include "gupnp-dlna-profile-loader.h"
-#include "gupnp-dlna-profile-backend.h"
 #include "gupnp-dlna-metadata-extractor.h"
 #include "gupnp-dlna-metadata-backend.h"
 

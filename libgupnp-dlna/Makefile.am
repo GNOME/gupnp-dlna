@@ -116,7 +116,6 @@ libgupnp_dlna_2_0_la_SOURCES = \
 	gupnp-dlna-information.c \
 	gupnp-dlna-video-information.c \
 	gupnp-dlna-field-value.c \
-	gupnp-dlna-profile-backend.c \
 	gupnp-dlna-profile.c \
 	gupnp-dlna-restriction.c \
 	gupnp-dlna-value-list.c \
@@ -154,7 +153,6 @@ libgupnp_dlna_metadata_inc_HEADERS = \
 dist_noinst_HEADERS += \
 	gupnp-dlna-field-value.h \
 	gupnp-dlna-metadata-backend.h \
-	gupnp-dlna-profile-backend.h \
 	gupnp-dlna-profile-loader.h \
 	gupnp-dlna-profile-guesser-impl.h \
 	gupnp-dlna-restriction-private.h \

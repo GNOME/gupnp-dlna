@@ -16,8 +16,6 @@ gupnp_libadd += \
 include $(top_srcdir)/libgupnp-dlna/profile-backends/native/sets/sets.am
 
 profile_backends_native_libnativeprofilebackend_la_SOURCES = \
-	profile-backends/native/gupnp-dlna-native-profile-backend.c \
-	profile-backends/native/gupnp-dlna-native-profile-backend.h \
 	profile-backends/native/gupnp-dlna-native-sets.h \
 	profile-backends/native/gupnp-dlna-native-utils.c \
 	profile-backends/native/gupnp-dlna-native-utils.h \
