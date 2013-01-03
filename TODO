@@ -1,27 +1,11 @@
-* Prepare native sets API for exposing into public. This needs to have
-  a bit of thought as we probably will want to expose only read-only
-  API. Also we probably don't want to expose every gory detail of sets
-  implementation. For GObject introspection purposes the exposed
-  classes will need to be boxed into GTypes.
-
-* Merge native profile backend into GUPnPDLNAProfile and
-  GUPnPDLNAProfileGuesser. That way we can get rid of
-  GUPnPDLNAProfileGuesserImpl and some backend files, expose profile's
-  restrictions and rename GUPnPDLNANativeFoo into GUPnPDLNAFoo. Also
-  we could extend gupnp-dlna-info-2.0 and gupnp-dlna-ls-profiles-2.0
-  to show more information about DLNA profiles.
-
 * More about extending tools - gupnp-dlna-info-2.0 could show DLNA
-  profiles restrictions (likely) and discovered metadata attributes
-  (bit unlikely, but dunno). gupnp-dlna-ls-profiles-2.0 could show
-  restrictions of listed DLNA profiles.
+  profiles restrictions and discovered metadata attributes.
+  gupnp-dlna-ls-profiles-2.0 could show restrictions of listed DLNA
+  profiles.
 
 * Write a GStreamer-only utility for creating a GstEncodingProfile
   from GUPnPDLNAProfile. That could be easily done when above points
   are done.
-
-* Maybe expose/add a generic/GStreamer-only API taking
-  generic/GStreamer discovery data and returning a guessed profile.
 
 * Bring the tests back to life. And make them being run on make check.
 
