@@ -30,7 +30,7 @@
 #include "gupnp-dlna-profile-loader.h"
 #include "gupnp-dlna-profile-private.h"
 #include "gupnp-dlna-native-sets.h"
-#include "gupnp-dlna-native-utils.h"
+#include "gupnp-dlna-utils.h"
 
 G_DEFINE_TYPE (GUPnPDLNAProfileLoader, gupnp_dlna_profile_loader, G_TYPE_OBJECT)
 
@@ -725,13 +725,13 @@ cleanup (GUPnPDLNAProfileLoader *loader G_GNUC_UNUSED,
 
         for (iter = profiles; iter != NULL; iter = iter->next) {
                 GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
-                gchar *acaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                gchar *acaps = gupnp_dlna_utils_restrictions_list_to_string
                           (gupnp_dlna_profile_get_audio_restrictions (profile));
-                gchar *ccaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                gchar *ccaps = gupnp_dlna_utils_restrictions_list_to_string
                       (gupnp_dlna_profile_get_container_restrictions (profile));
-                gchar *icaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                gchar *icaps = gupnp_dlna_utils_restrictions_list_to_string
                           (gupnp_dlna_profile_get_image_restrictions (profile));
-                gchar *vcaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                gchar *vcaps = gupnp_dlna_utils_restrictions_list_to_string
                           (gupnp_dlna_profile_get_video_restrictions (profile));
 
                 g_debug ("Loaded profile: %s\nMIME: %s\naudio caps: %s\n"

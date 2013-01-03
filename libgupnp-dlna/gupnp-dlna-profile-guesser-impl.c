@@ -31,7 +31,7 @@
 #include "gupnp-dlna-image-information.h"
 #include "gupnp-dlna-video-information.h"
 #include "gupnp-dlna-native-sets.h"
-#include "gupnp-dlna-native-utils.h"
+#include "gupnp-dlna-utils.h"
 
 static gboolean
 is_video_profile (GUPnPDLNAProfile *profile)
@@ -65,7 +65,7 @@ match_profile (GUPnPDLNAProfile       *profile,
         }
 
         stream_dump = gupnp_dlna_native_info_set_to_string (stream_info_set);
-        restrictions_dump = gupnp_dlna_native_utils_restrictions_list_to_string
+        restrictions_dump = gupnp_dlna_utils_restrictions_list_to_string
                                         (profile_restrictions);
         g_debug ("Stream: %s\nRestrictions: %s",
                  stream_dump,

@@ -119,7 +119,8 @@ libgupnp_dlna_2_0_la_SOURCES = \
 	gupnp-dlna-profile.c \
 	gupnp-dlna-restriction.c \
 	gupnp-dlna-value-list.c \
-	gupnp-dlna-g-values.c
+	gupnp-dlna-g-values.c \
+	gupnp-dlna-utils.c
 libgupnp_dlna_2_0_la_LIBADD = \
 	$(gupnp_libadd) \
 	libloader.la \
@@ -157,7 +158,8 @@ dist_noinst_HEADERS += \
 	gupnp-dlna-profile-guesser-impl.h \
 	gupnp-dlna-restriction-private.h \
 	gupnp-dlna-value-list-private.h \
-	gupnp-dlna-g-values-private.h
+	gupnp-dlna-g-values-private.h \
+	gupnp-dlna-utils.h
 
 
 # INTROSPECTION

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -19,19 +19,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#ifndef __GUPNP_DLNA_NATIVE_UTILS_H__
-#define __GUPNP_DLNA_NATIVE_UTILS_H__
+#ifndef __GUPNP_DLNA_UTILS_H__
+#define __GUPNP_DLNA_UTILS_H__
 
 #include <glib.h>
 
 G_BEGIN_DECLS
 
 void
-gupnp_dlna_native_utils_free_restrictions (GList *list);
+gupnp_dlna_utils_free_restrictions (GList *list);
 
 gchar *
-gupnp_dlna_native_utils_restrictions_list_to_string (GList *list);
+gupnp_dlna_utils_restrictions_list_to_string (GList *list);
 
 G_END_DECLS
 
-#endif /* __GUPNP_DLNA_NATIVE_UTILS_H__ */
+#endif /* __GUPNP_DLNA_UTILS_H__ */

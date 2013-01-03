@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -19,20 +19,19 @@
  * Boston, MA 02110-1301, USA.
  */
 
-#include "gupnp-dlna-native-utils.h"
-#include "gupnp-dlna-native-sets.h"
+#include "gupnp-dlna-utils.h"
+#include "gupnp-dlna-restriction.h"
 
 void
-gupnp_dlna_native_utils_free_restrictions (GList *list)
+gupnp_dlna_utils_free_restrictions (GList *list)
 {
         if (list == NULL)
                 return;
-        g_list_free_full (list,
-                          (GDestroyNotify) gupnp_dlna_restriction_free);
+        g_list_free_full (list, (GDestroyNotify) gupnp_dlna_restriction_free);
 }
 
 gchar *
-gupnp_dlna_native_utils_restrictions_list_to_string (GList *list)
+gupnp_dlna_utils_restrictions_list_to_string (GList *list)
 {
         GList *iter;
         GPtrArray *strings = g_ptr_array_new_with_free_func (g_free);
@@ -50,8 +49,7 @@ gupnp_dlna_native_utils_restrictions_list_to_string (GList *list)
 
         if (strings->len) {
                 g_ptr_array_add (strings, NULL);
-                final_string = g_strjoinv ("; ",
-                                           (gchar **) strings->pdata);
+                final_string = g_strjoinv ("; ", (gchar **) strings->pdata);
         }
         else
                 final_string = g_strdup ("EMPTY");
