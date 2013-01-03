@@ -20,12 +20,12 @@
  */
 
 #include "gupnp-dlna-value-list-private.h"
-#include "gupnp-dlna-native-value.h"
+#include "gupnp-dlna-value.h"
 #include "gupnp-dlna-info-value.h"
 
 struct _GUPnPDLNAValueList {
         GUPnPDLNAValueType *type;
-        GList              *values; /* <GUPnPDLNANativeValue *> */
+        GList              *values; /* <GUPnPDLNAValue *> */
         gboolean            sorted;
 };
 
@@ -50,18 +50,11 @@ gupnp_dlna_value_list_new (GUPnPDLNAValueType *type)
 }
 
 static void
-free_value (GUPnPDLNANativeValue     *value,
-            GUPnPDLNAValueType *type)
-{
-        gupnp_dlna_native_value_free (value, type);
-}
-
-static void
 free_value_list (GUPnPDLNAValueList *list)
 {
         if (list->values) {
                 g_list_foreach (list->values,
-                                (GFunc) free_value,
+                                (GFunc) gupnp_dlna_value_free,
                                 list->type);
                 g_list_free (list->values);
                 list->values = NULL;
@@ -79,16 +72,16 @@ gupnp_dlna_value_list_free (GUPnPDLNAValueList *list)
 }
 
 static gint
-value_compare (GUPnPDLNANativeValue     *a,
-               GUPnPDLNANativeValue     *b,
+value_compare (GUPnPDLNAValue     *a,
+               GUPnPDLNAValue     *b,
                GUPnPDLNAValueType *type)
 {
-        return gupnp_dlna_native_value_compare (a, b, type);
+        return gupnp_dlna_value_compare (a, b, type);
 }
 
 static gboolean
 insert_value (GUPnPDLNAValueList *list,
-              GUPnPDLNANativeValue *value)
+              GUPnPDLNAValue     *value)
 {
         if (value) {
                 if (list->sorted)
@@ -107,40 +100,40 @@ insert_value (GUPnPDLNAValueList *list,
 
 gboolean
 gupnp_dlna_value_list_add_single (GUPnPDLNAValueList *list,
-                                         const gchar *single)
+                                  const gchar        *single)
 {
-        GUPnPDLNANativeValue *value;
+        GUPnPDLNAValue *value;
 
         g_return_val_if_fail (list != NULL, FALSE);
         g_return_val_if_fail (single != NULL, FALSE);
 
-        value = gupnp_dlna_native_value_new_single (list->type, single);
+        value = gupnp_dlna_value_new_single (list->type, single);
 
         return insert_value (list, value);
 }
 
 gboolean
 gupnp_dlna_value_list_add_range (GUPnPDLNAValueList *list,
-                                        const gchar *min,
-                                        const gchar *max)
+                                 const gchar        *min,
+                                 const gchar        *max)
 {
-        GUPnPDLNANativeValue *range;
+        GUPnPDLNAValue *range;
 
         g_return_val_if_fail (list != NULL, FALSE);
         g_return_val_if_fail (min != NULL, FALSE);
         g_return_val_if_fail (max != NULL, FALSE);
 
-        range = gupnp_dlna_native_value_new_ranged (list->type, min, max);
+        range = gupnp_dlna_value_new_ranged (list->type, min, max);
 
         if (range) {
                 list->values = g_list_prepend (list->values, range);
+
                 return TRUE;
         }
 
         return FALSE;
 }
 
-/* private */
 GUPnPDLNAValueList *
 gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list)
 {
@@ -151,14 +144,13 @@ gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list)
 
                 dup = gupnp_dlna_value_list_new (list->type);
                 for (iter = list->values; iter != NULL; iter = iter->next) {
-                        GUPnPDLNANativeValue *base =
-                                        (GUPnPDLNANativeValue *) iter->data;
-                        GUPnPDLNANativeValue *copy;
+                        GUPnPDLNAValue *base = (GUPnPDLNAValue *) iter->data;
+                        GUPnPDLNAValue *copy;
 
                         if (base == NULL)
                                 continue;
 
-                        copy = gupnp_dlna_native_value_copy (base, list->type);
+                        copy = gupnp_dlna_value_copy (base, list->type);
                         if (copy != NULL)
                                 dup->values = g_list_prepend (dup->values,
                                                               copy);
@@ -192,10 +184,9 @@ gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList *list,
         }
 
         for (iter = list->values; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeValue *base =
-                                            (GUPnPDLNANativeValue *) iter->data;
+                GUPnPDLNAValue *base = (GUPnPDLNAValue *) iter->data;
 
-                if (gupnp_dlna_native_value_is_superset (base, value)) {
+                if (gupnp_dlna_value_is_superset (base, value)) {
                         *unsupported = FALSE;
 
                         return TRUE;
@@ -229,13 +220,11 @@ list_to_string (GUPnPDLNAValueList *value_list)
         gchar *str;
 
         for (iter = value_list->values; iter != NULL; iter = iter->next) {
-                GUPnPDLNANativeValue *value =
-                                            (GUPnPDLNANativeValue *) iter->data;
+                GUPnPDLNAValue *value = (GUPnPDLNAValue *) iter->data;
 
                 g_ptr_array_add (strings,
-                                 gupnp_dlna_native_value_to_string
-                                        (value,
-                                         value_list->type));
+                                 gupnp_dlna_value_to_string (value,
+                                                             value_list->type));
         }
         g_ptr_array_add (strings, NULL);
 
@@ -298,9 +287,8 @@ gupnp_dlna_value_list_get_g_values (GUPnPDLNAValueList *list)
 
         g_values = NULL;
         for (iter = list->values; iter != NULL; iter = iter->next) {
-                GValue *g_value =
-                                gupnp_dlna_native_value_to_g_value (iter->data,
-                                                                    list->type);
+                GValue *g_value = gupnp_dlna_value_to_g_value (iter->data,
+                                                               list->type);
 
                 if (g_value)
                         g_values = g_list_prepend (g_values, g_value);

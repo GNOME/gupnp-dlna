@@ -122,7 +122,8 @@ libgupnp_dlna_2_0_la_SOURCES = \
 	gupnp-dlna-g-values.c \
 	gupnp-dlna-utils.c \
 	gupnp-dlna-value-type.c \
-	gupnp-dlna-info-value.c
+	gupnp-dlna-info-value.c \
+	gupnp-dlna-value.c
 libgupnp_dlna_2_0_la_LIBADD = \
 	$(gupnp_libadd) \
 	libloader.la \
@@ -164,7 +165,8 @@ dist_noinst_HEADERS += \
 	gupnp-dlna-utils.h \
 	gupnp-dlna-value-union.h \
 	gupnp-dlna-value-type.h \
-	gupnp-dlna-info-value.h
+	gupnp-dlna-info-value.h \
+	gupnp-dlna-value.h
 
 
 # INTROSPECTION
