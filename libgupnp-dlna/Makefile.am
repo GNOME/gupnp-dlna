@@ -159,7 +159,8 @@ dist_noinst_HEADERS += \
 	gupnp-dlna-restriction-private.h \
 	gupnp-dlna-value-list-private.h \
 	gupnp-dlna-g-values-private.h \
-	gupnp-dlna-utils.h
+	gupnp-dlna-utils.h \
+	gupnp-dlna-value-union.h
 
 
 # INTROSPECTION

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -28,65 +28,56 @@
 #include "gupnp-dlna-g-values-private.h"
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-restriction-private.h"
+#include "gupnp-dlna-value-union.h"
 
 G_BEGIN_DECLS
-
-/* private */
-typedef union _GUPnPDLNANativeValueUnion GUPnPDLNANativeValueUnion;
-
-union _GUPnPDLNANativeValueUnion {
-        gboolean bool_value;
-        GUPnPDLNAFraction fraction_value;
-        gint int_value;
-        gchar *string_value;
-};
 
 /* ValueType */
 gboolean
 gupnp_dlna_native_value_type_init (GUPnPDLNANativeValueType  *type,
-                                   GUPnPDLNANativeValueUnion *value,
+                                   GUPnPDLNAValueUnion *value,
                                    const gchar               *raw);
 
 gboolean
 gupnp_dlna_native_value_type_copy (GUPnPDLNANativeValueType  *type,
-                                   GUPnPDLNANativeValueUnion *from,
-                                   GUPnPDLNANativeValueUnion *to);
+                                   GUPnPDLNAValueUnion *from,
+                                   GUPnPDLNAValueUnion *to);
 
 void
 gupnp_dlna_native_value_type_clean (GUPnPDLNANativeValueType  *type,
-                                    GUPnPDLNANativeValueUnion *value_union);
+                                    GUPnPDLNAValueUnion *value_union);
 
 gboolean
 gupnp_dlna_native_value_type_is_equal (GUPnPDLNANativeValueType  *type,
-                                       GUPnPDLNANativeValueUnion *first,
-                                       GUPnPDLNANativeValueUnion *second);
+                                       GUPnPDLNAValueUnion *first,
+                                       GUPnPDLNAValueUnion *second);
 
 gboolean
 gupnp_dlna_native_value_type_is_in_range (GUPnPDLNANativeValueType  *type,
-                                          GUPnPDLNANativeValueUnion *min,
-                                          GUPnPDLNANativeValueUnion *max,
-                                          GUPnPDLNANativeValueUnion *value);
+                                          GUPnPDLNAValueUnion *min,
+                                          GUPnPDLNAValueUnion *max,
+                                          GUPnPDLNAValueUnion *value);
 
 const gchar *
 gupnp_dlna_native_value_type_name (GUPnPDLNANativeValueType *type);
 
 gboolean
 gupnp_dlna_native_value_type_verify_range (GUPnPDLNANativeValueType  *type,
-                                           GUPnPDLNANativeValueUnion *min,
-                                           GUPnPDLNANativeValueUnion *max);
+                                           GUPnPDLNAValueUnion *min,
+                                           GUPnPDLNAValueUnion *max);
 
 gchar *
 gupnp_dlna_native_value_type_to_string (GUPnPDLNANativeValueType  *type,
-                                        GUPnPDLNANativeValueUnion *value);
+                                        GUPnPDLNAValueUnion *value);
 
 gint
 gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
-                                      GUPnPDLNANativeValueUnion *a,
-                                      GUPnPDLNANativeValueUnion *b);
+                                      GUPnPDLNAValueUnion *a,
+                                      GUPnPDLNAValueUnion *b);
 
 void
 gupnp_dlna_native_value_type_to_g_value (GUPnPDLNANativeValueType  *type,
-                                         GUPnPDLNANativeValueUnion *value,
+                                         GUPnPDLNAValueUnion *value,
                                          GValue                    *g_value);
 
 gboolean
@@ -111,7 +102,7 @@ gupnp_dlna_value_list_sort_items (GUPnPDLNAValueList *value_list);
 GUPnPDLNANativeValueType *
 gupnp_dlna_native_info_value_get_type (GUPnPDLNANativeInfoValue *info);
 
-GUPnPDLNANativeValueUnion *
+GUPnPDLNAValueUnion *
 gupnp_dlna_native_info_value_get_value (GUPnPDLNANativeInfoValue *info);
 
 G_END_DECLS

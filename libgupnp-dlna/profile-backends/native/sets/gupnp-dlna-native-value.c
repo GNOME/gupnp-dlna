@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -39,7 +39,7 @@ struct _GUPnPDLNANativeValueVTable {
         (* to_string) (GUPnPDLNANativeValue     *base,
                        GUPnPDLNANativeValueType *type);
 
-        GUPnPDLNANativeValueUnion *
+        GUPnPDLNAValueUnion *
         (* get_sort_value) (GUPnPDLNANativeValue *base);
 
         gboolean
@@ -53,7 +53,7 @@ typedef struct _GUPnPDLNANativeValueSingle GUPnPDLNANativeValueSingle;
 
 struct _GUPnPDLNANativeValueSingle {
         GUPnPDLNANativeValue      base;
-        GUPnPDLNANativeValueUnion value;
+        GUPnPDLNAValueUnion value;
 };
 
 static gboolean
@@ -72,7 +72,7 @@ static gchar *
 single_to_string (GUPnPDLNANativeValue     *base,
                   GUPnPDLNANativeValueType *type);
 
-static GUPnPDLNANativeValueUnion *
+static GUPnPDLNAValueUnion *
 single_get_sort_value (GUPnPDLNANativeValue *base);
 
 static gboolean
@@ -96,7 +96,7 @@ single_is_superset (GUPnPDLNANativeValue     *base,
         GUPnPDLNANativeValueSingle *value = (GUPnPDLNANativeValueSingle *) base;
         GUPnPDLNANativeValueType *info_type =
                                    gupnp_dlna_native_info_value_get_type (info);
-        GUPnPDLNANativeValueUnion *info_value =
+        GUPnPDLNAValueUnion *info_value =
                                   gupnp_dlna_native_info_value_get_value (info);
 
         return gupnp_dlna_native_value_type_is_equal (info_type,
@@ -143,7 +143,7 @@ single_to_string (GUPnPDLNANativeValue     *base,
                                                        &value->value);
 }
 
-static GUPnPDLNANativeValueUnion *
+static GUPnPDLNAValueUnion *
 single_get_sort_value (GUPnPDLNANativeValue *base)
 {
         GUPnPDLNANativeValueSingle *value = (GUPnPDLNANativeValueSingle *) base;
@@ -168,8 +168,8 @@ typedef struct _GUPnPDLNANativeValueRange GUPnPDLNANativeValueRange;
 
 struct _GUPnPDLNANativeValueRange {
         GUPnPDLNANativeValue base;
-        GUPnPDLNANativeValueUnion min;
-        GUPnPDLNANativeValueUnion max;
+        GUPnPDLNAValueUnion min;
+        GUPnPDLNAValueUnion max;
 };
 
 static gboolean
@@ -188,7 +188,7 @@ static gchar *
 range_to_string (GUPnPDLNANativeValue     *base,
                  GUPnPDLNANativeValueType *type);
 
-static GUPnPDLNANativeValueUnion *
+static GUPnPDLNAValueUnion *
 range_get_sort_value (GUPnPDLNANativeValue *base);
 
 static gboolean
@@ -212,7 +212,7 @@ range_is_superset (GUPnPDLNANativeValue     *base,
         GUPnPDLNANativeValueRange *range = (GUPnPDLNANativeValueRange *) base;
         GUPnPDLNANativeValueType *info_type =
                                    gupnp_dlna_native_info_value_get_type (info);
-        GUPnPDLNANativeValueUnion *info_value =
+        GUPnPDLNAValueUnion *info_value =
                                   gupnp_dlna_native_info_value_get_value (info);
 
         return gupnp_dlna_native_value_type_is_in_range (info_type,
@@ -278,7 +278,7 @@ range_to_string (GUPnPDLNANativeValue     *base,
         return str;
 }
 
-static GUPnPDLNANativeValueUnion *
+static GUPnPDLNAValueUnion *
 range_get_sort_value (GUPnPDLNANativeValue *base)
 {
         GUPnPDLNANativeValueRange *range = (GUPnPDLNANativeValueRange *) base;
@@ -415,7 +415,7 @@ gupnp_dlna_native_value_to_string (GUPnPDLNANativeValue     *base,
         return base->vtable->to_string (base, type);
 }
 
-static GUPnPDLNANativeValueUnion *
+static GUPnPDLNAValueUnion *
 gupnp_dlna_native_value_get_sort_value (GUPnPDLNANativeValue *base)
 {
         g_return_val_if_fail (base->vtable != NULL, NULL);
@@ -429,8 +429,8 @@ gupnp_dlna_native_value_compare (GUPnPDLNANativeValue     *base,
                                  GUPnPDLNANativeValue     *other,
                                  GUPnPDLNANativeValueType *type)
 {
-        GUPnPDLNANativeValueUnion *base_union;
-        GUPnPDLNANativeValueUnion *other_union;
+        GUPnPDLNAValueUnion *base_union;
+        GUPnPDLNAValueUnion *other_union;
 
         g_return_val_if_fail (base != NULL, 0);
         g_return_val_if_fail (other != NULL, 0);

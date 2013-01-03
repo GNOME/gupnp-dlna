@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -27,7 +27,7 @@
 /* private */
 struct _GUPnPDLNANativeInfoValue {
         GUPnPDLNANativeValueType  *type;
-        GUPnPDLNANativeValueUnion  value;
+        GUPnPDLNAValueUnion  value;
         gboolean unsupported;
 };
 
@@ -59,7 +59,7 @@ value_unsupported (GUPnPDLNANativeValueType *type)
                                         g_slice_new (GUPnPDLNANativeInfoValue);
 
         info_value->type = type;
-        memset (&info_value->value, 0, sizeof (GUPnPDLNANativeValueUnion));
+        memset (&info_value->value, 0, sizeof (GUPnPDLNAValueUnion));
         info_value->unsupported = TRUE;
 
         return info_value;
@@ -140,7 +140,7 @@ gupnp_dlna_native_info_value_get_type (GUPnPDLNANativeInfoValue *info)
         return info->type;
 }
 
-GUPnPDLNANativeValueUnion *
+GUPnPDLNAValueUnion *
 gupnp_dlna_native_info_value_get_value (GUPnPDLNANativeInfoValue *info)
 {
         g_return_val_if_fail (info != NULL, NULL);
