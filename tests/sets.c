@@ -20,7 +20,11 @@
  */
 
 #include <glib.h>
-#include "gupnp-dlna-native-sets.h"
+
+#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-list-private.h"
+#include "gupnp-dlna-restriction-private.h"
+#include "gupnp-dlna-native-info-set.h"
 
 static void
 value_type_not_null (void)

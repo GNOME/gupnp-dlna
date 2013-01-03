@@ -30,8 +30,8 @@
 #include "gupnp-dlna-container-information.h"
 #include "gupnp-dlna-image-information.h"
 #include "gupnp-dlna-video-information.h"
-#include "gupnp-dlna-native-sets.h"
 #include "gupnp-dlna-utils.h"
+#include "gupnp-dlna-native-info-set.h"
 
 static gboolean
 is_video_profile (GUPnPDLNAProfile *profile)

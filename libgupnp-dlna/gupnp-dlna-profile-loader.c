@@ -29,8 +29,10 @@
 #include <libxml/relaxng.h>
 #include "gupnp-dlna-profile-loader.h"
 #include "gupnp-dlna-profile-private.h"
-#include "gupnp-dlna-native-sets.h"
 #include "gupnp-dlna-utils.h"
+#include "gupnp-dlna-value-list-private.h"
+#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-restriction-private.h"
 
 G_DEFINE_TYPE (GUPnPDLNAProfileLoader, gupnp_dlna_profile_loader, G_TYPE_OBJECT)
 
