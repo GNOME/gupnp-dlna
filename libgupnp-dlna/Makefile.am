@@ -55,7 +55,6 @@ gupnp_cflags = \
 gupnp_libadd = \
 	$(common_libadd)
 
-include $(top_srcdir)/libgupnp-dlna/profile-backends/native/native.am
 include $(top_srcdir)/libgupnp-dlna/metadata/metadata.am
 
 metadatadir=$(METADATA_DIRECTORY)
