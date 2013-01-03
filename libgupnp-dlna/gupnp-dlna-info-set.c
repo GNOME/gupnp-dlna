@@ -21,23 +21,23 @@
 
 #include <glib.h>
 
-#include "gupnp-dlna-native-info-set.h"
+#include "gupnp-dlna-info-set.h"
 #include "gupnp-dlna-info-value.h"
 #include "gupnp-dlna-value-list-private.h"
 
-struct _GUPnPDLNANativeInfoSet {
+struct _GUPnPDLNAInfoSet {
         gchar *mime;
         GHashTable *entries; /* <gchar *, GUPnPDLNAInfoValue *> */
 };
 
-GUPnPDLNANativeInfoSet *
-gupnp_dlna_native_info_set_new (const gchar *mime)
+GUPnPDLNAInfoSet *
+gupnp_dlna_info_set_new (const gchar *mime)
 {
-        GUPnPDLNANativeInfoSet *info_set;
+        GUPnPDLNAInfoSet *info_set;
 
         g_return_val_if_fail (mime != NULL, NULL);
 
-        info_set = g_slice_new (GUPnPDLNANativeInfoSet);
+        info_set = g_slice_new (GUPnPDLNAInfoSet);
         info_set->mime = g_strdup (mime);
         info_set->entries = g_hash_table_new_full
                            (g_str_hash,
@@ -49,18 +49,18 @@ gupnp_dlna_native_info_set_new (const gchar *mime)
 }
 
 void
-gupnp_dlna_native_info_set_free (GUPnPDLNANativeInfoSet *info_set)
+gupnp_dlna_info_set_free (GUPnPDLNAInfoSet *info_set)
 {
         if (info_set == NULL)
                 return;
         g_free (info_set->mime);
         g_hash_table_unref (info_set->entries);
-        g_slice_free (GUPnPDLNANativeInfoSet, info_set);
+        g_slice_free (GUPnPDLNAInfoSet, info_set);
 }
 
 static gboolean
-insert_value (GUPnPDLNANativeInfoSet   *info_set,
-              const gchar              *name,
+insert_value (GUPnPDLNAInfoSet   *info_set,
+              const gchar        *name,
               GUPnPDLNAInfoValue *value)
 {
         if (value == NULL) {
@@ -81,9 +81,9 @@ insert_value (GUPnPDLNANativeInfoSet   *info_set,
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_bool (GUPnPDLNANativeInfoSet *info_set,
-                                     const gchar *name,
-                                     gboolean value)
+gupnp_dlna_info_set_add_bool (GUPnPDLNAInfoSet *info_set,
+                              const gchar      *name,
+                              gboolean          value)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
@@ -94,53 +94,48 @@ gupnp_dlna_native_info_set_add_bool (GUPnPDLNANativeInfoSet *info_set,
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_unsupported_bool
-                                        (GUPnPDLNANativeInfoSet *info_set,
-                                         const gchar *name)
-{
-        g_return_val_if_fail (info_set != NULL, FALSE);
-        g_return_val_if_fail (name != NULL, FALSE);
-
-        return insert_value
-                         (info_set,
-                          name,
-                          gupnp_dlna_info_value_new_unsupported_bool ());
-}
-
-gboolean
-gupnp_dlna_native_info_set_add_fraction (GUPnPDLNANativeInfoSet *info_set,
-                                         const gchar *name,
-                                         gint numerator,
-                                         gint denominator)
+gupnp_dlna_info_set_add_unsupported_bool (GUPnPDLNAInfoSet *info_set,
+                                          const gchar      *name)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
 
         return insert_value (info_set,
                              name,
-                             gupnp_dlna_info_value_new_fraction
-                                        (numerator,
-                                         denominator));
+                             gupnp_dlna_info_value_new_unsupported_bool ());
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_unsupported_fraction
-                                        (GUPnPDLNANativeInfoSet *info_set,
-                                         const gchar *name)
+gupnp_dlna_info_set_add_fraction (GUPnPDLNAInfoSet *info_set,
+                                  const gchar      *name,
+                                  gint              numerator,
+                                  gint              denominator)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
 
-        return insert_value
-                     (info_set,
-                      name,
-                      gupnp_dlna_info_value_new_unsupported_fraction ());
+        return insert_value (info_set,
+                             name,
+                             gupnp_dlna_info_value_new_fraction (numerator,
+                                                                 denominator));
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_int (GUPnPDLNANativeInfoSet *info_set,
-                                    const gchar *name,
-                                    gint value)
+gupnp_dlna_info_set_add_unsupported_fraction (GUPnPDLNAInfoSet *info_set,
+                                              const gchar      *name)
+{
+        g_return_val_if_fail (info_set != NULL, FALSE);
+        g_return_val_if_fail (name != NULL, FALSE);
+
+        return insert_value (info_set,
+                             name,
+                             gupnp_dlna_info_value_new_unsupported_fraction ());
+}
+
+gboolean
+gupnp_dlna_info_set_add_int (GUPnPDLNAInfoSet *info_set,
+                             const gchar      *name,
+                             gint              value)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
@@ -151,23 +146,21 @@ gupnp_dlna_native_info_set_add_int (GUPnPDLNANativeInfoSet *info_set,
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_unsupported_int
-                                        (GUPnPDLNANativeInfoSet *info_set,
-                                         const gchar *name)
+gupnp_dlna_info_set_add_unsupported_int (GUPnPDLNAInfoSet *info_set,
+                                         const gchar      *name)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
 
-        return insert_value
-                          (info_set,
-                           name,
-                           gupnp_dlna_info_value_new_unsupported_int ());
+        return insert_value (info_set,
+                             name,
+                             gupnp_dlna_info_value_new_unsupported_int ());
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_string (GUPnPDLNANativeInfoSet *info_set,
-                                       const gchar            *name,
-                                       const gchar            *value)
+gupnp_dlna_info_set_add_string (GUPnPDLNAInfoSet *info_set,
+                                const gchar      *name,
+                                const gchar      *value)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
@@ -179,23 +172,20 @@ gupnp_dlna_native_info_set_add_string (GUPnPDLNANativeInfoSet *info_set,
 }
 
 gboolean
-gupnp_dlna_native_info_set_add_unsupported_string
-                                        (GUPnPDLNANativeInfoSet *info_set,
-                                         const gchar *name)
+gupnp_dlna_info_set_add_unsupported_string (GUPnPDLNAInfoSet *info_set,
+                                            const gchar      *name)
 {
         g_return_val_if_fail (info_set != NULL, FALSE);
         g_return_val_if_fail (name != NULL, FALSE);
 
-        return insert_value
-                       (info_set,
-                        name,
-                        gupnp_dlna_info_value_new_unsupported_string ());
+        return insert_value (info_set,
+                             name,
+                             gupnp_dlna_info_value_new_unsupported_string ());
 }
 
 gboolean
-gupnp_dlna_native_info_set_fits_restriction
-                                       (GUPnPDLNANativeInfoSet *info_set,
-                                        GUPnPDLNARestriction   *restriction)
+gupnp_dlna_info_set_fits_restriction (GUPnPDLNAInfoSet     *info_set,
+                                      GUPnPDLNARestriction *restriction)
 {
         GHashTableIter iter;
         gpointer key;
@@ -225,8 +215,8 @@ gupnp_dlna_native_info_set_fits_restriction
                         return FALSE;
                 value_list = (GUPnPDLNAValueList *) value;
                 if (!gupnp_dlna_value_list_is_superset (value_list,
-                                                               info_value,
-                                                               &unsupported))
+                                                        info_value,
+                                                        &unsupported))
                         return FALSE;
                 else if (unsupported)
                         unsupported_match = TRUE;
@@ -240,7 +230,7 @@ gupnp_dlna_native_info_set_fits_restriction
 }
 
 static gboolean
-gupnp_dlna_native_info_set_is_empty (GUPnPDLNANativeInfoSet *info_set)
+gupnp_dlna_info_set_is_empty (GUPnPDLNAInfoSet *info_set)
 {
         g_return_val_if_fail (info_set != NULL, TRUE);
 
@@ -249,7 +239,7 @@ gupnp_dlna_native_info_set_is_empty (GUPnPDLNANativeInfoSet *info_set)
 }
 
 gchar *
-gupnp_dlna_native_info_set_to_string (GUPnPDLNANativeInfoSet *info_set)
+gupnp_dlna_info_set_to_string (GUPnPDLNAInfoSet *info_set)
 {
         GString *str;
         GHashTableIter iter;
@@ -258,7 +248,7 @@ gupnp_dlna_native_info_set_to_string (GUPnPDLNANativeInfoSet *info_set)
 
         g_return_val_if_fail (info_set != NULL, NULL);
 
-        if (gupnp_dlna_native_info_set_is_empty (info_set))
+        if (gupnp_dlna_info_set_is_empty (info_set))
                 return g_strdup ("EMPTY");
 
         str = g_string_new (info_set->mime ? info_set->mime : "(null)");
@@ -274,7 +264,7 @@ gupnp_dlna_native_info_set_to_string (GUPnPDLNANativeInfoSet *info_set)
 }
 
 const gchar *
-gupnp_dlna_native_info_set_get_mime (GUPnPDLNANativeInfoSet *info_set)
+gupnp_dlna_info_set_get_mime (GUPnPDLNAInfoSet *info_set)
 {
         g_return_val_if_fail (info_set != NULL, NULL);
 

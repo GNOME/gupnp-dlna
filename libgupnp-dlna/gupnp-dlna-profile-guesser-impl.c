@@ -31,7 +31,7 @@
 #include "gupnp-dlna-image-information.h"
 #include "gupnp-dlna-video-information.h"
 #include "gupnp-dlna-utils.h"
-#include "gupnp-dlna-native-info-set.h"
+#include "gupnp-dlna-info-set.h"
 
 static gboolean
 is_video_profile (GUPnPDLNAProfile *profile)
@@ -45,9 +45,9 @@ is_video_profile (GUPnPDLNAProfile *profile)
 }
 
 static gboolean
-match_profile (GUPnPDLNAProfile       *profile,
-               GUPnPDLNANativeInfoSet *stream_info_set,
-               GList                  *profile_restrictions)
+match_profile (GUPnPDLNAProfile *profile,
+               GUPnPDLNAInfoSet *stream_info_set,
+               GList            *profile_restrictions)
 {
         const gchar *name = gupnp_dlna_profile_get_name (profile);
         GList *iter;
@@ -64,7 +64,7 @@ match_profile (GUPnPDLNAProfile       *profile,
                 return FALSE;
         }
 
-        stream_dump = gupnp_dlna_native_info_set_to_string (stream_info_set);
+        stream_dump = gupnp_dlna_info_set_to_string (stream_info_set);
         restrictions_dump = gupnp_dlna_utils_restrictions_list_to_string
                                         (profile_restrictions);
         g_debug ("Stream: %s\nRestrictions: %s",
@@ -78,9 +78,8 @@ match_profile (GUPnPDLNAProfile       *profile,
                                         GUPNP_DLNA_RESTRICTION (iter->data);
 
                 if (restriction != NULL &&
-                    gupnp_dlna_native_info_set_fits_restriction
-                                        (stream_info_set,
-                                         restriction))
+                    gupnp_dlna_info_set_fits_restriction (stream_info_set,
+                                                          restriction))
                         return TRUE;
         }
 
@@ -88,16 +87,14 @@ match_profile (GUPnPDLNAProfile       *profile,
 }
 
 static void
-add_bool (GUPnPDLNANativeInfoSet *info_set,
-          const gchar            *name,
-          GUPnPDLNABoolValue      value,
-          const gchar            *type)
+add_bool (GUPnPDLNAInfoSet   *info_set,
+          const gchar        *name,
+          GUPnPDLNABoolValue  value,
+          const gchar        *type)
 {
         switch (value.state) {
         case GUPNP_DLNA_VALUE_STATE_SET:
-                if (!gupnp_dlna_native_info_set_add_bool (info_set,
-                                                          name,
-                                                          value.value))
+                if (!gupnp_dlna_info_set_add_bool (info_set, name, value.value))
                         g_warning ("Failed to add '%s' bool value (%s) to %s "
                                    "info set.",
                                    name,
@@ -108,8 +105,7 @@ add_bool (GUPnPDLNANativeInfoSet *info_set,
         case GUPNP_DLNA_VALUE_STATE_UNSET:
                 break;
         case GUPNP_DLNA_VALUE_STATE_UNSUPPORTED:
-                if (!gupnp_dlna_native_info_set_add_unsupported_bool (info_set,
-                                                                      name))
+                if (!gupnp_dlna_info_set_add_unsupported_bool (info_set, name))
                         g_warning ("Failed to add '%s' bool unsupported value"
                                    " to %s info set.",
                                    name,
@@ -122,18 +118,17 @@ add_bool (GUPnPDLNANativeInfoSet *info_set,
 }
 
 static void
-add_fraction (GUPnPDLNANativeInfoSet *info_set,
+add_fraction (GUPnPDLNAInfoSet       *info_set,
               const gchar            *name,
               GUPnPDLNAFractionValue  value,
               const gchar            *type)
 {
         switch (value.state) {
         case GUPNP_DLNA_VALUE_STATE_SET:
-                if (!gupnp_dlna_native_info_set_add_fraction
-                                        (info_set,
-                                         name,
-                                         value.numerator,
-                                         value.denominator))
+                if (!gupnp_dlna_info_set_add_fraction (info_set,
+                                                       name,
+                                                       value.numerator,
+                                                       value.denominator))
                         g_warning ("Failed to add '%s' fraction value (%d/%d)"
                                    " to %s info set.",
                                    name,
@@ -145,9 +140,8 @@ add_fraction (GUPnPDLNANativeInfoSet *info_set,
         case GUPNP_DLNA_VALUE_STATE_UNSET:
                 break;
         case GUPNP_DLNA_VALUE_STATE_UNSUPPORTED:
-                if (!gupnp_dlna_native_info_set_add_unsupported_fraction
-                                        (info_set,
-                                         name))
+                if (!gupnp_dlna_info_set_add_unsupported_fraction (info_set,
+                                                                   name))
                         g_warning ("Failed to add '%s' fraction unsupported"
                                    " value to %s info set.",
                                    name,
@@ -160,16 +154,14 @@ add_fraction (GUPnPDLNANativeInfoSet *info_set,
 }
 
 static void
-add_int (GUPnPDLNANativeInfoSet *info_set,
-          const gchar            *name,
-          GUPnPDLNAIntValue       value,
-          const gchar            *type)
+add_int (GUPnPDLNAInfoSet   *info_set,
+          const gchar       *name,
+          GUPnPDLNAIntValue  value,
+          const gchar       *type)
 {
         switch (value.state) {
         case GUPNP_DLNA_VALUE_STATE_SET:
-                if (!gupnp_dlna_native_info_set_add_int (info_set,
-                                                         name,
-                                                         value.value))
+                if (!gupnp_dlna_info_set_add_int (info_set, name, value.value))
                         g_warning ("Failed to add '%s' int value (%d) to %s "
                                    "info set.",
                                    name,
@@ -180,8 +172,7 @@ add_int (GUPnPDLNANativeInfoSet *info_set,
         case GUPNP_DLNA_VALUE_STATE_UNSET:
                 break;
         case GUPNP_DLNA_VALUE_STATE_UNSUPPORTED:
-                if (!gupnp_dlna_native_info_set_add_unsupported_int (info_set,
-                                                                     name))
+                if (!gupnp_dlna_info_set_add_unsupported_int (info_set, name))
                         g_warning ("Failed to add '%s' int unsupported value"
                                    " to %s info set.",
                                    name,
@@ -194,16 +185,16 @@ add_int (GUPnPDLNANativeInfoSet *info_set,
 }
 
 static void
-add_string (GUPnPDLNANativeInfoSet *info_set,
-            const gchar            *name,
-            GUPnPDLNAStringValue    value,
-            const gchar            *type)
+add_string (GUPnPDLNAInfoSet     *info_set,
+            const gchar          *name,
+            GUPnPDLNAStringValue  value,
+            const gchar          *type)
 {
         switch (value.state) {
         case GUPNP_DLNA_VALUE_STATE_SET:
-                if (!gupnp_dlna_native_info_set_add_string (info_set,
-                                                            name,
-                                                            value.value))
+                if (!gupnp_dlna_info_set_add_string (info_set,
+                                                     name,
+                                                     value.value))
                         g_warning ("Failed to add '%s' int value (%s) to %s "
                                    "info set.",
                                    name,
@@ -215,9 +206,8 @@ add_string (GUPnPDLNANativeInfoSet *info_set,
         case GUPNP_DLNA_VALUE_STATE_UNSET:
                 break;
         case GUPNP_DLNA_VALUE_STATE_UNSUPPORTED:
-                if (!gupnp_dlna_native_info_set_add_unsupported_string
-                                        (info_set,
-                                         name))
+                if (!gupnp_dlna_info_set_add_unsupported_string (info_set,
+                                                                 name))
                         g_warning ("Failed to add '%s' string unsupported value"
                                    " to %s info set.",
                                    name,
@@ -229,13 +219,13 @@ add_string (GUPnPDLNANativeInfoSet *info_set,
         }
 }
 
-static GUPnPDLNANativeInfoSet *
+static GUPnPDLNAInfoSet *
 create_info_set (GUPnPDLNAStringValue  value,
                  const gchar          *type)
 {
         gchar *mime;
         gchar *lctype;
-        GUPnPDLNANativeInfoSet *info_set;
+        GUPnPDLNAInfoSet *info_set;
 
         if (value.state == GUPNP_DLNA_VALUE_STATE_SET) {
                 mime = value.value;
@@ -248,7 +238,7 @@ create_info_set (GUPnPDLNAStringValue  value,
                 lctype = g_strdup (mime);
         }
 
-        info_set = gupnp_dlna_native_info_set_new (mime);
+        info_set = gupnp_dlna_info_set_new (mime);
         if (info_set == NULL)
                 g_warning ("Failed to create %s info set with mime '%s'.",
                            lctype,
@@ -259,11 +249,11 @@ create_info_set (GUPnPDLNAStringValue  value,
         return info_set;
 }
 
-static GUPnPDLNANativeInfoSet *
+static GUPnPDLNAInfoSet *
 info_set_from_container_information (GUPnPDLNAContainerInformation *info)
 {
         static const gchar *const type = "container";
-        GUPnPDLNANativeInfoSet *info_set = create_info_set
+        GUPnPDLNAInfoSet *info_set = create_info_set
                               (gupnp_dlna_container_information_get_mime (info),
                                "Container");
 
@@ -309,7 +299,7 @@ check_container_profile (GUPnPDLNAInformation *info,
                  gupnp_dlna_profile_get_container_restrictions (profile);
 
         if (profile_restrictions != NULL && container_info != NULL) {
-                GUPnPDLNANativeInfoSet *stream_info_set =
+                GUPnPDLNAInfoSet *stream_info_set =
                            info_set_from_container_information (container_info);
 
                 if (match_profile (profile,
@@ -318,18 +308,18 @@ check_container_profile (GUPnPDLNAInformation *info,
                         matched = TRUE;
                 else
                         g_debug ("Container did not match.");
-                gupnp_dlna_native_info_set_free (stream_info_set);
+                gupnp_dlna_info_set_free (stream_info_set);
         } else if (profile_restrictions == NULL && container_info == NULL)
                 matched = TRUE;
 
         return matched;
 }
 
-static GUPnPDLNANativeInfoSet *
+static GUPnPDLNAInfoSet *
 info_set_from_audio_information (GUPnPDLNAAudioInformation *info)
 {
         static const gchar *const type = "audio";
-        GUPnPDLNANativeInfoSet *info_set = create_info_set
+        GUPnPDLNAInfoSet *info_set = create_info_set
                                   (gupnp_dlna_audio_information_get_mime (info),
                                    "Audio");
 
@@ -398,7 +388,7 @@ static gboolean
 check_audio_profile (GUPnPDLNAInformation *info,
                      GUPnPDLNAProfile     *profile)
 {
-        GUPnPDLNANativeInfoSet *info_set;
+        GUPnPDLNAInfoSet *info_set;
         gboolean matched;
         GUPnPDLNAAudioInformation *audio_info;
         GList *restrictions;
@@ -414,16 +404,16 @@ check_audio_profile (GUPnPDLNAInformation *info,
                 matched = TRUE;
         else
                 g_debug ("Audio did not match.");
-        gupnp_dlna_native_info_set_free (info_set);
+        gupnp_dlna_info_set_free (info_set);
 
         return matched;
 }
 
-static GUPnPDLNANativeInfoSet *
+static GUPnPDLNAInfoSet *
 info_set_from_video_information (GUPnPDLNAVideoInformation *info)
 {
         static const gchar *const type = "video";
-        GUPnPDLNANativeInfoSet *info_set = create_info_set
+        GUPnPDLNAInfoSet *info_set = create_info_set
                                   (gupnp_dlna_video_information_get_mime (info),
                                    "Video");
 
@@ -492,7 +482,7 @@ check_video_profile (GUPnPDLNAInformation *info,
                             gupnp_dlna_information_get_video_information (info);
         GUPnPDLNAAudioInformation *audio_info =
                             gupnp_dlna_information_get_audio_information (info);
-        GUPnPDLNANativeInfoSet *info_set = NULL;
+        GUPnPDLNAInfoSet *info_set = NULL;
         GList *restrictions;
         gboolean result = FALSE;
 
@@ -506,7 +496,7 @@ check_video_profile (GUPnPDLNAInformation *info,
 
                 goto out;
         }
-        gupnp_dlna_native_info_set_free (info_set);
+        gupnp_dlna_info_set_free (info_set);
 
         restrictions = gupnp_dlna_profile_get_audio_restrictions (profile);
         info_set = info_set_from_audio_information (audio_info);
@@ -519,16 +509,16 @@ check_video_profile (GUPnPDLNAInformation *info,
         if (check_container_profile (info, profile))
                 result = TRUE;
  out:
-        gupnp_dlna_native_info_set_free (info_set);
+        gupnp_dlna_info_set_free (info_set);
 
         return result;
 }
 
-static GUPnPDLNANativeInfoSet *
+static GUPnPDLNAInfoSet *
 info_set_from_image_information (GUPnPDLNAImageInformation *info)
 {
         static const gchar *const type = "image";
-        GUPnPDLNANativeInfoSet *info_set = create_info_set
+        GUPnPDLNAInfoSet *info_set = create_info_set
                                   (gupnp_dlna_image_information_get_mime (info),
                                    "Image");
 
@@ -561,7 +551,7 @@ gupnp_dlna_profile_guesser_impl_guess_image_profile
         GList *iter;
         GUPnPDLNAImageInformation *image_info =
                             gupnp_dlna_information_get_image_information (info);
-        GUPnPDLNANativeInfoSet *info_set;
+        GUPnPDLNAInfoSet *info_set;
         GUPnPDLNAProfile *found_profile;
 
         if (!image_info)
@@ -586,7 +576,7 @@ gupnp_dlna_profile_guesser_impl_guess_image_profile
                         g_debug ("Image did not match");
         }
 
-        gupnp_dlna_native_info_set_free (info_set);
+        gupnp_dlna_info_set_free (info_set);
 
         return found_profile;
 }

@@ -24,7 +24,7 @@
 #include "gupnp-dlna-value-type.h"
 #include "gupnp-dlna-value-list-private.h"
 #include "gupnp-dlna-restriction-private.h"
-#include "gupnp-dlna-native-info-set.h"
+#include "gupnp-dlna-info-set.h"
 
 static void
 value_type_not_null (void)
@@ -256,36 +256,28 @@ restriction_merge (void)
 static void
 info_set_adding_values (void)
 {
-        GUPnPDLNANativeInfoSet *info_set =
-                                        gupnp_dlna_native_info_set_new ("mime");
+        GUPnPDLNAInfoSet *info_set = gupnp_dlna_info_set_new ("mime");
 
         g_assert (info_set != NULL);
-        g_assert (gupnp_dlna_native_info_set_add_bool (info_set, "b", TRUE));
+        g_assert (gupnp_dlna_info_set_add_bool (info_set, "b", TRUE));
         /* invalid fraction */
-        g_assert (!gupnp_dlna_native_info_set_add_fraction (info_set,
-                                                            "f",
-                                                            1,
-                                                            0));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (info_set,
-                                                           "f",
-                                                           1,
-                                                           2));
-        g_assert (gupnp_dlna_native_info_set_add_int (info_set, "i", 42));
-        g_assert (gupnp_dlna_native_info_set_add_string (info_set, "s", "str"));
+        g_assert (!gupnp_dlna_info_set_add_fraction (info_set, "f", 1, 0));
+        g_assert (gupnp_dlna_info_set_add_fraction (info_set, "f", 1, 2));
+        g_assert (gupnp_dlna_info_set_add_int (info_set, "i", 42));
+        g_assert (gupnp_dlna_info_set_add_string (info_set, "s", "str"));
         /* that name already exists */
-        g_assert (!gupnp_dlna_native_info_set_add_bool (info_set, "b", FALSE));
+        g_assert (!gupnp_dlna_info_set_add_bool (info_set, "b", FALSE));
 
-        gupnp_dlna_native_info_set_free (info_set);
+        gupnp_dlna_info_set_free (info_set);
 }
 
 static void
 info_set_fit (void)
 {
-        GUPnPDLNARestriction *r =
-                                     gupnp_dlna_restriction_new ("mime");
+        GUPnPDLNARestriction *r = gupnp_dlna_restriction_new ("mime");
         GUPnPDLNAValueList *v = gupnp_dlna_value_list_new
-                                          (gupnp_dlna_value_type_bool());
-        GUPnPDLNANativeInfoSet *s;
+                                        (gupnp_dlna_value_type_bool());
+        GUPnPDLNAInfoSet *s;
 
         /* restriction */
         g_assert (gupnp_dlna_value_list_add_single (v, "true"));
@@ -312,92 +304,92 @@ info_set_fit (void)
         g_assert (gupnp_dlna_restriction_add_value_list (r, "s1", v));
 
         /* info set with exactly fitting values and same mime*/
-        s = gupnp_dlna_native_info_set_new ("mime");
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b1", TRUE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f1", 1, 2));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f2", 1, 3));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i1", 13));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i2", 50));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s1", "aaa"));
+        s = gupnp_dlna_info_set_new ("mime");
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b1", TRUE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f1", 1, 2));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f2", 1, 3));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i1", 13));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i2", 50));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s1", "aaa"));
 
-        g_assert (gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (gupnp_dlna_info_set_fits_restriction (s, r));
 
         /* add some more values not considered by restriction */
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b2", FALSE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f3", 4, 5));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i3", 7));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s2", "bbb"));
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b2", FALSE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f3", 4, 5));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i3", 7));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s2", "bbb"));
 
-        g_assert (gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (gupnp_dlna_info_set_fits_restriction (s, r));
 
-        gupnp_dlna_native_info_set_free (s);
+        gupnp_dlna_info_set_free (s);
 
         /* info set with exactly fitting values but different mime */
-        s = gupnp_dlna_native_info_set_new ("asdf");
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b1", TRUE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f1", 1, 2));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f2", 1, 3));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i1", 13));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i2", 50));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s1", "aaa"));
+        s = gupnp_dlna_info_set_new ("asdf");
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b1", TRUE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f1", 1, 2));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f2", 1, 3));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i1", 13));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i2", 50));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s1", "aaa"));
 
-        g_assert (!gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (!gupnp_dlna_info_set_fits_restriction (s, r));
 
         /* add some more values not considered by restriction */
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b2", FALSE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f3", 4, 5));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i3", 7));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s2", "bbb"));
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b2", FALSE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f3", 4, 5));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i3", 7));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s2", "bbb"));
 
-        g_assert (!gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (!gupnp_dlna_info_set_fits_restriction (s, r));
 
-        gupnp_dlna_native_info_set_free (s);
+        gupnp_dlna_info_set_free (s);
 
         /* info set with same mime, exact fitting set but not fitting values */
-        s = gupnp_dlna_native_info_set_new ("mime");
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b1", FALSE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f1", 3, 2));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f2", 3, 3));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i1", 17));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i2", 57));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s1", "aaaa"));
+        s = gupnp_dlna_info_set_new ("mime");
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b1", FALSE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f1", 3, 2));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f2", 3, 3));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i1", 17));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i2", 57));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s1", "aaaa"));
 
-        g_assert (!gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (!gupnp_dlna_info_set_fits_restriction (s, r));
 
         /* add some more values not considered by restriction */
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b2", FALSE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f3", 4, 5));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i3", 7));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s2", "bbb"));
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b2", FALSE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f3", 4, 5));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i3", 7));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s2", "bbb"));
 
-        g_assert (!gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (!gupnp_dlna_info_set_fits_restriction (s, r));
 
-        gupnp_dlna_native_info_set_free (s);
+        gupnp_dlna_info_set_free (s);
 
         /* info set with same mime but with too few values */
-        s = gupnp_dlna_native_info_set_new ("mime");
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f2", 1, 3));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i1", 13));
+        s = gupnp_dlna_info_set_new ("mime");
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f2", 1, 3));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i1", 13));
 
-        g_assert (!gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (!gupnp_dlna_info_set_fits_restriction (s, r));
 
         /* add some more values not considered by restriction */
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b2", FALSE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f3", 4, 5));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i3", 7));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s2", "bbb"));
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b2", FALSE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f3", 4, 5));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i3", 7));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s2", "bbb"));
 
-        g_assert (!gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (!gupnp_dlna_info_set_fits_restriction (s, r));
 
         /* add missing values */
-        g_assert (gupnp_dlna_native_info_set_add_bool (s, "b1", TRUE));
-        g_assert (gupnp_dlna_native_info_set_add_fraction (s, "f1", 1, 2));
-        g_assert (gupnp_dlna_native_info_set_add_int (s, "i2", 50));
-        g_assert (gupnp_dlna_native_info_set_add_string (s, "s1", "aaa"));
+        g_assert (gupnp_dlna_info_set_add_bool (s, "b1", TRUE));
+        g_assert (gupnp_dlna_info_set_add_fraction (s, "f1", 1, 2));
+        g_assert (gupnp_dlna_info_set_add_int (s, "i2", 50));
+        g_assert (gupnp_dlna_info_set_add_string (s, "s1", "aaa"));
 
-        g_assert (gupnp_dlna_native_info_set_fits_restriction (s, r));
+        g_assert (gupnp_dlna_info_set_fits_restriction (s, r));
 
-        gupnp_dlna_native_info_set_free (s);
+        gupnp_dlna_info_set_free (s);
         gupnp_dlna_restriction_free (r);
 }
 
