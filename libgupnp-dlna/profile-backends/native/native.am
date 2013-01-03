@@ -1,15 +1,12 @@
 native_profile_backend = \
 	profile-backends/native/libnativeprofilebackend.la
-native_loader = \
-	profile-backends/native/libnativeloader.la
 
 native_cflags = \
 	$(common_cflags) \
 	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
 
 noinst_LTLIBRARIES += \
-	$(native_profile_backend) \
-	$(native_loader)
+	$(native_profile_backend)
 
 gupnp_cflags += \
 	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native
@@ -17,15 +14,6 @@ gupnp_libadd += \
 	$(native_profile_backend)
 
 include $(top_srcdir)/libgupnp-dlna/profile-backends/native/sets/sets.am
-
-profile_backends_native_libnativeloader_la_SOURCES = \
-	profile-backends/native/gupnp-dlna-native-profile-loader.c \
-	profile-backends/native/gupnp-dlna-native-profile-loader.h
-profile_backends_native_libnativeloader_la_LIBADD = \
-	$(common_libadd)
-profile_backends_native_libnativeloader_la_CFLAGS = \
-	$(loader_log_cflags) \
-	$(native_cflags)
 
 profile_backends_native_libnativeprofilebackend_la_SOURCES = \
 	profile-backends/native/gupnp-dlna-native-profile-backend.c \
@@ -35,8 +23,7 @@ profile_backends_native_libnativeprofilebackend_la_SOURCES = \
 	profile-backends/native/gupnp-dlna-native-utils.h \
 	$(sets_sources)
 profile_backends_native_libnativeprofilebackend_la_LIBADD = \
-	$(common_libadd) \
-	$(native_loader)
+	$(common_libadd)
 profile_backends_native_libnativeprofilebackend_la_CFLAGS = \
 	$(general_log_cflags) \
 	$(native_cflags) \

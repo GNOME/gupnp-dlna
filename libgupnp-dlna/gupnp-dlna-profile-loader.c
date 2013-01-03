@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -28,11 +28,11 @@
 #include <libxml/xmlreader.h>
 #include <libxml/relaxng.h>
 #include "gupnp-dlna-profile-loader.h"
-#include "gupnp-dlna-profile-backend.h"
+#include "gupnp-dlna-profile-private.h"
+#include "gupnp-dlna-native-sets.h"
+#include "gupnp-dlna-native-utils.h"
 
-G_DEFINE_ABSTRACT_TYPE (GUPnPDLNAProfileLoader,
-                        gupnp_dlna_profile_loader,
-                        G_TYPE_OBJECT)
+G_DEFINE_TYPE (GUPnPDLNAProfileLoader, gupnp_dlna_profile_loader, G_TYPE_OBJECT)
 
 #define DLNA_DATA_DIR DATA_DIR G_DIR_SEPARATOR_S "dlna-profiles"
 #define NODE_TYPE_ELEMENT_START 1
@@ -46,218 +46,709 @@ enum {
         PROP_EXTENDED_MODE
 };
 
+typedef enum {
+        GUPNP_DLNA_PARSED_ELEMENT_RESTRICTIONS,
+        GUPNP_DLNA_PARSED_ELEMENT_RESTRICTION,
+        GUPNP_DLNA_PARSED_ELEMENT_FIELD,
+        GUPNP_DLNA_PARSED_ELEMENT_PARENT,
+        GUPNP_DLNA_PARSED_ELEMENT_DLNA_PROFILE,
+        GUPNP_DLNA_PARSED_ELEMENT_INVALID
+} GUPnPDLNAParsedElement;
+
+typedef enum {
+        GUPNP_DLNA_RESTRICTION_TYPE_AUDIO,
+        GUPNP_DLNA_RESTRICTION_TYPE_CONTAINER,
+        GUPNP_DLNA_RESTRICTION_TYPE_IMAGE,
+        GUPNP_DLNA_RESTRICTION_TYPE_VIDEO,
+        GUPNP_DLNA_RESTRICTION_TYPE_INVALID
+} GUPnPDLNARestrictionType;
+
+typedef struct {
+        GList *audios;
+        GList *containers;
+        GList *images;
+        GList *videos;
+} GUPnPDLNAProfileData;
+
+typedef struct {
+        gchar              *name;
+        GUPnPDLNAValueList *list;
+} GUPnPDLNANameValueListPair;
+
+typedef struct {
+        GList *name_list_pairs;
+        GList *parents;
+} GUPnPDLNARestrictionData;
+
+typedef struct {
+        GUPnPDLNARestriction     *restriction;
+        GUPnPDLNARestrictionType  type;
+} GUPnPDLNADescription;
+
 struct _GUPnPDLNAProfileLoaderPrivate {
+        /* parser part */
         GHashTable *restrictions;
         GHashTable *profile_ids;
         GHashTable *files_hash;
         gboolean    relaxed_mode;
         gboolean    extended_mode;
+        /* loader part */
+        GHashTable *descriptions;
+        GList      *tags_stack;
+        GList      *dlna_profile_data_stack;
+        GList      *restriction_data_stack;
 };
 
-static void
-gupnp_dlna_profile_loader_run_pre_field (GUPnPDLNAProfileLoader *loader)
+static GUPnPDLNANameValueListPair *
+gupnp_dlna_name_value_list_pair_new (const gchar        *name,
+                                     GUPnPDLNAValueList *list)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        GUPnPDLNANameValueListPair *pair =
+                                       g_slice_new (GUPnPDLNANameValueListPair);
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
+        pair->name = g_strdup (name);
+        pair->list = list;
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->pre_field != NULL);
-
-        loader_class->pre_field (loader);
+        return pair;
 }
 
 static void
-gupnp_dlna_profile_loader_run_post_field (GUPnPDLNAProfileLoader *loader,
-                                          gchar                  *name,
-                                          gchar                  *type,
-                                          GList                  *values)
+gupnp_dlna_name_value_list_pair_free (GUPnPDLNANameValueListPair *pair)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        if (pair == NULL)
+                return;
+        g_free (pair->name);
+        gupnp_dlna_value_list_free (pair->list);
+        g_slice_free (GUPnPDLNANameValueListPair, pair);
+}
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
+static GUPnPDLNADescription *
+gupnp_dlna_description_new (GUPnPDLNARestriction     *restriction,
+                            GUPnPDLNARestrictionType  type)
+{
+        GUPnPDLNADescription *description = g_slice_new (GUPnPDLNADescription);
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
+        description->restriction = restriction;
+        description->type = type;
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->post_field != NULL);
-
-        loader_class->post_field (loader,
-                                  name,
-                                  type,
-                                  values);
+        return description;
 }
 
 static void
-gupnp_dlna_profile_loader_run_pre_parent (GUPnPDLNAProfileLoader *loader)
+gupnp_dlna_description_free (GUPnPDLNADescription *description)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        if (description == NULL)
+                return;
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
+        gupnp_dlna_restriction_free (description->restriction);
+        g_slice_free (GUPnPDLNADescription, description);
+}
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
+static GUPnPDLNAProfileData*
+gupnp_dlna_profile_data_new (void)
+{
+        GUPnPDLNAProfileData* data = g_slice_new (GUPnPDLNAProfileData);
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->pre_parent != NULL);
+        data->audios = NULL;
+        data->containers = NULL;
+        data->images = NULL;
+        data->videos = NULL;
 
-        loader_class->pre_parent (loader);
+        return data;
 }
 
 static void
-gupnp_dlna_profile_loader_run_post_parent (GUPnPDLNAProfileLoader *loader,
-                                           gchar *parent)
+gupnp_dlna_profile_data_free (GUPnPDLNAProfileData *data)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        if (data == NULL)
+                return;
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
+        gupnp_dlna_utils_free_restrictions (data->audios);
+        gupnp_dlna_utils_free_restrictions (data->containers);
+        gupnp_dlna_utils_free_restrictions (data->images);
+        gupnp_dlna_utils_free_restrictions (data->videos);
+        g_slice_free (GUPnPDLNAProfileData, data);
+}
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
+static GUPnPDLNARestrictionData *
+gupnp_dlna_restriction_data_new (void)
+{
+        GUPnPDLNARestrictionData* data = g_slice_new (GUPnPDLNARestrictionData);
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->post_parent != NULL);
+        data->name_list_pairs = NULL;
+        data->parents = NULL;
 
-        loader_class->post_parent (loader, parent);
+        return data;
 }
 
 static void
-gupnp_dlna_profile_loader_run_pre_restriction (GUPnPDLNAProfileLoader *loader)
+gupnp_dlna_restriction_data_free (GUPnPDLNARestrictionData *data)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        if (data == NULL)
+                return;
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
-
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->pre_restriction != NULL);
-
-        loader_class->pre_restriction (loader);
+        if (data->name_list_pairs != NULL)
+                g_list_free_full
+                 (data->name_list_pairs,
+                  (GDestroyNotify) gupnp_dlna_name_value_list_pair_free);
+        if (data->parents != NULL)
+                g_list_free_full (data->parents,
+                                  (GDestroyNotify) gupnp_dlna_restriction_free);
+        g_slice_free (GUPnPDLNARestrictionData, data);
 }
 
 static void
-gupnp_dlna_profile_loader_run_post_restriction
-                                      (GUPnPDLNAProfileLoader *loader,
-                                       gchar                  *restriction_type,
-                                       gchar                  *id,
-                                       gchar                  *name)
+gupnp_dlna_profile_data_stack_free (GList* stack)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
-
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->post_restriction != NULL);
-
-        loader_class->post_restriction (loader,
-                                        restriction_type,
-                                        id,
-                                        name);
+        g_list_free_full (stack,
+                          (GDestroyNotify) gupnp_dlna_profile_data_free);
 }
 
 static void
-gupnp_dlna_profile_loader_run_pre_restrictions (GUPnPDLNAProfileLoader *loader)
+gupnp_dlna_restriction_data_stack_free (GList* stack)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
-
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->pre_restrictions != NULL);
-
-        loader_class->pre_restrictions (loader);
+        g_list_free_full (stack,
+                          (GDestroyNotify) gupnp_dlna_restriction_data_free);
 }
 
 static void
-gupnp_dlna_profile_loader_run_post_restrictions (GUPnPDLNAProfileLoader *loader)
+push_tag (GUPnPDLNAProfileLoader *loader,
+          GUPnPDLNAParsedElement  element)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        gint raw_element = (gint) element;
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
-
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->post_restrictions != NULL);
-
-        loader_class->post_restrictions (loader);
+        priv->tags_stack = g_list_prepend (priv->tags_stack,
+                                           GINT_TO_POINTER (raw_element));
 }
 
 static void
-gupnp_dlna_profile_loader_run_pre_dlna_profile (GUPnPDLNAProfileLoader *loader)
+pop_tag (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
-
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
-
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->pre_dlna_profile != NULL);
-
-        loader_class->pre_dlna_profile (loader);
+        priv->tags_stack = g_list_delete_link (priv->tags_stack,
+                                               priv->tags_stack);
 }
 
-static GUPnPDLNAProfile *
-gupnp_dlna_profile_loader_run_create_profile (GUPnPDLNAProfileLoader *loader,
-                                              GUPnPDLNAProfile       *base,
-                                              gchar                  *name,
-                                              gchar                  *mime,
-                                              gboolean                extended)
+static GUPnPDLNAParsedElement
+top_tag (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader), NULL);
+        if (priv->tags_stack != NULL) {
+                gint top_raw = GPOINTER_TO_INT (priv->tags_stack->data);
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
+                return (GUPnPDLNAParsedElement) top_raw;
+        }
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class),
-                              NULL);
-        g_return_val_if_fail (loader_class->create_profile != NULL, NULL);
-
-        return loader_class->create_profile (loader,
-                                             base,
-                                             name,
-                                             mime,
-                                             extended);
+        return GUPNP_DLNA_PARSED_ELEMENT_INVALID;
 }
 
 static void
-gupnp_dlna_profile_loader_run_post_dlna_profile (GUPnPDLNAProfileLoader *loader)
+pre_field (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_FIELD);
+}
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader));
+static GUPnPDLNANativeValueType *
+value_type_from_string (const gchar *type)
+{
+        if (!g_strcmp0 (type, "boolean"))
+                return gupnp_dlna_native_value_type_bool ();
+        else if (!g_strcmp0 (type, "float")) {
+                g_warning ("'float' data type is not yet supported.");
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
+                return NULL;
+        } else if (!g_strcmp0 (type, "fourcc")) {
+                g_warning ("'fourcc' data type is not yet supported.");
 
-        g_return_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class));
-        g_return_if_fail (loader_class->post_dlna_profile != NULL);
+                return NULL;
+        } else if (!g_strcmp0 (type, "fraction"))
+                return gupnp_dlna_native_value_type_fraction ();
+        else if (!g_strcmp0 (type, "int"))
+                return gupnp_dlna_native_value_type_int ();
+        else if (!g_strcmp0 (type, "string"))
+                return gupnp_dlna_native_value_type_string ();
+        g_critical ("Unknown value type: %s", type);
 
-        loader_class->post_dlna_profile (loader);
+        return NULL;
+}
+
+static void
+append_value_to_list (GUPnPDLNAFieldValue *value,
+                      GUPnPDLNAValueList  *list)
+{
+        if (value == NULL)
+                return;
+
+        switch (value->type) {
+        case GUPNP_DLNA_FIELD_VALUE_TYPE_RANGE:
+                if (!gupnp_dlna_value_list_add_range (list,
+                                                      value->value.range.min,
+                                                      value->value.range.max))
+                        g_warning ("Failed to add range value (%s, %s).",
+                                   value->value.range.min,
+                                   value->value.range.max);
+                break;
+        case GUPNP_DLNA_FIELD_VALUE_TYPE_SINGLE:
+                if (!gupnp_dlna_value_list_add_single (list,
+                                                       value->value.single))
+                        g_warning ("Failed to add single value (%s).",
+                                   value->value.single);
+
+                break;
+        default:
+                g_critical ("Unknown field value type: %d", (gint) value->type);
+        }
+}
+
+static void
+post_field (GUPnPDLNAProfileLoader *loader,
+            const gchar            *name,
+            const gchar            *type,
+            GList                  *values)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv;
+        GUPnPDLNARestrictionData *restriction_data;
+        GUPnPDLNANameValueListPair *pair;
+        GUPnPDLNAValueList *value_list;
+        GUPnPDLNANativeValueType* value_type;
+        GList *iter;
+
+        pop_tag (loader);
+
+        if (name == NULL || type == NULL)
+                return;
+
+        value_type = value_type_from_string (type);
+
+        if (value_type == NULL)
+                return;
+
+        priv = loader->priv;
+        restriction_data =
+                (GUPnPDLNARestrictionData *) priv->restriction_data_stack->data;
+        value_list = gupnp_dlna_value_list_new (value_type);
+
+        for (iter = values; iter != NULL; iter = iter->next) {
+                GUPnPDLNAFieldValue *field_value =
+                                        (GUPnPDLNAFieldValue *) iter->data;
+
+                append_value_to_list (field_value, value_list);
+        }
+
+        pair = gupnp_dlna_name_value_list_pair_new (name, value_list);
+        restriction_data->name_list_pairs = g_list_prepend
+                                        (restriction_data->name_list_pairs,
+                                         pair);
+}
+
+static void
+merge_restrictions (GUPnPDLNAProfileLoader *loader,
+                    GUPnPDLNADescription   *description)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileData* data =
+                   (GUPnPDLNAProfileData *) priv->dlna_profile_data_stack->data;
+        GList **target_list;
+        GUPnPDLNARestriction *copy;
+
+        if (description == NULL || description->restriction == NULL)
+                return;
+
+        switch (description->type) {
+        case GUPNP_DLNA_RESTRICTION_TYPE_AUDIO:
+                target_list = &data->audios;
+
+                break;
+        case GUPNP_DLNA_RESTRICTION_TYPE_CONTAINER:
+                target_list = &data->containers;
+
+                break;
+        case GUPNP_DLNA_RESTRICTION_TYPE_IMAGE:
+                target_list = &data->images;
+
+                break;
+        case GUPNP_DLNA_RESTRICTION_TYPE_VIDEO:
+                target_list = &data->videos;
+
+                break;
+        default:
+                g_assert_not_reached ();
+        }
+
+        copy = gupnp_dlna_restriction_copy (description->restriction);
+        *target_list = g_list_prepend (*target_list, copy);
+}
+
+static void
+merge_restrictions_if_in_dlna_profile (GUPnPDLNAProfileLoader *loader,
+                                       GUPnPDLNADescription   *description)
+{
+        GUPnPDLNAParsedElement element = top_tag (loader);
+
+        if (element == GUPNP_DLNA_PARSED_ELEMENT_DLNA_PROFILE)
+                merge_restrictions (loader, description);
+}
+
+static void
+collect_parents (GUPnPDLNAProfileLoader *loader,
+                 GUPnPDLNADescription   *description)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNARestrictionData *data =
+                (GUPnPDLNARestrictionData *) priv->restriction_data_stack->data;
+
+        if (description != NULL && description->restriction != NULL) {
+                /* Collect parents in a list - we'll
+                 * coalesce them later */
+                GUPnPDLNARestriction *copy =
+                         gupnp_dlna_restriction_copy (description->restriction);
+
+                data->parents = g_list_prepend (data->parents, copy);
+        }
+}
+
+static void
+collect_parents_if_in_restriction (GUPnPDLNAProfileLoader *loader,
+                                   GUPnPDLNADescription   *description)
+{
+        GUPnPDLNAParsedElement element = top_tag (loader);
+
+        if (element == GUPNP_DLNA_PARSED_ELEMENT_RESTRICTION)
+                collect_parents (loader, description);
+}
+
+static void
+pre_parent (GUPnPDLNAProfileLoader *loader)
+{
+        push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_PARENT);
+}
+
+static void
+post_parent (GUPnPDLNAProfileLoader *loader,
+             const gchar            *parent)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+
+        pop_tag (loader);
+
+        if (parent != NULL) {
+                GUPnPDLNADescription *description = g_hash_table_lookup
+                                        (priv->descriptions,
+                                         parent);
+
+                merge_restrictions_if_in_dlna_profile (loader, description);
+                collect_parents_if_in_restriction (loader, description);
+        }
+}
+
+static void
+pre_restriction (GUPnPDLNAProfileLoader *loader)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNARestrictionData *data = gupnp_dlna_restriction_data_new ();
+
+        push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_RESTRICTION);
+
+        priv->restriction_data_stack = g_list_prepend
+                                        (priv->restriction_data_stack,
+                                         data);
+}
+
+static GUPnPDLNARestrictionType
+restriction_type_from_string (const gchar *type)
+{
+        if (!g_strcmp0 (type, "audio"))
+                return GUPNP_DLNA_RESTRICTION_TYPE_AUDIO;
+        else if (!g_strcmp0 (type, "container"))
+                return GUPNP_DLNA_RESTRICTION_TYPE_CONTAINER;
+        else if (!g_strcmp0 (type, "image"))
+                return GUPNP_DLNA_RESTRICTION_TYPE_IMAGE;
+        else if (!g_strcmp0 (type, "video"))
+                return GUPNP_DLNA_RESTRICTION_TYPE_VIDEO;
+
+        return GUPNP_DLNA_RESTRICTION_TYPE_INVALID;
+}
+
+static void
+post_restriction (GUPnPDLNAProfileLoader *loader,
+                  const gchar            *restriction_type,
+                  const gchar            *id,
+                  const gchar            *name)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNARestrictionData *data =
+                (GUPnPDLNARestrictionData *) priv->restriction_data_stack->data;
+        GUPnPDLNARestriction *restriction;
+        GUPnPDLNADescription *description;
+        GUPnPDLNARestrictionType type;
+        GList *iter;
+
+        pop_tag (loader);
+
+        /* If this is NULL then it means that 'used' attribute was
+           different from relaxed_mode setting. In this case we just
+           ignore it.
+         */
+        if (restriction_type == NULL)
+                goto out;
+
+        restriction = gupnp_dlna_restriction_new (name);
+
+        for (iter = data->name_list_pairs; iter != NULL; iter = iter->next) {
+                GUPnPDLNANameValueListPair *pair =
+                                      (GUPnPDLNANameValueListPair *) iter->data;
+
+                if (gupnp_dlna_restriction_add_value_list (restriction,
+                                                           pair->name,
+                                                           pair->list))
+                        pair->list = NULL;
+        }
+
+        type = restriction_type_from_string (restriction_type);
+
+        if (type == GUPNP_DLNA_RESTRICTION_TYPE_INVALID) {
+                g_warning ("Support for '%s' restrictions not yet implemented.",
+                           restriction_type);
+                goto out;
+        }
+
+        iter = data->parents = g_list_reverse (data->parents);
+        for (iter = data->parents; iter != NULL; iter = iter->next) {
+                /* Merge all the parent caps. The child overrides parent
+                 * attributes */
+                GUPnPDLNARestriction *parent =
+                                        GUPNP_DLNA_RESTRICTION (iter->data);
+
+                gupnp_dlna_restriction_merge (restriction, parent);
+                iter->data = NULL;
+        }
+
+        description = gupnp_dlna_description_new (restriction, type);
+        merge_restrictions_if_in_dlna_profile (loader, description);
+        if (id != NULL)
+                g_hash_table_replace (priv->descriptions,
+                                      g_strdup (id),
+                                      description);
+        else
+                gupnp_dlna_description_free (description);
+
+ out:
+        gupnp_dlna_restriction_data_free (data);
+        priv->restriction_data_stack = g_list_delete_link
+                                        (priv->restriction_data_stack,
+                                         priv->restriction_data_stack);
+}
+
+static void
+pre_restrictions (GUPnPDLNAProfileLoader *loader)
+{
+        push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_RESTRICTIONS);
+}
+
+static void
+post_restrictions (GUPnPDLNAProfileLoader *loader)
+{
+        pop_tag (loader);
+}
+
+static void
+pre_dlna_profile (GUPnPDLNAProfileLoader *loader)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileData* data = gupnp_dlna_profile_data_new ();
+
+        push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_DLNA_PROFILE);
+        priv->dlna_profile_data_stack = g_list_prepend
+                                        (priv->dlna_profile_data_stack,
+                                         data);
 }
 
 static GList *
-gupnp_dlna_profile_loader_run_cleanup (GUPnPDLNAProfileLoader *loader,
-                                       GList *profiles)
+copy_restrictions_list (GList *list)
 {
-        GUPnPDLNAProfileLoaderClass *loader_class;
+        GList *dup = NULL;
+        GList *iter;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader), NULL);
+        for (iter = list; iter != NULL; iter = iter->next) {
+                GUPnPDLNARestriction *restriction =
+                                        GUPNP_DLNA_RESTRICTION (iter->data);
+                GUPnPDLNARestriction *copy =
+                                      gupnp_dlna_restriction_copy (restriction);
 
-        loader_class = GUPNP_DLNA_PROFILE_LOADER_GET_CLASS (loader);
+                if (copy)
+                        dup = g_list_prepend (dup, copy);
+        }
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER_CLASS (loader_class),
-                              NULL);
-        g_return_val_if_fail (loader_class->cleanup != NULL, NULL);
+        return dup;
+}
 
-        return loader_class->cleanup (loader,
-                                      profiles);
+static void
+merge_base_restrictions (GUPnPDLNAProfileData *data,
+                         GUPnPDLNAProfile     *profile)
+{
+        GList *audio_restrictions =
+                            gupnp_dlna_profile_get_audio_restrictions (profile);
+        GList *container_restrictions =
+                        gupnp_dlna_profile_get_container_restrictions (profile);
+        GList *image_restrictions =
+                            gupnp_dlna_profile_get_image_restrictions (profile);
+        GList *video_restrictions =
+                            gupnp_dlna_profile_get_video_restrictions (profile);
+
+        if (audio_restrictions != NULL) {
+                GList *copy = copy_restrictions_list (audio_restrictions);
+
+                data->audios = g_list_concat (copy, data->audios);
+        }
+        if (container_restrictions != NULL) {
+                GList *copy = copy_restrictions_list (container_restrictions);
+
+                data->containers = g_list_concat (copy, data->containers);
+        }
+        if (image_restrictions != NULL) {
+                GList *copy = copy_restrictions_list (image_restrictions);
+
+                data->images = g_list_concat (copy, data->images);
+        }
+        if (video_restrictions != NULL) {
+                GList *copy = copy_restrictions_list (video_restrictions);
+
+                data->videos = g_list_concat (copy, data->videos);
+        }
+}
+
+static gboolean
+restrictions_list_is_empty (GList *list)
+{
+        GList *iter;
+
+        for (iter = list; iter != NULL; iter = iter->next) {
+                GUPnPDLNARestriction *restriction =
+                                            GUPNP_DLNA_RESTRICTION (iter->data);
+
+                if (restriction != NULL &&
+                    !gupnp_dlna_restriction_is_empty (restriction))
+                        return FALSE;
+        }
+
+        return TRUE;
+}
+
+static GUPnPDLNAProfile *
+create_profile (GUPnPDLNAProfileLoader *loader,
+                GUPnPDLNAProfile       *base,
+                const gchar            *name,
+                const gchar            *mime,
+                gboolean                extended)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileData *data =
+                   (GUPnPDLNAProfileData *) priv->dlna_profile_data_stack->data;
+        GList *audio_restrictions = NULL;
+        GList *container_restrictions = NULL;
+        GList *image_restrictions = NULL;
+        GList *video_restrictions = NULL;
+
+        /* Inherit from base profile, if it exists */
+        if (base != NULL)
+                merge_base_restrictions (data, base);
+
+        /* The merged caps will be our new GUPnPDLNAProfile */
+        if (!restrictions_list_is_empty (data->audios)) {
+                audio_restrictions = g_list_reverse (data->audios);
+                data->audios = NULL;
+        }
+        if (!restrictions_list_is_empty (data->containers)) {
+                container_restrictions = g_list_reverse (data->containers);
+                data->containers = NULL;
+        }
+        if (!restrictions_list_is_empty (data->images)) {
+                image_restrictions = g_list_reverse (data->images);
+                data->images = NULL;
+        }
+        if (!restrictions_list_is_empty (data->videos)) {
+                video_restrictions = g_list_reverse (data->videos);
+                data->videos = NULL;
+        }
+
+        return gupnp_dlna_profile_new (name,
+                                       mime,
+                                       audio_restrictions,
+                                       container_restrictions,
+                                       image_restrictions,
+                                       video_restrictions,
+                                       extended);
+}
+
+static void
+post_dlna_profile (GUPnPDLNAProfileLoader *loader)
+{
+        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileData *data =
+                   (GUPnPDLNAProfileData *) priv->dlna_profile_data_stack->data;
+
+        pop_tag (loader);
+        gupnp_dlna_profile_data_free (data);
+        priv->dlna_profile_data_stack = g_list_delete_link
+                                        (priv->dlna_profile_data_stack,
+                                         priv->dlna_profile_data_stack);
+}
+
+static GList *
+cleanup (GUPnPDLNAProfileLoader *loader G_GNUC_UNUSED,
+         GList *profiles)
+{
+        /* Now that we're done loading profiles, remove all profiles
+         * with no name which are only used for inheritance and not
+         * matching. */
+        GList *iter = profiles;
+
+        while (iter != NULL) {
+                GList *next = iter->next;
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
+                const gchar *name = gupnp_dlna_profile_get_name (profile);
+
+                if (name == NULL || name[0] == '\0') {
+                        profiles = g_list_delete_link (profiles, iter);
+                        g_object_unref (profile);
+                } else {
+                        /* TODO: simplify restrictions in profile if
+                         * possible.
+                         */
+                }
+
+                iter = next;
+        }
+
+        for (iter = profiles; iter != NULL; iter = iter->next) {
+                GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (iter->data);
+                gchar *acaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                          (gupnp_dlna_profile_get_audio_restrictions (profile));
+                gchar *ccaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                      (gupnp_dlna_profile_get_container_restrictions (profile));
+                gchar *icaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                          (gupnp_dlna_profile_get_image_restrictions (profile));
+                gchar *vcaps = gupnp_dlna_native_utils_restrictions_list_to_string
+                          (gupnp_dlna_profile_get_video_restrictions (profile));
+
+                g_debug ("Loaded profile: %s\nMIME: %s\naudio caps: %s\n"
+                         "container caps: %s\nimage caps: %s\nvideo caps: %s\n",
+                         gupnp_dlna_profile_get_name (profile),
+                         gupnp_dlna_profile_get_mime (profile),
+                         acaps,
+                         ccaps,
+                         icaps,
+                         vcaps);
+                g_free (acaps);
+                g_free (ccaps);
+                g_free (icaps);
+                g_free (vcaps);
+        }
+
+        return profiles;
 }
 
 static void
@@ -316,13 +807,19 @@ gupnp_dlna_profile_loader_dispose (GObject *object)
         g_clear_pointer (&priv->profile_ids, g_hash_table_unref);
         g_clear_pointer (&priv->files_hash, g_hash_table_unref);
 
+        g_clear_pointer (&priv->descriptions, g_hash_table_unref);
+        g_clear_pointer (&priv->tags_stack, g_list_free);
+        g_clear_pointer (&priv->dlna_profile_data_stack,
+                         gupnp_dlna_profile_data_stack_free);
+        g_clear_pointer (&priv->restriction_data_stack,
+                         gupnp_dlna_restriction_data_stack_free);
+
         G_OBJECT_CLASS (gupnp_dlna_profile_loader_parent_class)->dispose
                                         (object);
 }
 
 static void
-gupnp_dlna_profile_loader_class_init
-                              (GUPnPDLNAProfileLoaderClass *loader_class)
+gupnp_dlna_profile_loader_class_init (GUPnPDLNAProfileLoaderClass *loader_class)
 {
         GObjectClass *object_class = G_OBJECT_CLASS (loader_class);
         GParamSpec *spec;
@@ -330,18 +827,6 @@ gupnp_dlna_profile_loader_class_init
         object_class->get_property = gupnp_dlna_profile_loader_get_property;
         object_class->set_property = gupnp_dlna_profile_loader_set_property;
         object_class->dispose = gupnp_dlna_profile_loader_dispose;
-        loader_class->pre_field = NULL;
-        loader_class->post_field = NULL;
-        loader_class->pre_parent = NULL;
-        loader_class->post_parent = NULL;
-        loader_class->pre_restriction = NULL;
-        loader_class->post_restriction = NULL;
-        loader_class->pre_restrictions = NULL;
-        loader_class->post_restrictions = NULL;
-        loader_class->pre_dlna_profile = NULL;
-        loader_class->create_profile = NULL;
-        loader_class->post_dlna_profile = NULL;
-        loader_class->cleanup = NULL;
 
         spec = g_param_spec_boolean ("relaxed-mode",
                                      "Relaxed mode",
@@ -391,6 +876,16 @@ gupnp_dlna_profile_loader_init (GUPnPDLNAProfileLoader *self)
                                                   g_str_equal,
                                                   g_free,
                                                   NULL);
+
+        priv->descriptions = g_hash_table_new_full
+                                 (g_str_hash,
+                                  g_str_equal,
+                                  g_free,
+                                  (GDestroyNotify) gupnp_dlna_description_free);
+        priv->tags_stack = NULL;
+        priv->dlna_profile_data_stack = NULL;
+        priv->restriction_data_stack = NULL;
+
         self->priv = priv;
 }
 
@@ -486,7 +981,7 @@ process_field (GUPnPDLNAProfileLoader *loader,
         GUPnPDLNAFieldValue *value = NULL;
         GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
 
-        gupnp_dlna_profile_loader_run_pre_field (loader);
+        pre_field (loader);
 
         /*
          * Parse the 'used' attribute and figure out the mode we
@@ -551,10 +1046,7 @@ process_field (GUPnPDLNAProfileLoader *loader,
         if (values)
                 values = g_list_reverse (values);
 
-        gupnp_dlna_profile_loader_run_post_field (loader,
-                                                  (gchar *)name,
-                                                  (gchar *)type,
-                                                  values);
+        post_field (loader, (gchar *)name, (gchar *)type, values);
 
         if (name)
                 xmlFree (name);
@@ -574,7 +1066,7 @@ process_parent (GUPnPDLNAProfileLoader *loader,
         xmlChar *used = NULL;
         GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
 
-        gupnp_dlna_profile_loader_run_pre_parent (loader);
+        pre_parent (loader);
 
         /*
          * Check to see if we need to follow any relaxed/strict mode
@@ -602,7 +1094,7 @@ process_parent (GUPnPDLNAProfileLoader *loader,
                 g_warning ("Could not find parent restriction: %s", parent);
 
  out:
-        gupnp_dlna_profile_loader_run_post_parent (loader, (gchar*) parent);
+        post_parent (loader, (gchar*) parent);
 
         if (parent)
                 xmlFree (parent);
@@ -620,7 +1112,7 @@ process_restriction (GUPnPDLNAProfileLoader *loader,
         gchar *name = NULL;
         GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
 
-        gupnp_dlna_profile_loader_run_pre_restriction (loader);
+        pre_restriction (loader);
         /*
          * First we parse the 'used' attribute and figure out
          * the mode we need to comply to.
@@ -707,10 +1199,7 @@ process_restriction (GUPnPDLNAProfileLoader *loader,
                 g_hash_table_add (priv->restrictions, g_strdup ((gchar *) id));
 
 out:
-        gupnp_dlna_profile_loader_run_post_restriction (loader,
-                                                        (gchar *) type,
-                                                        (gchar *) id,
-                                                        name);
+        post_restriction (loader, (gchar *) type, (gchar *) id, name);
         if (type)
                 xmlFree (type);
         if (id)
@@ -724,7 +1213,7 @@ process_restrictions (GUPnPDLNAProfileLoader *loader,
 {
         gboolean done = FALSE;
 
-        gupnp_dlna_profile_loader_run_pre_restrictions (loader);
+        pre_restrictions (loader);
 
         while (!done && xmlTextReaderRead (reader) == 1) {
                 xmlChar *tag = xmlTextReaderName (reader);
@@ -750,7 +1239,7 @@ process_restrictions (GUPnPDLNAProfileLoader *loader,
                 xmlFree (tag);
         }
 
-        gupnp_dlna_profile_loader_run_post_restrictions (loader);
+        post_restrictions (loader);
 }
 
 static void
@@ -769,7 +1258,7 @@ process_dlna_profile (GUPnPDLNAProfileLoader  *loader,
         gboolean is_extended = FALSE;
         GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
 
-        gupnp_dlna_profile_loader_run_pre_dlna_profile (loader);
+        pre_dlna_profile (loader);
 
         name = xmlTextReaderGetAttribute (reader, BAD_CAST ("name"));
         mime = xmlTextReaderGetAttribute (reader, BAD_CAST ("mime"));
@@ -829,11 +1318,11 @@ process_dlna_profile (GUPnPDLNAProfileLoader  *loader,
         }
 
 
-        profile = gupnp_dlna_profile_loader_run_create_profile (loader,
-                                                                base,
-                                                                (gchar *) name,
-                                                                (gchar *) mime,
-                                                                is_extended);
+        profile = create_profile (loader,
+                                  base,
+                                  (gchar *) name,
+                                  (gchar *) mime,
+                                  is_extended);
 
         *profiles = g_list_prepend (*profiles, profile);
 
@@ -844,7 +1333,7 @@ process_dlna_profile (GUPnPDLNAProfileLoader  *loader,
         }
 
 out:
-        gupnp_dlna_profile_loader_run_post_dlna_profile (loader);
+        post_dlna_profile (loader);
 
         if (id)
                 xmlFree (id);
@@ -886,14 +1375,6 @@ process_include (GUPnPDLNAProfileLoader  *loader,
 
         gupnp_dlna_profile_loader_get_from_file (loader, g_path, profiles);
         g_free (g_path);
-}
-
-GUPnPDLNAProfileLoader *
-gupnp_dlna_profile_loader_get_default (gboolean relaxed_mode,
-                                       gboolean extended_mode)
-{
-        return gupnp_dlna_profile_backend_get_loader (relaxed_mode,
-                                                      extended_mode);
 }
 
 /* This can go away once we have a glib function to canonicalize paths (see
@@ -1047,6 +1528,17 @@ gupnp_dlna_profile_loader_get_from_dir (GUPnPDLNAProfileLoader *loader,
         return profiles;
 }
 
+GUPnPDLNAProfileLoader *
+gupnp_dlna_profile_loader_new (gboolean relaxed_mode,
+                               gboolean extended_mode)
+{
+        return GUPNP_DLNA_PROFILE_LOADER (g_object_new
+                                        (GUPNP_TYPE_DLNA_PROFILE_LOADER,
+                                         "relaxed-mode", relaxed_mode,
+                                         "extended-mode", extended_mode,
+                                         NULL));
+}
+
 GList *
 gupnp_dlna_profile_loader_get_from_disk (GUPnPDLNAProfileLoader *loader)
 {
@@ -1059,5 +1551,5 @@ gupnp_dlna_profile_loader_get_from_disk (GUPnPDLNAProfileLoader *loader)
 
         profiles = g_list_reverse (profiles);
 
-        return gupnp_dlna_profile_loader_run_cleanup (loader, profiles);
+        return cleanup (loader, profiles);
 }

@@ -190,8 +190,9 @@ gupnp_dlna_profile_guesser_class_init
                 gboolean extended = ((iter) % 2 != 0); /* F,T,F,T */
                 guint rel_index = (relaxed ? 1 : 0);
                 guint ext_index = (extended ? 1 : 0);
-                GUPnPDLNAProfileLoader *loader =
-                      gupnp_dlna_profile_loader_get_default (relaxed, extended);
+                GUPnPDLNAProfileLoader *loader = gupnp_dlna_profile_loader_new
+                                        (relaxed,
+                                         extended);
 
                 profiles_list[rel_index][ext_index] =
                                gupnp_dlna_profile_loader_get_from_disk (loader);

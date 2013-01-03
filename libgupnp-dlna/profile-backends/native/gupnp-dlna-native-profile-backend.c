@@ -26,7 +26,5 @@ GUPnPDLNAProfileLoader *
 gupnp_dlna_native_profile_backend_get_loader (gboolean relaxed_mode,
                                               gboolean extended_mode)
 {
-        return GUPNP_DLNA_PROFILE_LOADER
-                (gupnp_dlna_native_profile_loader_new (relaxed_mode,
-                                                       extended_mode));
+        return NULL;
 }

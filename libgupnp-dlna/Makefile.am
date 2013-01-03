@@ -80,7 +80,8 @@ libloader_la_CFLAGS = \
 	$(metadata_cflags) \
 	$(common_cflags) \
 	$(LIBXML_CFLAGS) \
-	-DDATA_DIR='"$(shareddir)"'
+	-DDATA_DIR='"$(shareddir)"' \
+	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native
 
 libguesser_la_SOURCES = \
 	gupnp-dlna-profile-guesser.c \

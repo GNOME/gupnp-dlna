@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2009 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Zeeshan Ali <zeeshanak@gnome.org>
  *                      <zeeshan.ali@nokia.com>
@@ -66,63 +66,14 @@ typedef struct {
 
 typedef struct {
         GObjectClass parent_class;
-
-        /* virtuals */
-        void
-        (* pre_field) (GUPnPDLNAProfileLoader *loader);
-
-        void
-        (* post_field) (GUPnPDLNAProfileLoader *loader,
-                        const gchar            *name,
-                        const gchar            *type,
-                        GList                  *values);
-
-        void
-        (* pre_parent) (GUPnPDLNAProfileLoader *loader);
-
-        void
-        (* post_parent) (GUPnPDLNAProfileLoader *loader,
-                         const gchar            *parent);
-
-        void
-        (* pre_restriction) (GUPnPDLNAProfileLoader *loader);
-
-        void
-        (* post_restriction) (GUPnPDLNAProfileLoader *loader,
-                              const gchar            *restriction_type,
-                              const gchar            *id,
-                              const gchar            *name);
-
-        void
-        (* pre_restrictions) (GUPnPDLNAProfileLoader *loader);
-
-        void
-        (* post_restrictions) (GUPnPDLNAProfileLoader *loader);
-
-        void
-        (* pre_dlna_profile) (GUPnPDLNAProfileLoader *loader);
-
-        GUPnPDLNAProfile *
-        (* create_profile) (GUPnPDLNAProfileLoader *loader,
-                            GUPnPDLNAProfile       *base,
-                            const gchar            *name,
-                            const gchar            *mime,
-                            gboolean                extended);
-
-        void
-        (* post_dlna_profile) (GUPnPDLNAProfileLoader *loader);
-
-        GList *
-        (* cleanup) (GUPnPDLNAProfileLoader *loader,
-                     GList                  *profiles);
 } GUPnPDLNAProfileLoaderClass;
 
 GType
 gupnp_dlna_profile_loader_get_type (void);
 
 GUPnPDLNAProfileLoader *
-gupnp_dlna_profile_loader_get_default (gboolean relaxed_mode,
-                                       gboolean extended_mode);
+gupnp_dlna_profile_loader_new (gboolean relaxed_mode,
+                               gboolean extended_mode);
 
 GList *
 gupnp_dlna_profile_loader_get_from_disk (GUPnPDLNAProfileLoader *loader);
