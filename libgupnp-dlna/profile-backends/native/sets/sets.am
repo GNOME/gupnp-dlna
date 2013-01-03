@@ -4,6 +4,4 @@ sets_sources = \
 	profile-backends/native/sets/gupnp-dlna-native-info-value.c \
 	profile-backends/native/sets/gupnp-dlna-native-info-value.h \
 	profile-backends/native/sets/gupnp-dlna-native-value.c \
-	profile-backends/native/sets/gupnp-dlna-native-value.h \
-	profile-backends/native/sets/gupnp-dlna-native-value-type.c \
-	profile-backends/native/sets/gupnp-dlna-native-value-type.h
+	profile-backends/native/sets/gupnp-dlna-native-value.h

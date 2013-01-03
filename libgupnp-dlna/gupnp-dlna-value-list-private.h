@@ -26,12 +26,12 @@
 
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-value-list.h"
-#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-type.h"
 
 G_BEGIN_DECLS
 
 GUPnPDLNAValueList *
-gupnp_dlna_value_list_new (GUPnPDLNANativeValueType *type);
+gupnp_dlna_value_list_new (GUPnPDLNAValueType *type);
 
 void
 gupnp_dlna_value_list_free (GUPnPDLNAValueList *list);

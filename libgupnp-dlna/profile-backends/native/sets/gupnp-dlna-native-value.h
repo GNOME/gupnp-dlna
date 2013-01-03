@@ -26,7 +26,7 @@
 #include <glib-object.h>
 
 #include "gupnp-dlna-native-info-value.h"
-#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-type.h"
 
 G_BEGIN_DECLS
 
@@ -38,11 +38,11 @@ struct _GUPnPDLNANativeValue {
 };
 
 GUPnPDLNANativeValue *
-gupnp_dlna_native_value_new_single (GUPnPDLNANativeValueType *type,
+gupnp_dlna_native_value_new_single (GUPnPDLNAValueType *type,
                                     const gchar              *single);
 
 GUPnPDLNANativeValue *
-gupnp_dlna_native_value_new_ranged (GUPnPDLNANativeValueType *type,
+gupnp_dlna_native_value_new_ranged (GUPnPDLNAValueType *type,
                                     const gchar              *min,
                                     const gchar              *max);
 
@@ -52,24 +52,24 @@ gupnp_dlna_native_value_is_superset (GUPnPDLNANativeValue     *base,
 
 GUPnPDLNANativeValue *
 gupnp_dlna_native_value_copy (GUPnPDLNANativeValue     *base,
-                              GUPnPDLNANativeValueType *type);
+                              GUPnPDLNAValueType *type);
 
 void
 gupnp_dlna_native_value_free (GUPnPDLNANativeValue     *base,
-                              GUPnPDLNANativeValueType *type);
+                              GUPnPDLNAValueType *type);
 
 gchar *
 gupnp_dlna_native_value_to_string (GUPnPDLNANativeValue     *base,
-                                   GUPnPDLNANativeValueType *type);
+                                   GUPnPDLNAValueType *type);
 
 gint
 gupnp_dlna_native_value_compare (GUPnPDLNANativeValue     *base,
                                  GUPnPDLNANativeValue     *other,
-                                 GUPnPDLNANativeValueType *type);
+                                 GUPnPDLNAValueType *type);
 
 GValue *
 gupnp_dlna_native_value_to_g_value (GUPnPDLNANativeValue     *base,
-                                    GUPnPDLNANativeValueType *type);
+                                    GUPnPDLNAValueType *type);
 
 G_END_DECLS
 

@@ -24,7 +24,7 @@
 #include "gupnp-dlna-native-info-value.h"
 
 struct _GUPnPDLNAValueList {
-        GUPnPDLNANativeValueType *type;
+        GUPnPDLNAValueType *type;
         GList                    *values; /* <GUPnPDLNANativeValue *> */
         gboolean                  sorted;
 };
@@ -35,7 +35,7 @@ G_DEFINE_BOXED_TYPE (GUPnPDLNAValueList,
                      gupnp_dlna_value_list_free)
 
 GUPnPDLNAValueList *
-gupnp_dlna_value_list_new (GUPnPDLNANativeValueType *type)
+gupnp_dlna_value_list_new (GUPnPDLNAValueType *type)
 {
         GUPnPDLNAValueList *list;
 
@@ -51,7 +51,7 @@ gupnp_dlna_value_list_new (GUPnPDLNANativeValueType *type)
 
 static void
 free_value (GUPnPDLNANativeValue     *value,
-            GUPnPDLNANativeValueType *type)
+            GUPnPDLNAValueType *type)
 {
         gupnp_dlna_native_value_free (value, type);
 }
@@ -81,7 +81,7 @@ gupnp_dlna_value_list_free (GUPnPDLNAValueList *list)
 static gint
 value_compare (GUPnPDLNANativeValue     *a,
                GUPnPDLNANativeValue     *b,
-               GUPnPDLNANativeValueType *type)
+               GUPnPDLNAValueType *type)
 {
         return gupnp_dlna_native_value_compare (a, b, type);
 }
@@ -259,8 +259,7 @@ gupnp_dlna_value_list_to_string (GUPnPDLNAValueList *value_list)
         str = g_string_new (NULL);
         g_string_append_printf (str,
                                 "(%s)",
-                                gupnp_dlna_native_value_type_name
-                                        (value_list->type));
+                                gupnp_dlna_value_type_name (value_list->type));
         if (value_list->values->next != NULL) {
                 g_string_append (str, "{ ");
                 val_str = list_to_string (value_list);

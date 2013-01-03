@@ -24,7 +24,7 @@
 
 #include <glib.h>
 
-#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-type.h"
 #include "gupnp-dlna-value-union.h"
 
 G_BEGIN_DECLS
@@ -65,7 +65,7 @@ gupnp_dlna_native_info_value_to_string (GUPnPDLNANativeInfoValue *info_value);
 gboolean
 gupnp_dlna_native_info_value_is_unsupported (GUPnPDLNANativeInfoValue *info);
 
-GUPnPDLNANativeValueType *
+GUPnPDLNAValueType *
 gupnp_dlna_native_info_value_get_type (GUPnPDLNANativeInfoValue *info);
 
 GUPnPDLNAValueUnion *

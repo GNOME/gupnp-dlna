@@ -22,64 +22,64 @@
 #include <stdlib.h>
 
 #include "gupnp-dlna-g-values-private.h"
-#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-type.h"
 
-struct _GUPnPDLNANativeValueType {
+struct _GUPnPDLNAValueType {
         gboolean
-        (* init) (GUPnPDLNANativeValueType  *type,
+        (* init) (GUPnPDLNAValueType  *type,
                   GUPnPDLNAValueUnion *value,
-                  const gchar               *raw);
+                  const gchar         *raw);
 
         gboolean
-        (* copy) (GUPnPDLNANativeValueType  *type,
+        (* copy) (GUPnPDLNAValueType  *type,
                   GUPnPDLNAValueUnion *from,
                   GUPnPDLNAValueUnion *to);
 
         void
-        (* clean) (GUPnPDLNANativeValueType  *type,
+        (* clean) (GUPnPDLNAValueType  *type,
                    GUPnPDLNAValueUnion *value_union);
 
         gboolean
-        (* is_equal) (GUPnPDLNANativeValueType  *type,
+        (* is_equal) (GUPnPDLNAValueType  *type,
                       GUPnPDLNAValueUnion *first,
                       GUPnPDLNAValueUnion *second);
 
         gboolean
-        (* is_in_range) (GUPnPDLNANativeValueType  *type,
+        (* is_in_range) (GUPnPDLNAValueType  *type,
                          GUPnPDLNAValueUnion *min,
                          GUPnPDLNAValueUnion *max,
                          GUPnPDLNAValueUnion *value);
 
         const gchar *
-        (* name) (GUPnPDLNANativeValueType *type);
+        (* name) (GUPnPDLNAValueType *type);
 
         gboolean
-        (* verify_range) (GUPnPDLNANativeValueType  *type,
+        (* verify_range) (GUPnPDLNAValueType  *type,
                           GUPnPDLNAValueUnion *min,
                           GUPnPDLNAValueUnion *max);
 
         gchar *
-        (* to_string) (GUPnPDLNANativeValueType  *type,
+        (* to_string) (GUPnPDLNAValueType  *type,
                        GUPnPDLNAValueUnion *value);
 
         gint
-        (* compare) (GUPnPDLNANativeValueType  *type,
+        (* compare) (GUPnPDLNAValueType  *type,
                      GUPnPDLNAValueUnion *a,
                      GUPnPDLNAValueUnion *b);
 
         GType
-        (* get_g_type) (GUPnPDLNANativeValueType  *type);
+        (* get_g_type) (GUPnPDLNAValueType  *type);
 
         void
-        (* to_g_value) (GUPnPDLNANativeValueType  *type,
+        (* to_g_value) (GUPnPDLNAValueType  *type,
                         GUPnPDLNAValueUnion *value,
-                        GValue                    *g_value);
+                        GValue              *g_value);
 
         gboolean
-        (* flatten) (GUPnPDLNANativeValueType *type,
-                     GValue                   *target,
-                     GValue                   *min,
-                     GValue                   *max);
+        (* flatten) (GUPnPDLNAValueType *type,
+                     GValue             *target,
+                     GValue             *min,
+                     GValue             *max);
 };
 
 /* utils */
@@ -176,9 +176,9 @@ fraction_range_valid (GUPnPDLNAFraction min,
 
 /* bool */
 static gboolean
-bool_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_init (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
            GUPnPDLNAValueUnion *value,
-           const gchar               *raw)
+           const gchar         *raw)
 {
         if (!g_strcmp0 (raw, "true"))
                 value->bool_value = TRUE;
@@ -191,7 +191,7 @@ bool_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-bool_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_copy (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
            GUPnPDLNAValueUnion *from,
            GUPnPDLNAValueUnion *to)
 {
@@ -201,14 +201,14 @@ bool_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static void
-bool_clean (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_clean (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
             GUPnPDLNAValueUnion *value_union G_GNUC_UNUSED)
 {
 
 }
 
 static gboolean
-bool_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_is_equal (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                GUPnPDLNAValueUnion *first,
                GUPnPDLNAValueUnion *second)
 {
@@ -216,7 +216,7 @@ bool_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-bool_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_is_in_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                   GUPnPDLNAValueUnion *min G_GNUC_UNUSED,
                   GUPnPDLNAValueUnion *max G_GNUC_UNUSED,
                   GUPnPDLNAValueUnion *value G_GNUC_UNUSED)
@@ -226,13 +226,13 @@ bool_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static const gchar *
-bool_name (GUPnPDLNANativeValueType *type G_GNUC_UNUSED)
+bool_name (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return "boolean";
 }
 
 static gboolean
-bool_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_verify_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                    GUPnPDLNAValueUnion *min G_GNUC_UNUSED,
                    GUPnPDLNAValueUnion *max G_GNUC_UNUSED)
 {
@@ -240,14 +240,14 @@ bool_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gchar *
-bool_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_to_string (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                 GUPnPDLNAValueUnion *value)
 {
         return g_strdup (value->bool_value ? "true" : "false");
 }
 
 static gint
-bool_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_compare (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
               GUPnPDLNAValueUnion *a,
               GUPnPDLNAValueUnion *b)
 {
@@ -261,29 +261,29 @@ bool_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static GType
-bool_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+bool_get_g_type (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return G_TYPE_BOOLEAN;
 }
 
 static void
-bool_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+bool_to_g_value (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                  GUPnPDLNAValueUnion *value,
-                 GValue                    *g_value)
+                 GValue              *g_value)
 {
         g_value_set_boolean (g_value, value->bool_value);
 }
 
 static gboolean
-bool_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
-              GValue                    *target G_GNUC_UNUSED,
-              GValue                    *from G_GNUC_UNUSED,
-              GValue                    *to G_GNUC_UNUSED)
+bool_flatten (GUPnPDLNAValueType *type G_GNUC_UNUSED,
+              GValue             *target G_GNUC_UNUSED,
+              GValue             *from G_GNUC_UNUSED,
+              GValue             *to G_GNUC_UNUSED)
 {
         return FALSE;
 }
 
-static GUPnPDLNANativeValueType bool_type_impl = {
+static GUPnPDLNAValueType bool_type_impl = {
         bool_init,
         bool_copy,
         bool_clean,
@@ -300,9 +300,9 @@ static GUPnPDLNANativeValueType bool_type_impl = {
 
 /* fraction */
 static gboolean
-fraction_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_init (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                GUPnPDLNAValueUnion *value,
-               const gchar               *raw)
+               const gchar         *raw)
 {
         gchar **tokens = g_strsplit (raw, "/", 2);
         gboolean result = FALSE;
@@ -329,7 +329,7 @@ fraction_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-fraction_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_copy (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                GUPnPDLNAValueUnion *from,
                GUPnPDLNAValueUnion *to)
 {
@@ -339,14 +339,14 @@ fraction_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static void
-fraction_clean (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_clean (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                 GUPnPDLNAValueUnion *value_union G_GNUC_UNUSED)
 {
 
 }
 
 static gboolean
-fraction_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_is_equal (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                    GUPnPDLNAValueUnion *first,
                    GUPnPDLNAValueUnion *second)
 {
@@ -355,7 +355,7 @@ fraction_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-fraction_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_is_in_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                       GUPnPDLNAValueUnion *min,
                       GUPnPDLNAValueUnion *max,
                       GUPnPDLNAValueUnion *value)
@@ -367,13 +367,13 @@ fraction_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static const gchar *
-fraction_name (GUPnPDLNANativeValueType *type G_GNUC_UNUSED)
+fraction_name (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return "fraction";
 }
 
 static gboolean
-fraction_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_verify_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                        GUPnPDLNAValueUnion *min,
                        GUPnPDLNAValueUnion *max)
 {
@@ -381,7 +381,7 @@ fraction_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gchar *
-fraction_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_to_string (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                     GUPnPDLNAValueUnion *value)
 {
         return g_strdup_printf ("%d/%d",
@@ -390,7 +390,7 @@ fraction_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gint
-fraction_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_compare (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                   GUPnPDLNAValueUnion *a,
                   GUPnPDLNAValueUnion *b)
 {
@@ -398,24 +398,24 @@ fraction_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static GType
-fraction_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+fraction_get_g_type (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return GUPNP_TYPE_DLNA_FRACTION;
 }
 
 static void
-fraction_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+fraction_to_g_value (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                      GUPnPDLNAValueUnion *value,
-                     GValue                    *g_value)
+                     GValue              *g_value)
 {
         g_value_set_boxed (g_value, &value->fraction_value);
 }
 
 static gboolean
-fraction_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
-                  GValue                    *target,
-                  GValue                    *from,
-                  GValue                    *to)
+fraction_flatten (GUPnPDLNAValueType *type G_GNUC_UNUSED,
+                  GValue             *target,
+                  GValue             *from,
+                  GValue             *to)
 {
         GUPnPDLNAFraction *fraction_min =
                                  GUPNP_DLNA_FRACTION (g_value_get_boxed (from));
@@ -430,7 +430,7 @@ fraction_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return TRUE;
 }
 
-static GUPnPDLNANativeValueType fraction_type_impl = {
+static GUPnPDLNAValueType fraction_type_impl = {
         fraction_init,
         fraction_copy,
         fraction_clean,
@@ -447,9 +447,9 @@ static GUPnPDLNANativeValueType fraction_type_impl = {
 
 /* int */
 static gboolean
-int_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_init (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
           GUPnPDLNAValueUnion *value,
-          const gchar               *raw)
+          const gchar         *raw)
 {
         gint num;
 
@@ -462,7 +462,7 @@ int_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-int_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_copy (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
           GUPnPDLNAValueUnion *from,
           GUPnPDLNAValueUnion *to)
 {
@@ -472,14 +472,14 @@ int_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static void
-int_clean (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_clean (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
            GUPnPDLNAValueUnion *value_union G_GNUC_UNUSED)
 {
 
 }
 
 static gboolean
-int_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_is_equal (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
               GUPnPDLNAValueUnion *first,
               GUPnPDLNAValueUnion *second)
 {
@@ -487,7 +487,7 @@ int_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-int_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_is_in_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                  GUPnPDLNAValueUnion *min,
                  GUPnPDLNAValueUnion *max,
                  GUPnPDLNAValueUnion *value)
@@ -497,13 +497,13 @@ int_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static const gchar *
-int_name (GUPnPDLNANativeValueType *type G_GNUC_UNUSED)
+int_name (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return "int";
 }
 
 static gboolean
-int_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_verify_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                   GUPnPDLNAValueUnion *min,
                   GUPnPDLNAValueUnion *max)
 {
@@ -511,14 +511,14 @@ int_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gchar *
-int_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_to_string (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                GUPnPDLNAValueUnion *value)
 {
         return g_strdup_printf ("%d", value->int_value);
 }
 
 static gint
-int_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_compare (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
              GUPnPDLNAValueUnion *a,
              GUPnPDLNAValueUnion *b)
 {
@@ -526,24 +526,24 @@ int_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static GType
-int_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+int_get_g_type (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return G_TYPE_INT;
 }
 
 static void
-int_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+int_to_g_value (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                 GUPnPDLNAValueUnion *value,
-                GValue                    *g_value)
+                GValue              *g_value)
 {
         g_value_set_int (g_value, value->int_value);
 }
 
 static gboolean
-int_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
-             GValue                    *target,
-             GValue                    *from,
-             GValue                    *to)
+int_flatten (GUPnPDLNAValueType *type G_GNUC_UNUSED,
+             GValue             *target,
+             GValue             *from,
+             GValue             *to)
 {
         g_value_init (target, GUPNP_TYPE_DLNA_INT_RANGE);
         g_value_take_boxed (target,
@@ -553,7 +553,7 @@ int_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
         return TRUE;
 }
 
-static GUPnPDLNANativeValueType int_type_impl = {
+static GUPnPDLNAValueType int_type_impl = {
         int_init,
         int_copy,
         int_clean,
@@ -570,9 +570,9 @@ static GUPnPDLNANativeValueType int_type_impl = {
 
 /* string */
 static gboolean
-string_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_init (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
              GUPnPDLNAValueUnion *value,
-             const gchar               *raw)
+             const gchar         *raw)
 {
         value->string_value = g_strdup (raw);
 
@@ -580,7 +580,7 @@ string_init (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-string_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_copy (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
              GUPnPDLNAValueUnion *from,
              GUPnPDLNAValueUnion *to)
 {
@@ -590,14 +590,14 @@ string_copy (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static void
-string_clean (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_clean (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
               GUPnPDLNAValueUnion *value_union)
 {
         g_free (value_union->string_value);
 }
 
 static gboolean
-string_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_is_equal (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                  GUPnPDLNAValueUnion *first,
                  GUPnPDLNAValueUnion *second)
 {
@@ -605,7 +605,7 @@ string_is_equal (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gboolean
-string_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_is_in_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                     GUPnPDLNAValueUnion *min,
                     GUPnPDLNAValueUnion *max,
                     GUPnPDLNAValueUnion *value)
@@ -618,13 +618,13 @@ string_is_in_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static const gchar *
-string_name (GUPnPDLNANativeValueType *type G_GNUC_UNUSED)
+string_name (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return "string";
 }
 
 static gboolean
-string_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_verify_range (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                      GUPnPDLNAValueUnion *min G_GNUC_UNUSED,
                      GUPnPDLNAValueUnion *max G_GNUC_UNUSED)
 {
@@ -632,14 +632,14 @@ string_verify_range (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static gchar *
-string_to_string (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_to_string (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                   GUPnPDLNAValueUnion *value)
 {
         return g_strdup (value->string_value);
 }
 
 static gint
-string_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_compare (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                 GUPnPDLNAValueUnion *a,
                 GUPnPDLNAValueUnion *b)
 {
@@ -647,29 +647,29 @@ string_compare (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
 }
 
 static GType
-string_get_g_type (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED)
+string_get_g_type (GUPnPDLNAValueType *type G_GNUC_UNUSED)
 {
         return G_TYPE_STRING;
 }
 
 static void
-string_to_g_value (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
+string_to_g_value (GUPnPDLNAValueType  *type G_GNUC_UNUSED,
                    GUPnPDLNAValueUnion *value,
-                   GValue                    *g_value)
+                   GValue              *g_value)
 {
         g_value_set_string (g_value, value->string_value);
 }
 
 static gboolean
-string_flatten (GUPnPDLNANativeValueType  *type G_GNUC_UNUSED,
-                GValue                    *target G_GNUC_UNUSED,
-                GValue                    *from G_GNUC_UNUSED,
-                GValue                    *to G_GNUC_UNUSED)
+string_flatten (GUPnPDLNAValueType *type G_GNUC_UNUSED,
+                GValue             *target G_GNUC_UNUSED,
+                GValue             *from G_GNUC_UNUSED,
+                GValue             *to G_GNUC_UNUSED)
 {
         return FALSE;
 }
 
-static GUPnPDLNANativeValueType string_type_impl = {
+static GUPnPDLNAValueType string_type_impl = {
         string_init,
         string_copy,
         string_clean,
@@ -684,34 +684,34 @@ static GUPnPDLNANativeValueType string_type_impl = {
         string_flatten
 };
 
-GUPnPDLNANativeValueType *
-gupnp_dlna_native_value_type_bool (void)
+GUPnPDLNAValueType *
+gupnp_dlna_value_type_bool (void)
 {
         return &bool_type_impl;
 }
 
-GUPnPDLNANativeValueType *
-gupnp_dlna_native_value_type_fraction (void)
+GUPnPDLNAValueType *
+gupnp_dlna_value_type_fraction (void)
 {
         return &fraction_type_impl;
 }
 
-GUPnPDLNANativeValueType *
-gupnp_dlna_native_value_type_int (void)
+GUPnPDLNAValueType *
+gupnp_dlna_value_type_int (void)
 {
         return &int_type_impl;
 }
 
-GUPnPDLNANativeValueType *
-gupnp_dlna_native_value_type_string (void)
+GUPnPDLNAValueType *
+gupnp_dlna_value_type_string (void)
 {
         return &string_type_impl;
 }
 
 gboolean
-gupnp_dlna_native_value_type_init (GUPnPDLNANativeValueType  *type,
-                                   GUPnPDLNAValueUnion *value,
-                                   const gchar               *raw)
+gupnp_dlna_value_type_init (GUPnPDLNAValueType  *type,
+                            GUPnPDLNAValueUnion *value,
+                            const gchar         *raw)
 {
         g_return_val_if_fail (type != NULL, FALSE);
         g_return_val_if_fail (value != NULL, FALSE);
@@ -722,9 +722,9 @@ gupnp_dlna_native_value_type_init (GUPnPDLNANativeValueType  *type,
 }
 
 gboolean
-gupnp_dlna_native_value_type_copy (GUPnPDLNANativeValueType  *type,
-                                   GUPnPDLNAValueUnion *from,
-                                   GUPnPDLNAValueUnion *to)
+gupnp_dlna_value_type_copy (GUPnPDLNAValueType  *type,
+                            GUPnPDLNAValueUnion *from,
+                            GUPnPDLNAValueUnion *to)
 {
         g_return_val_if_fail (type != NULL, FALSE);
         g_return_val_if_fail (from != NULL, FALSE);
@@ -735,8 +735,8 @@ gupnp_dlna_native_value_type_copy (GUPnPDLNANativeValueType  *type,
 }
 
 void
-gupnp_dlna_native_value_type_clean (GUPnPDLNANativeValueType  *type,
-                                    GUPnPDLNAValueUnion *value)
+gupnp_dlna_value_type_clean (GUPnPDLNAValueType  *type,
+                             GUPnPDLNAValueUnion *value)
 {
         g_return_if_fail (type != NULL);
         g_return_if_fail (value != NULL);
@@ -746,9 +746,9 @@ gupnp_dlna_native_value_type_clean (GUPnPDLNANativeValueType  *type,
 }
 
 gboolean
-gupnp_dlna_native_value_type_is_equal (GUPnPDLNANativeValueType  *type,
-                                       GUPnPDLNAValueUnion *first,
-                                       GUPnPDLNAValueUnion *second)
+gupnp_dlna_value_type_is_equal (GUPnPDLNAValueType  *type,
+                                GUPnPDLNAValueUnion *first,
+                                GUPnPDLNAValueUnion *second)
 {
         g_return_val_if_fail (type != NULL, FALSE);
         g_return_val_if_fail (first != NULL, FALSE);
@@ -759,10 +759,10 @@ gupnp_dlna_native_value_type_is_equal (GUPnPDLNANativeValueType  *type,
 }
 
 gboolean
-gupnp_dlna_native_value_type_is_in_range (GUPnPDLNANativeValueType  *type,
-                                          GUPnPDLNAValueUnion *min,
-                                          GUPnPDLNAValueUnion *max,
-                                          GUPnPDLNAValueUnion *value)
+gupnp_dlna_value_type_is_in_range (GUPnPDLNAValueType  *type,
+                                   GUPnPDLNAValueUnion *min,
+                                   GUPnPDLNAValueUnion *max,
+                                   GUPnPDLNAValueUnion *value)
 {
         g_return_val_if_fail (type != NULL, FALSE);
         g_return_val_if_fail (min != NULL, FALSE);
@@ -774,7 +774,7 @@ gupnp_dlna_native_value_type_is_in_range (GUPnPDLNANativeValueType  *type,
 }
 
 const gchar *
-gupnp_dlna_native_value_type_name (GUPnPDLNANativeValueType *type)
+gupnp_dlna_value_type_name (GUPnPDLNAValueType *type)
 {
         g_return_val_if_fail (type != NULL, NULL);
         g_return_val_if_fail (type->name != NULL, NULL);
@@ -783,9 +783,9 @@ gupnp_dlna_native_value_type_name (GUPnPDLNANativeValueType *type)
 }
 
 gboolean
-gupnp_dlna_native_value_type_verify_range (GUPnPDLNANativeValueType  *type,
-                                           GUPnPDLNAValueUnion *min,
-                                           GUPnPDLNAValueUnion *max)
+gupnp_dlna_value_type_verify_range (GUPnPDLNAValueType  *type,
+                                    GUPnPDLNAValueUnion *min,
+                                    GUPnPDLNAValueUnion *max)
 {
         g_return_val_if_fail (type != NULL, FALSE);
         g_return_val_if_fail (min != NULL, FALSE);
@@ -796,8 +796,8 @@ gupnp_dlna_native_value_type_verify_range (GUPnPDLNANativeValueType  *type,
 }
 
 gchar *
-gupnp_dlna_native_value_type_to_string (GUPnPDLNANativeValueType  *type,
-                                        GUPnPDLNAValueUnion *value)
+gupnp_dlna_value_type_to_string (GUPnPDLNAValueType  *type,
+                                 GUPnPDLNAValueUnion *value)
 {
         g_return_val_if_fail (type != NULL, NULL);
         g_return_val_if_fail (value != NULL, NULL);
@@ -807,9 +807,9 @@ gupnp_dlna_native_value_type_to_string (GUPnPDLNANativeValueType  *type,
 }
 
 gint
-gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
-                                      GUPnPDLNAValueUnion *a,
-                                      GUPnPDLNAValueUnion *b)
+gupnp_dlna_value_type_compare (GUPnPDLNAValueType  *type,
+                               GUPnPDLNAValueUnion *a,
+                               GUPnPDLNAValueUnion *b)
 {
         g_return_val_if_fail (type != NULL, 0);
         g_return_val_if_fail (a != NULL, 0);
@@ -820,9 +820,9 @@ gupnp_dlna_native_value_type_compare (GUPnPDLNANativeValueType  *type,
 }
 
 void
-gupnp_dlna_native_value_type_to_g_value (GUPnPDLNANativeValueType  *type,
-                                         GUPnPDLNAValueUnion *value,
-                                         GValue                    *g_value)
+gupnp_dlna_value_type_to_g_value (GUPnPDLNAValueType  *type,
+                                  GUPnPDLNAValueUnion *value,
+                                  GValue              *g_value)
 {
         g_return_if_fail (type != NULL);
         g_return_if_fail (value != NULL);
@@ -836,12 +836,12 @@ gupnp_dlna_native_value_type_to_g_value (GUPnPDLNANativeValueType  *type,
 }
 
 gboolean
-gupnp_dlna_native_value_type_flatten (GUPnPDLNANativeValueType *type,
-                                      GValue *target,
-                                      GValue *from,
-                                      GValue *to)
+gupnp_dlna_value_type_flatten (GUPnPDLNAValueType *type,
+                               GValue             *target,
+                               GValue             *from,
+                               GValue             *to)
 {
-        GType native_value_type_g_type;
+        GType value_type_g_type;
 
         g_return_val_if_fail (type != NULL, FALSE);
         g_return_val_if_fail (target != NULL, FALSE);
@@ -851,11 +851,11 @@ gupnp_dlna_native_value_type_flatten (GUPnPDLNANativeValueType *type,
         g_return_val_if_fail (type->get_g_type != NULL, FALSE);
         g_return_val_if_fail (G_IS_VALUE (target) == FALSE, FALSE);
 
-        native_value_type_g_type = type->get_g_type (type);
+        value_type_g_type = type->get_g_type (type);
 
-        g_return_val_if_fail (G_VALUE_HOLDS (from, native_value_type_g_type),
+        g_return_val_if_fail (G_VALUE_HOLDS (from, value_type_g_type),
                               FALSE);
-        g_return_val_if_fail (G_VALUE_HOLDS (to, native_value_type_g_type),
+        g_return_val_if_fail (G_VALUE_HOLDS (to, value_type_g_type),
                               FALSE);
 
         return type->flatten (type, target, from, to);

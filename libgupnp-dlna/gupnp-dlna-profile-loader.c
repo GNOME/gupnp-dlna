@@ -31,7 +31,7 @@
 #include "gupnp-dlna-profile-private.h"
 #include "gupnp-dlna-utils.h"
 #include "gupnp-dlna-value-list-private.h"
-#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-type.h"
 #include "gupnp-dlna-restriction-private.h"
 
 G_DEFINE_TYPE (GUPnPDLNAProfileLoader, gupnp_dlna_profile_loader, G_TYPE_OBJECT)
@@ -253,11 +253,11 @@ pre_field (GUPnPDLNAProfileLoader *loader)
         push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_FIELD);
 }
 
-static GUPnPDLNANativeValueType *
+static GUPnPDLNAValueType *
 value_type_from_string (const gchar *type)
 {
         if (!g_strcmp0 (type, "boolean"))
-                return gupnp_dlna_native_value_type_bool ();
+                return gupnp_dlna_value_type_bool ();
         else if (!g_strcmp0 (type, "float")) {
                 g_warning ("'float' data type is not yet supported.");
 
@@ -267,11 +267,11 @@ value_type_from_string (const gchar *type)
 
                 return NULL;
         } else if (!g_strcmp0 (type, "fraction"))
-                return gupnp_dlna_native_value_type_fraction ();
+                return gupnp_dlna_value_type_fraction ();
         else if (!g_strcmp0 (type, "int"))
-                return gupnp_dlna_native_value_type_int ();
+                return gupnp_dlna_value_type_int ();
         else if (!g_strcmp0 (type, "string"))
-                return gupnp_dlna_native_value_type_string ();
+                return gupnp_dlna_value_type_string ();
         g_critical ("Unknown value type: %s", type);
 
         return NULL;
@@ -315,7 +315,7 @@ post_field (GUPnPDLNAProfileLoader *loader,
         GUPnPDLNARestrictionData *restriction_data;
         GUPnPDLNANameValueListPair *pair;
         GUPnPDLNAValueList *value_list;
-        GUPnPDLNANativeValueType* value_type;
+        GUPnPDLNAValueType* value_type;
         GList *iter;
 
         pop_tag (loader);
