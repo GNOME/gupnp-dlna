@@ -32,7 +32,7 @@ SCAN_OPTIONS=--deprecated-guards="GUPNP_DISABLE_DEPRECATED"
 MKDB_OPTIONS = \
 	--sgml-mode \
 	--output-format=xml \
-	--ignore-files="metadata metadata-backends profile-backends"
+	--ignore-files="metadata metadata-backends"
 
 # Extra options to supply to gtkdoc-mktmpl
 # e.g. MKTMPL_OPTIONS=--only-section-tmpl
@@ -57,12 +57,20 @@ CFILE_GLOB=$(top_srcdir)/libgupnp-dlna/*.c
 IGNORE_HFILES = \
 	metadata \
 	metadata-backends \
-	profile-backends \
 	gupnp-dlna-field-value.h \
 	gupnp-dlna-metadata-backend.h \
-	gupnp-dlna-profile-backend.h \
 	gupnp-dlna-profile-guesser-impl.h \
-	gupnp-dlna-profile-loader.h
+	gupnp-dlna-profile-loader.h \
+	gupnp-dlna-g-values-private.h \
+	gupnp-dlna-info-set.h \
+	gupnp-dlna-info-value.h \
+	gupnp-dlna-profile-private.h \
+	gupnp-dlna-restriction-private.h \
+	gupnp-dlna-utils.h \
+	gupnp-dlna-value.h \
+	gupnp-dlna-value-list-private.h \
+	gupnp-dlna-value-type.h \
+	gupnp-dlna-value-union.h
 
 # Images to copy into HTML directory.
 # e.g. HTML_IMAGES=$(top_srcdir)/gtk/stock-icons/stock_about_24.png

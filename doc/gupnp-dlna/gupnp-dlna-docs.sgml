@@ -59,6 +59,15 @@
 
     <xi:include href="xml/gupnp-dlna-profile-guesser.xml"/>
     <xi:include href="xml/gupnp-dlna-profile.xml"/>
+    <xi:include href="xml/gupnp-dlna-information.xml"/>
+    <xi:include href="xml/gupnp-dlna-values.xml"/>
+    <xi:include href="xml/gupnp-dlna-audio-information.xml"/>
+    <xi:include href="xml/gupnp-dlna-container-information.xml"/>
+    <xi:include href="xml/gupnp-dlna-image-information.xml"/>
+    <xi:include href="xml/gupnp-dlna-video-information.xml"/>
+    <xi:include href="xml/gupnp-dlna-restriction.xml"/>
+    <xi:include href="xml/gupnp-dlna-value-list.xml"/>
+    <xi:include href="xml/gupnp-dlna-g-values.xml"/>
     <xi:include href="xml/api-index-full.xml"/>
 
   </chapter>

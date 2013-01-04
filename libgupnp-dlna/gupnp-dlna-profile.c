@@ -1,6 +1,6 @@
 /*
  * Copyright (C) 2010 Nokia Corporation.
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Arun Raghavan <arun.raghavan@collabora.co.uk>
  *          Krzesimir Nowak <krnowak@openismus.com>
@@ -64,8 +64,8 @@ gupnp_dlna_profile_get_property (GObject    *object,
                                  GValue     *value,
                                  GParamSpec *pspec)
 {
-        GUPnPDLNAProfile *self = GUPNP_DLNA_PROFILE (object);
-        GUPnPDLNAProfilePrivate *priv = self->priv;
+        GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (object);
+        GUPnPDLNAProfilePrivate *priv = profile->priv;
 
         switch (property_id) {
         case PROP_DLNA_NAME:
@@ -119,8 +119,8 @@ gupnp_dlna_profile_set_property (GObject      *object,
                                  const GValue *value,
                                  GParamSpec   *pspec)
 {
-        GUPnPDLNAProfile *self = GUPNP_DLNA_PROFILE (object);
-        GUPnPDLNAProfilePrivate *priv = self->priv;
+        GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (object);
+        GUPnPDLNAProfilePrivate *priv = profile->priv;
 
         switch (property_id) {
         case PROP_DLNA_NAME:
@@ -167,8 +167,8 @@ gupnp_dlna_profile_set_property (GObject      *object,
 static void
 gupnp_dlna_profile_finalize (GObject *object)
 {
-        GUPnPDLNAProfile *self = GUPNP_DLNA_PROFILE (object);
-        GUPnPDLNAProfilePrivate *priv = self->priv;
+        GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (object);
+        GUPnPDLNAProfilePrivate *priv = profile->priv;
 
         g_free (priv->name);
         g_free (priv->mime);
@@ -269,9 +269,9 @@ gupnp_dlna_profile_class_init (GUPnPDLNAProfileClass *klass)
 }
 
 static void
-gupnp_dlna_profile_init (GUPnPDLNAProfile *self)
+gupnp_dlna_profile_init (GUPnPDLNAProfile *profile)
 {
-        GUPnPDLNAProfilePrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE (self,
+        GUPnPDLNAProfilePrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE (profile,
                                                   GUPNP_TYPE_DLNA_PROFILE,
                                                   GUPnPDLNAProfilePrivate);
 
@@ -282,7 +282,7 @@ gupnp_dlna_profile_init (GUPnPDLNAProfile *self)
         priv->container_restrictions = NULL;
         priv->image_restrictions = NULL;
         priv->video_restrictions = NULL;
-        self->priv = priv;
+        profile->priv = priv;
 }
 
 /**
@@ -327,37 +327,72 @@ gupnp_dlna_profile_get_extended (GUPnPDLNAProfile *profile)
         return profile->priv->extended;
 }
 
+/**
+ * gupnp_dlna_profile_get_audio_restrictions:
+ * @profile: (transfer none): A profile.
+ *
+ * Gets a list of audio restrictions.
+ *
+ * Returns: (transfer none) (element-type GUPnPDLNARestriction): Audio
+ * restrictions. Do not modify.
+ */
 GList *
-gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *self)
+gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (self), NULL);
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
 
-        return self->priv->audio_restrictions;
+        return profile->priv->audio_restrictions;
 }
 
+/**
+ * gupnp_dlna_profile_get_container_restrictions:
+ * @profile: (transfer none): A profile.
+ *
+ * Gets a list of container restrictions.
+ *
+ * Returns: (transfer none) (element-type GUPnPDLNARestriction):
+ * Container restrictions. Do not modify.
+ */
 GList *
-gupnp_dlna_profile_get_container_restrictions
-                                        (GUPnPDLNAProfile *self)
+gupnp_dlna_profile_get_container_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (self), NULL);
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
 
-        return self->priv->container_restrictions;
+        return profile->priv->container_restrictions;
 }
 
+/**
+ * gupnp_dlna_profile_get_image_restrictions:
+ * @profile: (transfer none): A profile.
+ *
+ * Gets a list of image restrictions.
+ *
+ * Returns: (transfer none) (element-type GUPnPDLNARestriction): Image
+ * restrictions. Do not modify.
+ */
 GList *
-gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *self)
+gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (self), NULL);
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
 
-        return self->priv->image_restrictions;
+        return profile->priv->image_restrictions;
 }
 
+/**
+ * gupnp_dlna_profile_get_video_restrictions:
+ * @profile: (transfer none): A profile.
+ *
+ * Gets a list of video restrictions.
+ *
+ * Returns: (transfer none) (element-type GUPnPDLNARestriction): Video
+ * restrictions. Do not modify.
+ */
 GList *
-gupnp_dlna_profile_get_video_restrictions (GUPnPDLNAProfile *self)
+gupnp_dlna_profile_get_video_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (self), NULL);
+        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
 
-        return self->priv->video_restrictions;
+        return profile->priv->video_restrictions;
 }
 
 GUPnPDLNAProfile *

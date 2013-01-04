@@ -89,16 +89,16 @@ gboolean
 gupnp_dlna_profile_get_extended (GUPnPDLNAProfile *profile);
 
 GList *
-gupnp_dlna_profile_get_container_restrictions (GUPnPDLNAProfile *self);
+gupnp_dlna_profile_get_container_restrictions (GUPnPDLNAProfile *profile);
 
 GList *
-gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *self);
+gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *profile);
 
 GList *
-gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *self);
+gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *profile);
 
 GList *
-gupnp_dlna_profile_get_video_restrictions (GUPnPDLNAProfile *self);
+gupnp_dlna_profile_get_video_restrictions (GUPnPDLNAProfile *profile);
 
 G_END_DECLS
 

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -23,6 +23,8 @@
  * SECTION:gupnp-dlna-audio-information
  * @short_description: Base class representing audio metadata needed
  * for DLNA profiles matching.
+ * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
+ * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  *
  * #GUPnPDLNAAudioInformation holds all audio metadatas important for
  * matching profiles. Note that it does not mean all data should be
@@ -41,9 +43,6 @@
  * Note that gupnp_dlna_audio_information_get_mime() should always
  * return a set value. Otherwise it is highly probably that the file
  * will not match against any DLNA profile.
- *
- * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
- * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  */
 
 #include "gupnp-dlna-audio-information.h"
@@ -89,7 +88,7 @@ gupnp_dlna_audio_information_init (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_bitrate:
+ * gupnp_dlna_audio_information_get_bitrate: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A bitrate.
@@ -114,7 +113,7 @@ gupnp_dlna_audio_information_get_bitrate (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_channels:
+ * gupnp_dlna_audio_information_get_channels: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A number of channels.
@@ -139,7 +138,7 @@ gupnp_dlna_audio_information_get_channels (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_depth:
+ * gupnp_dlna_audio_information_get_depth: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A depth.
@@ -164,7 +163,7 @@ gupnp_dlna_audio_information_get_depth (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_layer:
+ * gupnp_dlna_audio_information_get_layer: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A layer.
@@ -189,7 +188,7 @@ gupnp_dlna_audio_information_get_layer (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_level:
+ * gupnp_dlna_audio_information_get_level: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A level.
@@ -214,7 +213,7 @@ gupnp_dlna_audio_information_get_level (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_mpeg_audio_version:
+ * gupnp_dlna_audio_information_get_mpeg_audio_version: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: An MPEG audio version.
@@ -240,7 +239,7 @@ gupnp_dlna_audio_information_get_mpeg_audio_version
 }
 
 /**
- * gupnp_dlna_audio_information_get_mpeg_version:
+ * gupnp_dlna_audio_information_get_mpeg_version: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: An MPEG version.
@@ -265,7 +264,7 @@ gupnp_dlna_audio_information_get_mpeg_version (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_profile:
+ * gupnp_dlna_audio_information_get_profile: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A profile.
@@ -290,7 +289,7 @@ gupnp_dlna_audio_information_get_profile (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_rate:
+ * gupnp_dlna_audio_information_get_rate: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A sample rate.
@@ -315,7 +314,7 @@ gupnp_dlna_audio_information_get_rate (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_stream_format:
+ * gupnp_dlna_audio_information_get_stream_format: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A stream format.
@@ -340,7 +339,7 @@ gupnp_dlna_audio_information_get_stream_format (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_wma_version:
+ * gupnp_dlna_audio_information_get_wma_version: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A WMA version.
@@ -365,7 +364,7 @@ gupnp_dlna_audio_information_get_wma_version (GUPnPDLNAAudioInformation *info)
 }
 
 /**
- * gupnp_dlna_audio_information_get_mime:
+ * gupnp_dlna_audio_information_get_mime: (skip)
  * @info: A #GUPnPDLNAAudioInformation object.
  *
  * Returns: A MIME type.

@@ -49,6 +49,12 @@ gupnp_dlna_restriction_new (const gchar *mime)
         return restriction;
 }
 
+/**
+ * gupnp_dlna_restriction_copy:
+ * @restriction: (transfer none): A restriction to copy.
+ *
+ * Returns: (transfer full): A copy of @restriction.
+ */
 GUPnPDLNARestriction *
 gupnp_dlna_restriction_copy (GUPnPDLNARestriction *restriction)
 {
@@ -76,6 +82,12 @@ gupnp_dlna_restriction_copy (GUPnPDLNARestriction *restriction)
         return dup;
 }
 
+/**
+ * gupnp_dlna_restriction_free:
+ * @restriction: A restriction to free.
+ *
+ * Frees @restriction.
+ */
 void
 gupnp_dlna_restriction_free (GUPnPDLNARestriction *restriction)
 {
@@ -135,6 +147,13 @@ gupnp_dlna_restriction_merge (GUPnPDLNARestriction *restriction,
         gupnp_dlna_restriction_free (merged);
 }
 
+/**
+ * gupnp_dlna_restriction_is_empty:
+ * @restriction: (transfer none): A restriction.
+ *
+ * Returns: %TRUE if @restriction is empty and has no MIME type,
+ * otherwise %FALSE.
+ */
 gboolean
 gupnp_dlna_restriction_is_empty (GUPnPDLNARestriction *restriction)
 {
@@ -144,6 +163,15 @@ gupnp_dlna_restriction_is_empty (GUPnPDLNARestriction *restriction)
                 g_hash_table_size (restriction->entries) == 0);
 }
 
+/**
+ * gupnp_dlna_restriction_to_string:
+ * @restriction: (transfer none): A restriction.
+ *
+ * Creates a string representation of @restriction.
+ *
+ * Returns: (transfer full): A string representation of
+ * @restriction. Free with g_free() when not needed.
+ */
 gchar *
 gupnp_dlna_restriction_to_string (GUPnPDLNARestriction *restriction)
 {
@@ -169,6 +197,14 @@ gupnp_dlna_restriction_to_string (GUPnPDLNARestriction *restriction)
         return g_string_free (str, FALSE);
 }
 
+/**
+ * gupnp_dlna_restriction_get_mime:
+ * @restriction: (transfer none): A restriction.
+ *
+ * Gets @restriction's MIME type.
+ *
+ * Returns: (transfer none): MIME type. Do not modify.
+ */
 const gchar *
 gupnp_dlna_restriction_get_mime (GUPnPDLNARestriction *restriction)
 {
@@ -177,6 +213,16 @@ gupnp_dlna_restriction_get_mime (GUPnPDLNARestriction *restriction)
         return restriction->mime;
 }
 
+/**
+ * gupnp_dlna_restriction_get_entries:
+ * @restriction: (transfer none): A restriction.
+ *
+ * Gets @restriction's entries. It is a string to #GUPnPDLNAValueList
+ * mapping.
+ *
+ * Returns: (transfer none) (element-type utf8 GUPnPDLNAValueList):
+ * Entries. Do not modify.
+ */
 GHashTable *
 gupnp_dlna_restriction_get_entries (GUPnPDLNARestriction *restriction)
 {

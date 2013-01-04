@@ -61,6 +61,12 @@ free_value_list (GUPnPDLNAValueList *list)
         }
 }
 
+/**
+ * gupnp_dlna_value_list_free:
+ * @list: A list to free.
+ *
+ * Frees the value list.
+ */
 void
 gupnp_dlna_value_list_free (GUPnPDLNAValueList *list)
 {
@@ -134,6 +140,12 @@ gupnp_dlna_value_list_add_range (GUPnPDLNAValueList *list,
         return FALSE;
 }
 
+/**
+ * gupnp_dlna_value_list_copy:
+ * @list: (transfer none): A list to copy.
+ *
+ * Returns: (transfer full): A copy of @list.
+ */
 GUPnPDLNAValueList *
 gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list)
 {
@@ -196,6 +208,12 @@ gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList *list,
         return FALSE;
 }
 
+/**
+ * gupnp_dlna_value_list_is_empty:
+ * @list: (transfer none): A list.
+ *
+ * Returns: %TRUE if @list is empty, otherwise %FALSE.
+ */
 gboolean
 gupnp_dlna_value_list_is_empty (GUPnPDLNAValueList *value_list)
 {
@@ -234,6 +252,15 @@ list_to_string (GUPnPDLNAValueList *value_list)
         return str;
 }
 
+/**
+ * gupnp_dlna_value_list_to_string:
+ * @list: (transfer none): A list.
+ *
+ * Creates a string representation of @list.
+ *
+ * Returns: (transfer full): A string representation of @list. Free
+ * with g_free() when not needed.
+ */
 gchar *
 gupnp_dlna_value_list_to_string (GUPnPDLNAValueList *value_list)
 {
@@ -277,6 +304,17 @@ gupnp_dlna_value_list_sort_items (GUPnPDLNAValueList *value_list)
         }
 }
 
+/**
+ * gupnp_dlna_value_list_get_g_values:
+ * @list: (transfer none): A list.
+ *
+ * Gets a list of #GValues. #GValues can be of types #G_TYPE_BOOLEAN,
+ * #G_TYPE_INT, #G_TYPE_STRING, #GUPNP_TYPE_DLNA_FRACTION,
+ * #GUPNP_TYPE_DLNA_FRACTION_RANGE or #GUPNP_TYPE_DLNA_INT_RANGE.
+ *
+ * Returns: (transfer full) (element-type GValue): A list. Free it
+ * with g_list_free_full() with g_free().
+ */
 GList *
 gupnp_dlna_value_list_get_g_values (GUPnPDLNAValueList *list)
 {

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -23,6 +23,8 @@
  * SECTION:gupnp-dlna-image-information
  * @short_description: Base class representing image metadata needed
  * for DLNA profiles matching.
+ * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
+ * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  *
  * #GUPnPDLNAImageInformation holds all image metadatas important for
  * matching profiles. Note that it does not mean all data should be
@@ -41,9 +43,6 @@
  * Note that gupnp_dlna_image_information_get_mime() should always
  * return a set value. Otherwise it is highly probably that the file
  * will not match against any DLNA profile.
- *
- * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
- * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  */
 
 #include "gupnp-dlna-image-information.h"
@@ -81,7 +80,7 @@ gupnp_dlna_image_information_init (GUPnPDLNAImageInformation *info)
 }
 
 /**
- * gupnp_dlna_image_information_get_depth:
+ * gupnp_dlna_image_information_get_depth: (skip)
  * @info: A #GUPnPDLNAImageInformation object.
  *
  * Returns: A depth of an image.
@@ -106,7 +105,7 @@ gupnp_dlna_image_information_get_depth (GUPnPDLNAImageInformation *info)
 }
 
 /**
- * gupnp_dlna_image_information_get_height:
+ * gupnp_dlna_image_information_get_height: (skip)
  * @info: A #GUPnPDLNAImageInformation object.
  *
  * Returns: A height of an image.
@@ -131,7 +130,7 @@ gupnp_dlna_image_information_get_height (GUPnPDLNAImageInformation *info)
 }
 
 /**
- * gupnp_dlna_image_information_get_width:
+ * gupnp_dlna_image_information_get_width: (skip)
  * @info: A #GUPnPDLNAImageInformation object.
  *
  * Returns: A width of an image.
@@ -156,7 +155,7 @@ gupnp_dlna_image_information_get_width (GUPnPDLNAImageInformation *info)
 }
 
 /**
- * gupnp_dlna_image_information_get_mime:
+ * gupnp_dlna_image_information_get_mime: (skip)
  * @info: A #GUPnPDLNAImageInformation object.
  *
  * Returns: A MIME type of an image.

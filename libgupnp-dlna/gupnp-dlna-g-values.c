@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -67,6 +67,12 @@ gupnp_dlna_int_range_new (gint min,
         return range;
 }
 
+/**
+ * gupnp_dlna_fraction_copy:
+ * @fraction: (transfer none): A fraction to copy.
+ *
+ * Returns: (transfer full): A copy of @fraction.
+ */
 GUPnPDLNAFraction *
 gupnp_dlna_fraction_copy (GUPnPDLNAFraction *fraction)
 {
@@ -82,6 +88,12 @@ gupnp_dlna_fraction_copy (GUPnPDLNAFraction *fraction)
         return dup;
 }
 
+/**
+ * gupnp_dlna_fraction_free:
+ * @fraction: A fraction to free.
+ *
+ * Frees @fraction.
+ */
 void
 gupnp_dlna_fraction_free (GUPnPDLNAFraction *fraction)
 {
@@ -91,6 +103,12 @@ gupnp_dlna_fraction_free (GUPnPDLNAFraction *fraction)
         g_slice_free (GUPnPDLNAFraction, fraction);
 }
 
+/**
+ * gupnp_dlna_fraction_get_numerator:
+ * @fraction: A fraction.
+ *
+ * Returns: @fraction's numerator.
+ */
 gint
 gupnp_dlna_fraction_get_numerator (GUPnPDLNAFraction *fraction)
 {
@@ -99,6 +117,12 @@ gupnp_dlna_fraction_get_numerator (GUPnPDLNAFraction *fraction)
         return fraction->numerator;
 }
 
+/**
+ * gupnp_dlna_fraction_get_denominator:
+ * @fraction: A fraction.
+ *
+ * Returns: @fraction's denominator.
+ */
 gint
 gupnp_dlna_fraction_get_denominator (GUPnPDLNAFraction *fraction)
 {
@@ -107,6 +131,12 @@ gupnp_dlna_fraction_get_denominator (GUPnPDLNAFraction *fraction)
         return fraction->denominator;
 }
 
+/**
+ * gupnp_dlna_fraction_range_copy:
+ * @range: (transfer none): A range to copy.
+ *
+ * Returns: (transfer full): A copy of @range.
+ */
 GUPnPDLNAFractionRange *
 gupnp_dlna_fraction_range_copy (GUPnPDLNAFractionRange *range)
 {
@@ -118,6 +148,12 @@ gupnp_dlna_fraction_range_copy (GUPnPDLNAFractionRange *range)
                                          gupnp_dlna_fraction_copy (range->max));
 }
 
+/**
+ * gupnp_dlna_fraction_range_free:
+ * @range: A range to free.
+ *
+ * Frees @range.
+ */
 void
 gupnp_dlna_fraction_range_free (GUPnPDLNAFractionRange *range)
 {
@@ -129,6 +165,12 @@ gupnp_dlna_fraction_range_free (GUPnPDLNAFractionRange *range)
         g_slice_free (GUPnPDLNAFractionRange, range);
 }
 
+/**
+ * gupnp_dlna_fraction_range_get_min:
+ * @range: A range.
+ *
+ * Returns: (transfer none): Minimum value of @range.
+ */
 GUPnPDLNAFraction *
 gupnp_dlna_fraction_range_get_min (GUPnPDLNAFractionRange *range)
 {
@@ -137,6 +179,12 @@ gupnp_dlna_fraction_range_get_min (GUPnPDLNAFractionRange *range)
         return range->min;
 }
 
+/**
+ * gupnp_dlna_fraction_range_get_max:
+ * @range: A range.
+ *
+ * Returns: (transfer none): Maximum value of @range.
+ */
 GUPnPDLNAFraction *
 gupnp_dlna_fraction_range_get_max (GUPnPDLNAFractionRange *range)
 {
@@ -145,6 +193,12 @@ gupnp_dlna_fraction_range_get_max (GUPnPDLNAFractionRange *range)
         return range->max;
 }
 
+/**
+ * gupnp_dlna_int_range_copy:
+ * @range: (transfer none): A range to copy.
+ *
+ * Returns: (transfer full): A copy of @range.
+ */
 GUPnPDLNAIntRange *
 gupnp_dlna_int_range_copy (GUPnPDLNAIntRange *range)
 {
@@ -154,6 +208,12 @@ gupnp_dlna_int_range_copy (GUPnPDLNAIntRange *range)
         return gupnp_dlna_int_range_new (range->min, range->max);
 }
 
+/**
+ * gupnp_dlna_int_range_free:
+ * @range: A range to free.
+ *
+ * Frees @range.
+ */
 void
 gupnp_dlna_int_range_free (GUPnPDLNAIntRange *range)
 {
@@ -163,6 +223,12 @@ gupnp_dlna_int_range_free (GUPnPDLNAIntRange *range)
         g_slice_free (GUPnPDLNAIntRange, range);
 }
 
+/**
+ * gupnp_dlna_int_range_get_min:
+ * @range: A range.
+ *
+ * Returns: Minimum value of @range.
+ */
 gint
 gupnp_dlna_int_range_get_min (GUPnPDLNAIntRange *range)
 {
@@ -171,6 +237,12 @@ gupnp_dlna_int_range_get_min (GUPnPDLNAIntRange *range)
         return range->min;
 }
 
+/**
+ * gupnp_dlna_int_range_get_max:
+ * @range: A range.
+ *
+ * Returns: Maximum value of @range.
+ */
 gint
 gupnp_dlna_int_range_get_max (GUPnPDLNAIntRange *range)
 {

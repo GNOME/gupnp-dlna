@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -23,6 +23,8 @@
  * SECTION:gupnp-dlna-container-information
  * @short_description: Base class representing container metadata
  * needed for DLNA profiles matching.
+ * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
+ * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  *
  * #GUPnPDLNAContainerInformation holds all container metadatas
  * important for matching profiles. Note that it does not mean all
@@ -42,9 +44,6 @@
  * Note that gupnp_dlna_container_information_get_mime() should always
  * return a set value. Otherwise it is highly probably that the file
  * will not match against any DLNA profile.
- *
- * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
- * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  */
 
 #include "gupnp-dlna-container-information.h"
@@ -85,7 +84,7 @@ gupnp_dlna_container_information_init (GUPnPDLNAContainerInformation *info)
 }
 
 /**
- * gupnp_dlna_container_information_get_mpeg_version:
+ * gupnp_dlna_container_information_get_mpeg_version: (skip)
  * @info: A #GUPnPDLNAContainerInformation object.
  *
  * Returns: An MPEG version.
@@ -111,7 +110,7 @@ gupnp_dlna_container_information_get_mpeg_version
 }
 
 /**
- * gupnp_dlna_container_information_get_packet_size:
+ * gupnp_dlna_container_information_get_packet_size: (skip)
  * @info: A #GUPnPDLNAContainerInformation object.
  *
  * Returns: A packet size.
@@ -137,7 +136,7 @@ gupnp_dlna_container_information_get_packet_size
 }
 
 /**
- * gupnp_dlna_container_information_get_profile:
+ * gupnp_dlna_container_information_get_profile: (skip)
  * @info: A #GUPnPDLNAContainerInformation object.
  *
  * Returns: A profile.
@@ -163,7 +162,7 @@ gupnp_dlna_container_information_get_profile
 }
 
 /**
- * gupnp_dlna_container_information_is_system_stream:
+ * gupnp_dlna_container_information_is_system_stream: (skip)
  * @info: A #GUPnPDLNAContainerInformation object.
  *
  * Returns: Whether it is system stream.
@@ -189,7 +188,7 @@ gupnp_dlna_container_information_is_system_stream
 }
 
 /**
- * gupnp_dlna_container_information_get_variant:
+ * gupnp_dlna_container_information_get_variant: (skip)
  * @info: A #GUPnPDLNAContainerInformation object.
  *
  * Returns: A variant.
@@ -215,7 +214,7 @@ gupnp_dlna_container_information_get_variant
 }
 
 /**
- * gupnp_dlna_container_information_get_mime:
+ * gupnp_dlna_container_information_get_mime: (skip)
  * @info: A #GUPnPDLNAContainerInformation object.
  *
  * Returns: A MIME type.

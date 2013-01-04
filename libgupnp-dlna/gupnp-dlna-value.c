@@ -433,10 +433,10 @@ gupnp_dlna_value_to_g_value (GUPnPDLNAValue     *base,
         g_return_val_if_fail (base->vtable != NULL, NULL);
         g_return_val_if_fail (base->vtable->to_g_value != NULL, NULL);
 
-        g_value = g_slice_new0 (GValue);
+        g_value = g_new0 (GValue, 1);
 
         if (base->vtable->to_g_value (base, type, g_value)) {
-                g_slice_free (GValue, g_value);
+                g_free (g_value);
                 g_value = NULL;
         }
 

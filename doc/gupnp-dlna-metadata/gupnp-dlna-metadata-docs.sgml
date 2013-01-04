@@ -46,12 +46,6 @@
       the profile.
     </para>
 
-    <xi:include href="xml/gupnp-dlna-information.xml"/>
-    <xi:include href="xml/gupnp-dlna-values.xml"/>
-    <xi:include href="xml/gupnp-dlna-audio-information.xml"/>
-    <xi:include href="xml/gupnp-dlna-container-information.xml"/>
-    <xi:include href="xml/gupnp-dlna-image-information.xml"/>
-    <xi:include href="xml/gupnp-dlna-video-information.xml"/>
     <xi:include href="xml/gupnp-dlna-metadata-extractor.xml"/>
     <xi:include href="xml/api-index-full.xml"/>
 

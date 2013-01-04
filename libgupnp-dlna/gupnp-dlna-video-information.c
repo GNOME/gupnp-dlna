@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -23,6 +23,8 @@
  * SECTION:gupnp-dlna-video-information
  * @short_description: Base class representing video metadata needed
  * for DLNA profiles matching.
+ * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
+ * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  *
  * #GUPnPDLNAVideoInformation holds all video metadatas important for
  * matching profiles. Note that it does not mean all data should be
@@ -42,9 +44,6 @@
  * Note that gupnp_dlna_video_information_get_mime() should always
  * return a set value. Otherwise it is highly probably that the file
  * will not match against any DLNA profile.
- *
- * @see_also: #GUPnPDLNABoolValue, #GUPnPDLNAFractionValue,
- * #GUPnPDLNAIntValue, #GUPnPDLNAStringValue
  */
 
 #include "gupnp-dlna-video-information.h"
@@ -89,7 +88,7 @@ gupnp_dlna_video_information_init (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_bitrate:
+ * gupnp_dlna_video_information_get_bitrate: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A bitrate.
@@ -114,7 +113,7 @@ gupnp_dlna_video_information_get_bitrate (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_framerate:
+ * gupnp_dlna_video_information_get_framerate: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A framerate.
@@ -139,7 +138,7 @@ gupnp_dlna_video_information_get_framerate (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_height:
+ * gupnp_dlna_video_information_get_height: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A height.
@@ -164,7 +163,7 @@ gupnp_dlna_video_information_get_height (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_is_interlaced:
+ * gupnp_dlna_video_information_is_interlaced: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: Whether video is interlaced.
@@ -189,7 +188,7 @@ gupnp_dlna_video_information_is_interlaced (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_level:
+ * gupnp_dlna_video_information_get_level: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A level.
@@ -214,7 +213,7 @@ gupnp_dlna_video_information_get_level (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_mpeg_version:
+ * gupnp_dlna_video_information_get_mpeg_version: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: An MPEG version.
@@ -239,7 +238,7 @@ gupnp_dlna_video_information_get_mpeg_version (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_pixel_aspect_ratio:
+ * gupnp_dlna_video_information_get_pixel_aspect_ratio: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A pixel-aspect-ratio.
@@ -265,7 +264,7 @@ gupnp_dlna_video_information_get_pixel_aspect_ratio
 }
 
 /**
- * gupnp_dlna_video_information_get_profile:
+ * gupnp_dlna_video_information_get_profile: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A profile.
@@ -290,7 +289,7 @@ gupnp_dlna_video_information_get_profile (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_is_system_stream:
+ * gupnp_dlna_video_information_is_system_stream: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: Whether it is a system stream.
@@ -315,7 +314,7 @@ gupnp_dlna_video_information_is_system_stream (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_width:
+ * gupnp_dlna_video_information_get_width: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A width.
@@ -340,7 +339,7 @@ gupnp_dlna_video_information_get_width (GUPnPDLNAVideoInformation *info)
 }
 
 /**
- * gupnp_dlna_video_information_get_mime:
+ * gupnp_dlna_video_information_get_mime: (skip)
  * @info: A #GUPnPDLNAVideoInformation object.
  *
  * Returns: A MIME type.
