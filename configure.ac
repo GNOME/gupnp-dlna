@@ -200,6 +200,7 @@ tests/Makefile
 data/Makefile
 gupnp-dlna-2.0.pc
 gupnp-dlna-metadata-2.0.pc
+gupnp-dlna-gst-2.0.pc
 doc/Makefile
 doc/version.xml
 doc/gupnp-dlna/Makefile

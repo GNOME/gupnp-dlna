@@ -1,0 +1,9 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+includedir=@includedir@
+
+Name: gupnp-dlna-gst-2.0
+Description: GStreamer specific utils using GUPnP-DLNA
+Version: @VERSION@
+Requires: glib-2.0 gobject-2.0 gupnp-dlna-2.0 gstreamer-@GST_MAJORMINOR@ gstreamer-pbutils-@GST_MAJORMINOR@

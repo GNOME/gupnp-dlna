@@ -13,6 +13,9 @@ LTVERSION = $(GUPNP_DLNA_VERSION_INFO)
 
 include $(top_srcdir)/common.am
 
+libgupnp_dlna_incdir = \
+	$(includedir)/gupnp-dlna-2.0/libgupnp-dlna
+libgupnp_dlna_inc_HEADERS =
 noinst_LTLIBRARIES =
 pkglib_LTLIBRARIES =
 lib_LTLIBRARIES =
@@ -34,8 +37,7 @@ metadata_log_cflags = \
 
 common_cflags = \
 	$(GLIB_CFLAGS) \
-	$(GOBJECT_CFLAGS) \
-	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
+	$(GOBJECT_CFLAGS)
 
 metadata_cflags = \
 	-I$(top_srcdir)/libgupnp-dlna/metadata
@@ -44,7 +46,6 @@ common_libadd = \
 	$(GLIB_LIBS) \
 	$(GOBJECT_LIBS)
 
-# "Profile backend" might add some stuff to variables below.
 gupnp_ldflags = \
 	-version-info $(LTVERSION) \
 	-no-undefined
@@ -79,8 +80,7 @@ libloader_la_CFLAGS = \
 	$(metadata_cflags) \
 	$(common_cflags) \
 	$(LIBXML_CFLAGS) \
-	-DDATA_DIR='"$(shareddir)"' \
-	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native
+	-DDATA_DIR='"$(shareddir)"'
 
 libguesser_la_SOURCES = \
 	gupnp-dlna-profile-guesser.c \
@@ -90,8 +90,7 @@ libguesser_la_LIBADD = \
 libguesser_la_CFLAGS = \
 	$(guesser_log_cflags) \
 	$(metadata_cflags) \
-	$(common_cflags) \
-	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native
+	$(common_cflags)
 
 libmetadata_la_SOURCES = \
 	gupnp-dlna-metadata-backend.c \
@@ -134,9 +133,7 @@ libgupnp_dlna_2_0_la_CFLAGS = \
 	$(metadata_cflags) \
 	$(gupnp_cflags)
 
-libgupnp_dlna_incdir = \
-	$(includedir)/gupnp-dlna-2.0/libgupnp-dlna
-libgupnp_dlna_inc_HEADERS = \
+libgupnp_dlna_inc_HEADERS += \
 	gupnp-dlna-profile-guesser.h \
 	gupnp-dlna-profile.h \
 	gupnp-dlna-restriction.h \
@@ -173,17 +170,27 @@ dist_noinst_HEADERS += \
 # INTROSPECTION
 -include $(INTROSPECTION_MAKEFILE)
 INTROSPECTION_GIRS =
-INTROSPECTION_SCANNER_ARGS =
+INTROSPECTION_SCANNER_ARGS = \
+	--warn-all
 INTROSPECTION_COMPILER_ARGS = \
-	--includedir=$(top_srcdir) \
-	--includedir=$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
+	--includedir=$(top_srcdir)
 
 if HAVE_INTROSPECTION
 
 girs = GUPnPDLNA-2.0.gir
 
 introspection_sources = \
-	$(libgupnp_dlna_inc_HEADERS) \
+	gupnp-dlna-profile-guesser.h \
+	gupnp-dlna-profile.h \
+	gupnp-dlna-restriction.h \
+	gupnp-dlna-value-list.h \
+	gupnp-dlna-g-values.h \
+	gupnp-dlna-audio-information.h \
+	gupnp-dlna-container-information.h \
+	gupnp-dlna-image-information.h \
+	gupnp-dlna-video-information.h \
+	gupnp-dlna-information.h \
+	gupnp-dlna-values.h \
 	gupnp-dlna-profile-guesser.c \
 	gupnp-dlna-profile.c \
 	gupnp-dlna-restriction.c \
@@ -200,10 +207,25 @@ GUPnPDLNA_2_0_gir_FILES = $(introspection_sources)
 GUPnPDLNA_2_0_gir_LIBS = libgupnp-dlna-2.0.la
 GUPnPDLNA_2_0_gir_INCLUDES = GObject-2.0
 GUPnPDLNA_2_0_gir_SCANNERFLAGS = \
-	--warn-all \
 	--symbol-prefix=gupnp_dlna \
-	--identifier-prefix=GUPnPDLNA \
-	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
+	--identifier-prefix=GUPnPDLNA
+
+if GSTREAMER_METADATA_BACKEND_ENABLED
+girs += GUPnPDLNAGst-2.0.gir
+
+gst_introspection_sources = \
+	metadata-backends/gstreamer/gupnp-dlna-gst-utils.h \
+	metadata-backends/gstreamer/gupnp-dlna-gst-utils.c
+
+GUPnPDLNAGst-2.0.gir: $(gstreamer_utils_lib) GUPnPDLNA-2.0.gir
+GUPnPDLNAGst_2_0_gir_FILES = $(gst_introspection_sources)
+GUPnPDLNAGst_2_0_gir_LIBS = $(gstreamer_utils_lib)
+GUPnPDLNAGst_2_0_gir_INCLUDES = GObject-2.0 GUPnPDLNA-2.0 Gst-1.0 GstPbutils-1.0
+GUPnPDLNAGst_2_0_gir_SCANNERFLAGS = \
+	--symbol-prefix=gupnp_dlna_gst \
+	--identifier-prefix=GUPnPDLNAGst \
+	--add-include-path=.
+endif
 
 INTROSPECTION_GIRS += $(girs)
 

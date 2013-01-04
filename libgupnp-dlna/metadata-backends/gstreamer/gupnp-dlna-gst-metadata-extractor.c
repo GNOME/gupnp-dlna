@@ -24,6 +24,7 @@
 #include <gst/pbutils/pbutils.h>
 #include "gupnp-dlna-gst-metadata-extractor.h"
 #include "gupnp-dlna-gst-information.h"
+#include "gupnp-dlna-gst-utils.h"
 
 /**
  * SECTION:gupnp-dlna-gst-metadata-extractor
@@ -76,10 +77,8 @@ gupnp_dlna_discovered_cb (GUPnPDLNAMetadataExtractor *self,
                                   (gupnp_dlna_gst_information_new_empty_with_uri
                                         (gst_discoverer_info_get_uri (info)));
         else
-                gupnp_info = GUPNP_DLNA_INFORMATION
-                            (gupnp_dlna_gst_information_new_from_discoverer_info
-                                        (gst_discoverer_info_get_uri (info),
-                                         info));
+                gupnp_info = gupnp_dlna_gst_utils_information_from_discoverer_info
+                                        (info);
         gupnp_dlna_metadata_extractor_emit_done (self,
                                                  gupnp_info,
                                                  error);

@@ -12,25 +12,40 @@ gst_metadata_backend_cflags = \
 
 gstreamer_metadata_backend = \
 	metadata-backends/gstreamer/libgstreamer.la
+gstreamer_utils_lib = \
+	metadata-backends/gstreamer/libgupnp-dlna-gst-2.0.la
 metadata_LTLIBRARIES += \
 	$(gstreamer_metadata_backend)
+lib_LTLIBRARIES += \
+	$(gstreamer_utils_lib)
 
 metadata_backends_gstreamer_libgstreamer_la_LDFLAGS = \
-	$(convenience_ldflags) \
+	-no-undefined \
 	-shared -fPIC -module -avoid-version -Wl,-z,defs
 metadata_backends_gstreamer_libgstreamer_la_SOURCES = \
+	metadata-backends/gstreamer/gupnp-dlna-gst-metadata-backend.c \
+	metadata-backends/gstreamer/gupnp-dlna-gst-metadata-extractor.c
+metadata_backends_gstreamer_libgstreamer_la_LIBADD = \
+	$(gst_metadata_backend_libadd) \
+	$(gstreamer_utils_lib)
+metadata_backends_gstreamer_libgstreamer_la_CFLAGS = \
+	$(gst_metadata_backend_cflags)
+
+metadata_backends_gstreamer_libgupnp_dlna_gst_2_0_la_LDFLAGS = \
+	$(gupnp_ldflags)
+metadata_backends_gstreamer_libgupnp_dlna_gst_2_0_la_SOURCES = \
 	metadata-backends/gstreamer/gupnp-dlna-gst-audio-information.c \
 	metadata-backends/gstreamer/gupnp-dlna-gst-container-information.c \
 	metadata-backends/gstreamer/gupnp-dlna-gst-image-information.c \
 	metadata-backends/gstreamer/gupnp-dlna-gst-information.c \
 	metadata-backends/gstreamer/gupnp-dlna-gst-info-utils.c \
-	metadata-backends/gstreamer/gupnp-dlna-gst-metadata-backend.c \
-	metadata-backends/gstreamer/gupnp-dlna-gst-metadata-extractor.c \
+	metadata-backends/gstreamer/gupnp-dlna-gst-utils.c \
 	metadata-backends/gstreamer/gupnp-dlna-gst-video-information.c
-metadata_backends_gstreamer_libgstreamer_la_LIBADD = \
+metadata_backends_gstreamer_libgupnp_dlna_gst_2_0_la_LIBADD = \
 	$(gst_metadata_backend_libadd)
-metadata_backends_gstreamer_libgstreamer_la_CFLAGS = \
+metadata_backends_gstreamer_libgupnp_dlna_gst_2_0_la_CFLAGS = \
 	$(gst_metadata_backend_cflags)
+
 dist_noinst_HEADERS += \
 	metadata-backends/gstreamer/gupnp-dlna-gst-audio-information.h \
 	metadata-backends/gstreamer/gupnp-dlna-gst-container-information.h \
@@ -39,3 +54,6 @@ dist_noinst_HEADERS += \
 	metadata-backends/gstreamer/gupnp-dlna-gst-info-utils.h \
 	metadata-backends/gstreamer/gupnp-dlna-gst-metadata-extractor.h \
 	metadata-backends/gstreamer/gupnp-dlna-gst-video-information.h
+
+libgupnp_dlna_inc_HEADERS += \
+	metadata-backends/gstreamer/gupnp-dlna-gst-utils.h

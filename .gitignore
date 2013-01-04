@@ -49,6 +49,7 @@ m4/ltsugar.m4
 m4/ltversion.m4
 m4/lt~obsolete.m4
 vala/gupnp-dlna-2.0.vapi
+vala/gupnp-dlna-gst-2.0.vapi
 *.gir
 *.typelib
 tests/dlna-encoding
@@ -69,6 +70,7 @@ depcomp
 gtk-doc.make
 gupnp-dlna-2.0.pc
 gupnp-dlna-metadata-2.0.pc
+gupnp-dlna-gst-2.0.pc
 gupnp-dlna-2.0-uninstalled.pc
 gupnp-dlna-*.tar.xz
 install-sh

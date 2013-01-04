@@ -5,6 +5,10 @@ SUBDIRS = libgupnp-dlna tools tests data doc vala
 pkgconfig_DATA = gupnp-dlna-2.0.pc gupnp-dlna-metadata-2.0.pc
 pkgconfigdir = $(libdir)/pkgconfig
 
+if GSTREAMER_METADATA_BACKEND_ENABLED
+pkgconfig_DATA += gupnp-dlna-gst-2.0.pc
+endif
+
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection
 
 # Extra clean files so that maintainer-clean removes *everything*
