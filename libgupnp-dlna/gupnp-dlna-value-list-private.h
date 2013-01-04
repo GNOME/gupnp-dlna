@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -24,6 +24,7 @@
 
 #include <glib.h>
 
+#include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-value-list.h"
 #include "gupnp-dlna-native-value-type.h"
 
@@ -43,6 +44,17 @@ gupnp_dlna_value_list_add_range (GUPnPDLNAValueList *list,
 gboolean
 gupnp_dlna_value_list_add_single (GUPnPDLNAValueList *list,
                                   const gchar        *single);
+
+gboolean
+gupnp_dlna_value_list_is_superset (GUPnPDLNAValueList       *list,
+                                   GUPnPDLNANativeInfoValue *value,
+                                   gboolean                 *unsupported);
+
+GList *
+gupnp_dlna_value_list_get_list (GUPnPDLNAValueList *value_list);
+
+void
+gupnp_dlna_value_list_sort_items (GUPnPDLNAValueList *value_list);
 
 G_END_DECLS
 

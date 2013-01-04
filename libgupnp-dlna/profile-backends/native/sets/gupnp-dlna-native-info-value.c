@@ -20,9 +20,8 @@
  */
 
 #include <string.h> /* for memset */
+
 #include "gupnp-dlna-native-info-value.h"
-#include "gupnp-dlna-native-value-type.h"
-#include "gupnp-dlna-native-sets-private.h"
 
 /* private */
 struct _GUPnPDLNANativeInfoValue {

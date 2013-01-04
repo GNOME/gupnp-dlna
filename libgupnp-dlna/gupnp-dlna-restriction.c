@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -22,7 +22,7 @@
 #include <glib.h>
 
 #include "gupnp-dlna-restriction-private.h"
-#include "gupnp-dlna-native-sets-private.h"
+#include "gupnp-dlna-value-list-private.h"
 
 struct _GUPnPDLNARestriction {
         gchar *mime;

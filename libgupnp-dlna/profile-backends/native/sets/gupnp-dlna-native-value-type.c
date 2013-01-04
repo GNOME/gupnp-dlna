@@ -20,8 +20,9 @@
  */
 
 #include <stdlib.h>
+
+#include "gupnp-dlna-g-values-private.h"
 #include "gupnp-dlna-native-value-type.h"
-#include "gupnp-dlna-native-sets-private.h"
 
 struct _GUPnPDLNANativeValueType {
         gboolean

@@ -20,7 +20,7 @@
  */
 
 #include "gupnp-dlna-native-value.h"
-#include "gupnp-dlna-native-sets-private.h"
+#include "gupnp-dlna-value-union.h"
 
 struct _GUPnPDLNANativeValueVTable {
         gboolean

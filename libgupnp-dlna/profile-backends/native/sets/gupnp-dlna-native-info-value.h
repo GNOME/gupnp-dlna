@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -23,6 +23,9 @@
 #define __GUPNP_DLNA_NATIVE_INFO_VALUE_H__
 
 #include <glib.h>
+
+#include "gupnp-dlna-native-value-type.h"
+#include "gupnp-dlna-value-union.h"
 
 G_BEGIN_DECLS
 
@@ -61,6 +64,12 @@ gupnp_dlna_native_info_value_to_string (GUPnPDLNANativeInfoValue *info_value);
 
 gboolean
 gupnp_dlna_native_info_value_is_unsupported (GUPnPDLNANativeInfoValue *info);
+
+GUPnPDLNANativeValueType *
+gupnp_dlna_native_info_value_get_type (GUPnPDLNANativeInfoValue *info);
+
+GUPnPDLNAValueUnion *
+gupnp_dlna_native_info_value_get_value (GUPnPDLNANativeInfoValue *info);
 
 G_END_DECLS
 

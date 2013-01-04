@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -21,7 +21,6 @@
 
 #include <glib.h>
 #include "gupnp-dlna-native-sets.h"
-#include "gupnp-dlna-native-sets-private.h"
 
 static void
 value_type_not_null (void)

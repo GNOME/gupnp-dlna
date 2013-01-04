@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <glib-object.h>
 #include "gupnp-dlna-restriction.h"
-#include "gupnp-dlna-value-list-private.h"
+#include "gupnp-dlna-value-list.h"
 
 G_BEGIN_DECLS
 

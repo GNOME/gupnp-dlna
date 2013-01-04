@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2012 Intel Corporation.
+ * Copyright (C) 2012, 2013 Intel Corporation.
  *
  * Authors: Krzesimir Nowak <krnowak@openismus.com>
  *
@@ -24,6 +24,7 @@
 
 #include <glib.h>
 #include <glib-object.h>
+
 #include "gupnp-dlna-native-info-value.h"
 #include "gupnp-dlna-native-value-type.h"
 
