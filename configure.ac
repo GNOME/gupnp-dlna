@@ -205,6 +205,7 @@ doc/Makefile
 doc/version.xml
 doc/gupnp-dlna/Makefile
 doc/gupnp-dlna-metadata/Makefile
+doc/gupnp-dlna-gst/Makefile
 vala/Makefile
 ])
 AC_CONFIG_FILES([tests/test-discoverer.sh],

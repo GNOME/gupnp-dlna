@@ -26,26 +26,6 @@
 #include "gupnp-dlna-gst-information.h"
 #include "gupnp-dlna-gst-utils.h"
 
-/**
- * SECTION:gupnp-dlna-gst-metadata-extractor
- * @short_description: Utility API for extracting metadata for given
- * media.
- *
- * The GUPnPDLNAGstMetadataExtractor object provides a light-weight
- * wrapper over the #GstMetadataExtractor API. The latter provides a
- * simple interface to discover media metadata given a
- * URI. GUPnPDLNAGstMetadataExtractor extends this API to also provide
- * a DLNA profile name and mime type for the media.
- *
- * The API provided corresponds very closely to the API provided by
- * #GstMetadataExtractor - both synchronous and asynchronous discovery
- * of metadata are possible.
- *
- * The asynchronous mode requires a running #GMainLoop in the default
- * #GMainContext, where one connects to the various signals, appends
- * the URIs to be processed and then asks for the discovery to begin.
- */
-
 G_DEFINE_TYPE (GUPnPDLNAGstMetadataExtractor,
                gupnp_dlna_gst_metadata_extractor,
                GUPNP_TYPE_DLNA_METADATA_EXTRACTOR)
