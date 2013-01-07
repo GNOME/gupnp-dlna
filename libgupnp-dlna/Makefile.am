@@ -37,7 +37,8 @@ metadata_log_cflags = \
 
 common_cflags = \
 	$(GLIB_CFLAGS) \
-	$(GOBJECT_CFLAGS)
+	$(GOBJECT_CFLAGS) \
+	-I$(top_srcdir)
 
 metadata_cflags = \
 	-I$(top_srcdir)/libgupnp-dlna/metadata
@@ -164,7 +165,8 @@ dist_noinst_HEADERS += \
 	gupnp-dlna-value-type.h \
 	gupnp-dlna-info-value.h \
 	gupnp-dlna-value.h \
-	gupnp-dlna-info-set.h
+	gupnp-dlna-info-set.h \
+	gupnp-dlna-profile-private.h
 
 
 # INTROSPECTION
@@ -209,6 +211,8 @@ GUPnPDLNA_2_0_gir_INCLUDES = GObject-2.0
 GUPnPDLNA_2_0_gir_SCANNERFLAGS = \
 	--symbol-prefix=gupnp_dlna \
 	--identifier-prefix=GUPnPDLNA
+GUPnPDLNA_2_0_gir_CFLAGS = \
+	-I$(top_srcdir)
 
 if GSTREAMER_METADATA_BACKEND_ENABLED
 girs += GUPnPDLNAGst-2.0.gir
@@ -225,6 +229,8 @@ GUPnPDLNAGst_2_0_gir_SCANNERFLAGS = \
 	--symbol-prefix=gupnp_dlna_gst \
 	--identifier-prefix=GUPnPDLNAGst \
 	--add-include-path=.
+GUPnPDLNAGst_2_0_gir_CFLAGS = \
+	-I$(top_srcdir)
 endif
 
 INTROSPECTION_GIRS += $(girs)

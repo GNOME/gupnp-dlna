@@ -22,6 +22,7 @@
  */
 
 #include "gupnp-dlna-profile.h"
+#include "gupnp-dlna-profile-private.h"
 
 /**
  * SECTION:gupnp-dlna-profile
