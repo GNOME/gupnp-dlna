@@ -23,10 +23,10 @@
 #define __GUPNP_DLNA_INFORMATION_H__
 
 #include <glib-object.h>
-#include "gupnp-dlna-audio-information.h"
-#include "gupnp-dlna-container-information.h"
-#include "gupnp-dlna-image-information.h"
-#include "gupnp-dlna-video-information.h"
+#include <libgupnp-dlna/gupnp-dlna-audio-information.h>
+#include <libgupnp-dlna/gupnp-dlna-container-information.h>
+#include <libgupnp-dlna/gupnp-dlna-image-information.h>
+#include <libgupnp-dlna/gupnp-dlna-video-information.h>
 
 G_BEGIN_DECLS
 

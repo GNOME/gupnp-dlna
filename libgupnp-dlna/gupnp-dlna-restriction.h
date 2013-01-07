@@ -25,7 +25,7 @@
 #include <glib.h>
 #include <glib-object.h>
 
-#include "gupnp-dlna-value-list.h"
+#include <libgupnp-dlna/gupnp-dlna-value-list.h>
 
 G_BEGIN_DECLS
 

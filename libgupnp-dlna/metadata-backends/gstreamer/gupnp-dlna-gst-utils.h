@@ -23,7 +23,7 @@
 #define __GUPNP_DLNA_GST_UTILS_H__
 
 #include <gst/pbutils/pbutils.h>
-#include "gupnp-dlna-information.h"
+#include <libgupnp-dlna/gupnp-dlna-information.h>
 
 G_BEGIN_DECLS
 

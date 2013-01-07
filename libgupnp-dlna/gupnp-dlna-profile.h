@@ -25,7 +25,7 @@
 #define __GUPNP_DLNA_PROFILE_H__
 
 #include <glib-object.h>
-#include "gupnp-dlna-restriction.h"
+#include <libgupnp-dlna/gupnp-dlna-restriction.h>
 
 G_BEGIN_DECLS
 

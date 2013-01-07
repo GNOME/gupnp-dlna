@@ -25,8 +25,8 @@
 #define __GUPNP_DLNA_PROFILE_GUESSER_H__
 
 #include <glib-object.h>
-#include "gupnp-dlna-profile.h"
-#include "gupnp-dlna-information.h"
+#include <libgupnp-dlna/gupnp-dlna-profile.h>
+#include <libgupnp-dlna/gupnp-dlna-information.h>
 
 G_BEGIN_DECLS
 
