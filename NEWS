@@ -1,3 +1,14 @@
+0.9.3
+=====
+- Fix underlinking of gstreamer plug-in.
+- Fix out-of-srcdir build with --enable-gtk-doc.
+- Fix signal G-I annotation.
+- Link meta-data back-end as a plug-in.
+
+All contributors to this release:
+  Jens Georg <mail@jensge.org>
+  Krzesimir Nowak <krnowak@openismus.com>
+
 0.9.2
 =====
 - Remove the old gupnp-dlna-1.1.pc.in file.
