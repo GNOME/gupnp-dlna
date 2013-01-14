@@ -435,7 +435,7 @@ gupnp_dlna_value_to_g_value (GUPnPDLNAValue     *base,
 
         g_value = g_new0 (GValue, 1);
 
-        if (base->vtable->to_g_value (base, type, g_value)) {
+        if (!base->vtable->to_g_value (base, type, g_value)) {
                 g_free (g_value);
                 g_value = NULL;
         }
