@@ -39,6 +39,8 @@ gupnp-dlna-gst-2.0.stamp: $(builddir)/../libgupnp-dlna/GUPnPDLNAGst-2.0.gir \
 			      --pkg gupnp-dlna-2.0 \
 			      --pkg gstreamer-1.0 \
 			      --pkg gstreamer-pbutils-1.0 \
+			      --pkg gstreamer-video-1.0 \
+			      --pkg gstreamer-base-1.0 \
 			      $(builddir)/../libgupnp-dlna/GUPnPDLNAGst-2.0.gir \
 			      $(srcdir)/gupnp-dlna-gst-2.0-custom.vala && \
 	echo timestamp > $(@F)
