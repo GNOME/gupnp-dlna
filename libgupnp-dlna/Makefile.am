@@ -145,7 +145,8 @@ libgupnp_dlna_inc_HEADERS += \
 	gupnp-dlna-image-information.h \
 	gupnp-dlna-video-information.h \
 	gupnp-dlna-information.h \
-	gupnp-dlna-values.h
+	gupnp-dlna-values.h \
+	gupnp-dlna.h
 
 libgupnp_dlna_metadata_incdir = \
 	$(libgupnp_dlna_incdir)/metadata
