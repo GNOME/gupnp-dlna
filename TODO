@@ -16,5 +16,5 @@
 
 * Read TODO.old for some ideas.
 
-* Add a gupnp-dlna.h and gupnp-dlna-metadata.h main headers. Maybe
-  make them the only includable ones.
+* Add a gupnp-dlna-metadata.h main headers. Maybe make the single include
+  headers the only includable ones.
