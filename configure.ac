@@ -182,7 +182,7 @@ GOBJECT_INTROSPECTION_CHECK([0.6.4])
 # vapigen
 AS_IF([test "x$found_introspection" = "xyes"],
       [
-       VALA_PROG_VAPIGEN([0.14])
+       VALA_PROG_VAPIGEN([0.18])
       ]
 )
 AM_CONDITIONAL([HAVE_VAPIGEN], [test "x$VAPIGEN" != "x"])
