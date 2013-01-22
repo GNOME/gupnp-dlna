@@ -1,3 +1,21 @@
+0.9.4
+=====
+- Introduce new API to guess a DLNA profile from existing
+  GUPnPDLNAInformation.
+- Introduce a new library to create GUPnPDLNAInformation from
+  GstDiscovererInfo.
+- Fix an issue with GValue conversion.
+- Get rid of the old profile backend and move most of it to the library
+  itself.
+- Introduce single-include header file.
+
+All contributors to this release:
+  Krzesimir Nowak <krnowak@openismus.com>
+  Jens Georg <jensg@openismus.com>
+
+Changes in dependencies:
+ - vapigen >= 0.18 for GStreamer 1.0 vapis.
+
 0.9.3
 =====
 - Fix underlinking of gstreamer plug-in.
