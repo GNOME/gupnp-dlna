@@ -57,5 +57,11 @@ EXTRA_DIST += \
 	GUPnPDLNAGst-2.0.metadata \
 	gupnp-dlna-gst-2.0-custom.vala
 endif
+
+if GSTREAMER_LEGACY_METADATA_BACKEND_ENABLED
+vapi_DATA += \
+	gupnp-dlna-gst-legacy-2.0.vapi \
+	$(srcdir)/gupnp-dlna-gst-legacy-2.0.deps
+endif
 endif
 endif

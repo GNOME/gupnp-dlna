@@ -9,6 +9,10 @@ if GSTREAMER_METADATA_BACKEND_ENABLED
 pkgconfig_DATA += gupnp-dlna-gst-2.0.pc
 endif
 
+if GSTREAMER_LEGACY_METADATA_BACKEND_ENABLED
+pkgconfig_DATA += gupnp-dlna-gst-legacy-2.0.pc
+endif
+
 DISTCHECK_CONFIGURE_FLAGS = --enable-gtk-doc --enable-introspection
 
 # Extra clean files so that maintainer-clean removes *everything*

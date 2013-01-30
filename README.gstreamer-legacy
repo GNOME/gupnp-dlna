@@ -1,0 +1,13 @@
+If you only want to compile gupnp-dlna with a gstreamer-0.10 back-end, you have to
+do the following:
+
+./configure --disable-gstreamer-metadata-backend \
+            --enable-legacy-gstreamer-metadata-backend \
+            --with-default-metadata-backend=gstreamer-legacy
+
+This disables the GStreamer 1.0 back-end, enables the 0.10 back-end and makes
+it the default one.
+
+If you omit the last configure option, the default will be the "normal"
+GStreamer back-end and you need to explicitly set the back-end in your code or
+environment.

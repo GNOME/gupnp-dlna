@@ -102,6 +102,47 @@ else
         AM_CONDITIONAL(GSTREAMER_METADATA_BACKEND_ENABLED, false)
 fi
 
+AC_ARG_ENABLE([legacy-gstreamer-metadata-backend],
+              [AS_HELP_STRING([--enable-legacy-gstreamer-metadata-backend],
+                              [build a GStreamer 0.10 metadata backend @<:@default=no@:>@])],
+                              ,
+                              [enable_legacy_gstreamer_metadata_backend=no])
+
+if test "x$enable_legacy_gstreamer_metadata_backend" != 'xno'
+then
+        gstreamer_found='yes'
+        GST_LEGACY_MAJORMINOR=0.10
+        GST_LEGACY_REQ=0.10.36
+        GSTPBU_LEGACY_REQ=0.10.36
+
+        PKG_CHECK_MODULES([GST_LEGACY],
+                          [gstreamer-$GST_LEGACY_MAJORMINOR >= $GST_LEGACY_REQ],
+                          ,
+                          [gstreamer_found='no'])
+        PKG_CHECK_MODULES([GST_PBU_LEGACY],
+                          [gstreamer-pbutils-$GST_LEGACY_MAJORMINOR >= $GSTPBU_LEGACY_REQ],
+                          ,
+                          [gstreamer_found='no'])
+
+        if test "x$gstreamer_found" = 'xyes'
+        then
+                AC_SUBST(GST_LEGACY_MAJORMINOR)
+                enable_legacy_gstreamer_metadata_backend='yes'
+        elif test "x$enable_legacy_gstreamer_metadata_backend" = 'xyes'
+        then
+                AC_MSG_ERROR([GStreamer $GST_LEGACY_MAJORMINOR not found.])
+        else
+                enable_legacy_gstreamer_metadata_backend='no'
+        fi
+fi
+
+if test "x$enable_legacy_gstreamer_metadata_backend" = 'xyes'
+then
+        AM_CONDITIONAL(GSTREAMER_LEGACY_METADATA_BACKEND_ENABLED, true)
+else
+        AM_CONDITIONAL(GSTREAMER_LEGACY_METADATA_BACKEND_ENABLED, false)
+fi
+
 AC_ARG_WITH([default-metadata-backend-dir],
             [AS_HELP_STRING([--with-default-metadata-backend-dir=your_directory],
                             [set a default metadata backend directory @<:@default=$libdir/$PACKAGE_NAME@:>@])])
@@ -202,6 +243,7 @@ data/Makefile
 gupnp-dlna-2.0.pc
 gupnp-dlna-metadata-2.0.pc
 gupnp-dlna-gst-2.0.pc
+gupnp-dlna-gst-legacy-2.0.pc
 doc/Makefile
 doc/version.xml
 doc/gupnp-dlna/Makefile
