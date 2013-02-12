@@ -1,3 +1,11 @@
+0.9.5
+=====
+- Add --disable-maintainer-mode option.
+- Add a GStreamer 0.10 meta-data back-end.
+
+All contributors to this release:
+  Jens Georg <jensg@openismus.com>
+
 0.9.4
 =====
 - Introduce new API to guess a DLNA profile from existing
