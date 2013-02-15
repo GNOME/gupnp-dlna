@@ -258,7 +258,8 @@ AC_OUTPUT
 echo
 echo 'Configuration status:'
 echo
-echo "Default metadata backend:           $with_default_metadata_backend"
-echo "Default metadata backend directory: $with_default_metadata_backend_dir"
-echo "Build GStreamer metadata backend:   $enable_gstreamer_metadata_backend"
+echo "Default metadata backend:                $with_default_metadata_backend"
+echo "Default metadata backend directory:      $with_default_metadata_backend_dir"
+echo "Build GStreamer metadata backend:        $enable_gstreamer_metadata_backend"
+echo "Build legacy GStreamer metadata backend: $enable_legacy_gstreamer_metadata_backend"
 echo
