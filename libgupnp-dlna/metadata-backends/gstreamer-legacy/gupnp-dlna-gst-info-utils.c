@@ -24,7 +24,8 @@
 void
 gupnp_dlna_gst_discoverer_info_unref (gpointer info)
 {
-        gst_discoverer_info_unref (info);
+        if (info)
+                gst_discoverer_info_unref (info);
 }
 
 void
