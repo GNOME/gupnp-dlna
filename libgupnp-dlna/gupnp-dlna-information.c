@@ -60,6 +60,12 @@ enum {
         PROP_VIDEO_INFO
 };
 
+static const gchar *
+gupnp_dlna_information_get_profile_name_default (GUPnPDLNAInformation *info G_GNUC_UNUSED)
+{
+        return NULL;
+}
+
 static void
 gupnp_dlna_information_dispose (GObject *object)
 {
@@ -162,6 +168,7 @@ gupnp_dlna_information_class_init (GUPnPDLNAInformationClass *info_class)
         info_class->get_image_information = NULL;
         info_class->get_video_information = NULL;
         info_class->get_audio_information = NULL;
+        info_class->get_profile_name = gupnp_dlna_information_get_profile_name_default;
 
         /**
          * GUPnPDLNAInformation:uri:
@@ -392,6 +399,21 @@ gupnp_dlna_information_get_video_information (GUPnPDLNAInformation *info)
 
         return priv->video_info;
 }
+
+/**
+ * gupnp_dlna_information_get_profile_name:
+ * @info: A #GUPnPDLNAInformation object.
+ *
+ * Returns: (transfer none): The name of a DLNA profile or %NULL.
+ */
+const gchar *
+gupnp_dlna_information_get_profile_name (GUPnPDLNAInformation *info)
+{
+        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+
+        return GUPNP_DLNA_INFORMATION_GET_CLASS (info)->get_profile_name (info);
+}
+
 
 /**
  * gupnp_dlna_information_get_uri:

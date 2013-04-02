@@ -374,6 +374,13 @@ gupnp_dlna_profile_guesser_guess_profile_sync
         return profile;
 }
 
+static gint
+compare_profile_name (GUPnPDLNAProfile *profile, const char *name)
+{
+        return g_ascii_strcasecmp (gupnp_dlna_profile_get_name (profile),
+                                   name);
+}
+
 /**
  * gupnp_dlna_profile_guesser_guess_profile_from_info:
  * @guesser: The #GUPnPDLNAProfileGuesser object.
@@ -394,6 +401,7 @@ gupnp_dlna_profile_guesser_guess_profile_from_info
         GUPnPDLNAAudioInformation *audio_info;
         GUPnPDLNAImageInformation *image_info;
         GUPnPDLNAProfile *profile;
+        const gchar *profile_name;
 
         g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
         g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
@@ -402,6 +410,19 @@ gupnp_dlna_profile_guesser_guess_profile_from_info
         video_info = gupnp_dlna_information_get_video_information (info);
         audio_info = gupnp_dlna_information_get_audio_information (info);
         image_info = gupnp_dlna_information_get_image_information (info);
+        profile_name = gupnp_dlna_information_get_profile_name (info);
+
+        if (profile_name) {
+                GList *it = NULL;
+                it = g_list_find_custom (profiles,
+                                         profile_name,
+                                         (GCompareFunc) compare_profile_name);
+                if (it != NULL)
+                        return it->data;
+                else
+                        g_warning ("Profile '%s' provided by back-end not known to GUPnP-DLNA",
+                                   profile_name);
+        }
 
         if (image_info)
                 profile = gupnp_dlna_profile_guesser_impl_guess_image_profile

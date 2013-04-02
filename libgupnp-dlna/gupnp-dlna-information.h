@@ -74,6 +74,8 @@ typedef struct {
  * to get an image information.
  * @get_video_information: This is called by #GUPnPDLNAProfileGuesser
  * to get a video information.
+ * @get_profile_name: This is called by #GUPnPDLNAProfileGuesser to
+ * get the name of the DLNA profile assigned with this information.
  * @_reserved: Padding. Ignore it.
  */
 typedef struct {
@@ -91,7 +93,10 @@ typedef struct {
         GUPnPDLNAVideoInformation *
         (* get_video_information) (GUPnPDLNAInformation *info);
 
-        gpointer _reserved[12];
+        const gchar *
+        (* get_profile_name) (GUPnPDLNAInformation *info);
+
+        gpointer _reserved[11];
 } GUPnPDLNAInformationClass;
 
 GType
@@ -108,6 +113,9 @@ gupnp_dlna_information_get_image_information (GUPnPDLNAInformation *info);
 
 GUPnPDLNAVideoInformation*
 gupnp_dlna_information_get_video_information (GUPnPDLNAInformation *info);
+
+const gchar *
+gupnp_dlna_information_get_profile_name (GUPnPDLNAInformation *info);
 
 const gchar *
 gupnp_dlna_information_get_uri (GUPnPDLNAInformation *info);
