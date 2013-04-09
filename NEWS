@@ -1,3 +1,11 @@
+0.10.1
+======
+- Add functionality to let the meta-data back-end provide a profile on its
+  own.
+
+All contributors to this release:
+  Jens Georg <jensg@openismus.com>
+
 0.10.0
 ======
 - Various fixes for the GStreamer 0.10 meta-data back-end.
