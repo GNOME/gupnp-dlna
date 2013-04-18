@@ -1,4 +1,10 @@
-noinst_PROGRAMS = sets
+TESTS_ENVIRONMENT = \
+	G_SLICE=debug-blocks \
+	LD_LIBRARY_PATH=$(top_builddir)/libgupnp-dlna/.libs:$(LD_LIBRARY_PATH) \
+	MEDIA_DIR="$(srcdir)/media" FILE_LIST="$(srcdir)/media/media-list.txt" ${SHELL}
+TESTS = $(check_PROGRAMS) test-discoverer.sh
+
+check_PROGRAMS = sets
 
 sets_SOURCES = \
 	sets.c
