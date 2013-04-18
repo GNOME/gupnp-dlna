@@ -37,6 +37,12 @@
     <restriction id="AAC-MULT5" type="audio">
       <parent name="AAC" />
 
+      <field name="level" type="string">
+        <value>1</value>
+        <value>2</value>
+        <value>4</value>
+      </field>
+
       <field name="channels" type="int">
         <!-- Technically the profile supports upto 5.1, not 6 -->
         <range min="1" max="6" />
