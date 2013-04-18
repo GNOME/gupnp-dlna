@@ -18,4 +18,9 @@ dlnaprofiles = mp3.xml \
 dlnadir = $(shareddir)/dlna-profiles
 dlna_DATA = $(dlnaschemas) $(dlnaprofiles)
 
+if HAVE_XMLLINT
+check: $(dlnaprofiles) $(dlnaschemas)
+	$(XMLLINT) --relaxng $(dlnaschemas) $(dlnaprofiles) >/dev/null
+endif
+
 EXTRA_DIST = $(dlnaschemas) $(dlnaprofiles)

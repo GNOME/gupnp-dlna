@@ -238,6 +238,10 @@ GTK_DOC_CHECK([1.11],[--flavour no-tmpl])
 GLIB_PREFIX="`$PKG_CONFIG --variable=prefix glib-2.0`"
 AC_SUBST(GLIB_PREFIX)
 
+dnl xmllint for schema validation
+AC_PATH_PROG([XMLLINT],[xmllint])
+AM_CONDITIONAL([HAVE_XMLLINT], [test "x$XMLLINT" != "x"])
+
 AC_CONFIG_FILES([
 Makefile
 libgupnp-dlna/Makefile
