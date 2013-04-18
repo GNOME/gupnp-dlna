@@ -28,6 +28,15 @@
       </field>
     </restriction>
 
+    <restriction id="MPEG_TS_AUDIO_EU" type="audio">
+      <parent name="MPEG_TS_AUDIO"/>
+      <field name="rate" type="int">
+        <value>32000</value>
+        <value>44100</value>
+        <value>48000</value>
+      </field>
+    </restriction>
+
     <restriction id="MPEG_TS_VIDEO" type="video">
       <field name="name" type="string">
         <value>video/mpeg</value>
@@ -316,26 +325,26 @@
     <parent name="MPEG_TS" />
 
     <restriction type="audio">
-      <parent name="MPEG_TS_AUDIO" />
+      <parent name="MPEG_TS_AUDIO_EU" />
 
       <field name="name" type="string">
-	<value>audio/x-ac3</value>
+          <value>audio/x-ac3</value>
       </field>
     </restriction>
 
     <restriction type="audio">
-      <parent name="MPEG_TS_AUDIO" />
+      <parent name="MPEG_TS_AUDIO_EU" />
 
       <field name="name" type="string">
-	<value>audio/x-private1-ac3</value>
+          <value>audio/x-private1-ac3</value>
       </field>
     </restriction>
 
     <restriction type="audio">
-      <parent name="MPEG_TS_AUDIO" />
+      <parent name="MPEG_TS_AUDIO_EU" />
 
       <field name="name" type="string">
-	<value>audio/ac3</value>
+          <value>audio/ac3</value>
       </field>
     </restriction>
 
