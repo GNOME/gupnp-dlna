@@ -65,6 +65,7 @@
       <field name="width" type="int">
         <range min="1" max="4096" />
       </field>
+      <!-- bgo#689355
       <field name="depth" type="int" used="in-strict">
         <value>1</value>
         <value>2</value>
@@ -73,7 +74,7 @@
         <value>16</value>
         <value>24</value>
         <value>32</value>
-      </field>
+      </field> -->
     </restriction>
   </dlna-profile>
 </dlna-profiles>
