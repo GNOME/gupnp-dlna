@@ -50,6 +50,8 @@ get_audio_info (GUPnPDLNAGstAudioInformation *gst_info)
 
         if (!priv->audio_info) {
                 GList *iter;
+                gboolean adts_hack = FALSE;
+                int stream_count = 0;
 
                 if (!priv->stream_list) {
                         priv->stream_list =
@@ -58,16 +60,38 @@ get_audio_info (GUPnPDLNAGstAudioInformation *gst_info)
                                 return NULL;
                 }
 
+                /* For ADTS files we get two audio streams and the important
+                 * information is only on the "outer" stream which is the
+                 * second stream in the stream list. If we only have audio
+                 * streams, we skip the first audio stream we see
+                 *
+                 * Works around
+                 * https://bugzilla.gnome.org/show_bug.cgi?id=699212
+                 */
+                iter = gst_discoverer_info_get_audio_streams (priv->info);
+                stream_count = g_list_length (priv->stream_list);
+
+                adts_hack = (stream_count == g_list_length (iter)) &&
+                            stream_count == 2;
+
                 for (iter = priv->stream_list; iter; iter = iter->next) {
                         GstDiscovererStreamInfo *stream =
                                         GST_DISCOVERER_STREAM_INFO (iter->data);
                         GType stream_type = G_TYPE_FROM_INSTANCE (stream);
 
+                        /* copy caps from other stream */
+                        if (adts_hack && !iter->next) {
+                                priv->caps = gst_discoverer_stream_info_get_caps (stream);
+
+                                continue;
+                        }
+
                         if (stream_type == GST_TYPE_DISCOVERER_AUDIO_INFO) {
                                 priv->audio_info =
                                              GST_DISCOVERER_AUDIO_INFO (stream);
 
-                                break;
+                                if (!adts_hack)
+                                        break;
                         }
                 }
         }
@@ -79,10 +103,10 @@ static GstCaps *
 get_caps (GUPnPDLNAGstAudioInformation *gst_info)
 {
         GUPnPDLNAGstAudioInformationPrivate *priv = gst_info->priv;
+        GstDiscovererStreamInfo *info = GST_DISCOVERER_STREAM_INFO (get_audio_info (gst_info));
 
         if (!priv->caps)
-                priv->caps = gst_discoverer_stream_info_get_caps
-                       (GST_DISCOVERER_STREAM_INFO (get_audio_info (gst_info)));
+                priv->caps = gst_discoverer_stream_info_get_caps (info);
 
         return priv->caps;
 }
