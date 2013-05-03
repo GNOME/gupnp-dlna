@@ -147,6 +147,8 @@ backend_get_bitrate (GUPnPDLNAAudioInformation *self)
         if (data > 0 && data <= G_MAXINT) {
                 value.state = GUPNP_DLNA_VALUE_STATE_SET;
                 value.value = (gint) data;
+        } else {
+                value = get_int_value (gst_info, "bitrate");
         }
 
         return value;
