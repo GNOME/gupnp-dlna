@@ -280,7 +280,7 @@
     </restriction>
   </restrictions>
 
-  <dlna-profile name="MPEG_TS_SD_NA_ISO" mime="video/mpeg">
+  <dlna-profile id="MPEG_TS_SD_NA_BASE">
     <!-- Note: We have no way to restrict the system bitrate yet -->
     <parent name="MPEG_TS_ISO" />
 
@@ -400,6 +400,20 @@
     <restriction type="video">
       <parent name="MPEG_TS_VIDEO" />
       <parent name="352x288" />
+    </restriction>
+  </dlna-profile>
+
+  <dlna-profile name="MPEG_TS_SD_NA" mime="video/vnd.dlna.mpeg-tts" base-profile="MPEG_TS_SD_NA_BASE">
+    <!-- Note: We have no way to restrict the system bitrate yet -->
+    <restriction type="container">
+      <parent name="MPEG_TS" />
+    </restriction>
+  </dlna-profile>
+
+  <dlna-profile name="MPEG_TS_SD_NA_ISO" mime="video/mpeg" base-profile="MPEG_TS_SD_NA_BASE">
+    <!-- Note: We have no way to restrict the system bitrate yet -->
+    <restriction type="container">
+      <parent name="MPEG_TS_ISO" />
     </restriction>
   </dlna-profile>
 
