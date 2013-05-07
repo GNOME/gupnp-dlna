@@ -16,10 +16,7 @@
       </field>
     </restriction>
 
-    <restriction id="MPEG_TS_AUDIO" type="audio">
-      <field name="rate" type="int">
-        <value>48000</value>
-      </field>
+    <restriction id="MPEG_TS_AUDIO_BASE" type="audio">
       <field name="channels" type="int">
         <range min="1" max="6" />
       </field>
@@ -28,8 +25,17 @@
       </field>
     </restriction>
 
+    <!-- audio rate restrictions for non-EU TS streams -->
+    <restriction id="MPEG_TS_AUDIO" type="audio">
+      <parent name="MPEG_TS_AUDIO_BASE" />
+      <field name="rate" type="int">
+        <value>48000</value>
+      </field>
+    </restriction>
+
+    <!-- audio rate restrictions for EU TS streams -->
     <restriction id="MPEG_TS_AUDIO_EU" type="audio">
-      <parent name="MPEG_TS_AUDIO"/>
+      <parent name="MPEG_TS_AUDIO_BASE"/>
       <field name="rate" type="int">
         <value>32000</value>
         <value>44100</value>
