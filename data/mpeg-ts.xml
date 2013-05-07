@@ -349,7 +349,7 @@
     </restriction>
 
     <restriction type="audio">
-      <parent name="MPEG_TS_AUDIO" />
+      <parent name="MPEG_TS_AUDIO_EU" />
 
       <field name="name" type="string">
           <value>audio/mpeg</value>
