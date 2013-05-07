@@ -4,7 +4,7 @@
   <include ref="common.xml" />
 
   <restrictions>
-    <restriction id="MPEG_TS" type="container">
+    <restriction id="MPEG_TS_ISO" type="container">
       <field name="name" type="string">
         <value>video/mpegts</value>
       </field>
@@ -13,6 +13,19 @@
       </field>
       <field name="packetsize" type="int">
         <value>188</value>
+      </field>
+    </restriction>
+
+    <!-- TS with 192 byte packet size and all zero timestamps -->
+    <restriction id="MPEG_TS" type="container">
+      <field name="name" type="string">
+        <value>video/mpegts</value>
+      </field>
+      <field name="systemstream" type="boolean">
+        <value>true</value>
+      </field>
+      <field name="packetsize" type="int">
+        <value>192</value>
       </field>
     </restriction>
 
@@ -269,7 +282,7 @@
 
   <dlna-profile name="MPEG_TS_SD_NA_ISO" mime="video/mpeg">
     <!-- Note: We have no way to restrict the system bitrate yet -->
-    <parent name="MPEG_TS" />
+    <parent name="MPEG_TS_ISO" />
 
     <restriction type="audio">
       <parent name="MPEG_TS_AUDIO" />
@@ -326,10 +339,8 @@
     </restriction>
   </dlna-profile>
 
-  <dlna-profile name="MPEG_TS_SD_EU_ISO" mime="video/mpeg">
+  <dlna-profile id="MPEG_TS_SD_EU_BASE">
     <!-- Note: We have no way to restrict the system bitrate yet -->
-    <parent name="MPEG_TS" />
-
     <restriction type="audio">
       <parent name="MPEG_TS_AUDIO_EU" />
 
@@ -366,7 +377,6 @@
       </field>
     </restriction>
 
-
     <restriction type="video">
       <parent name="MPEG_TS_VIDEO" />
       <parent name="720x576" />
@@ -393,8 +403,23 @@
     </restriction>
   </dlna-profile>
 
+  <dlna-profile name="MPEG_TS_SD_EU" mime="video/vnd.dlna.mpeg-tts" base-profile="MPEG_TS_SD_EU_BASE">
+    <!-- Note: We have no way to restrict the system bitrate yet -->
+    <restriction type="container">
+      <parent name="MPEG_TS" />
+    </restriction>
+  </dlna-profile>
+
+  <dlna-profile name="MPEG_TS_SD_EU_ISO" mime="video/mpeg" base-profile="MPEG_TS_SD_EU_BASE">
+    <!-- Note: We have no way to restrict the system bitrate yet -->
+    <restriction type="container">
+      <parent name="MPEG_TS_ISO" />
+    </restriction>
+  </dlna-profile>
+
+
   <dlna-profile name="MPEG_TS_HD_NA_ISO" mime="video/mpeg">
-    <parent name="MPEG_TS" />
+    <parent name="MPEG_TS_ISO" />
 
     <restriction type="audio">
       <parent name="MPEG_TS_AUDIO" />
