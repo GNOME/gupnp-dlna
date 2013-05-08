@@ -12,6 +12,7 @@ dlnaprofiles = mp3.xml \
 	       avc.xml \
 	       mpeg-ts.xml \
 	       mpeg-ps.xml \
+	       mpeg-common.xml \
 	       mpeg4.xml \
 	       jpeg.xml \
 	       png.xml
