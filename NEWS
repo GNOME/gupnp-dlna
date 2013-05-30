@@ -1,3 +1,24 @@
+0.10.2
+======
+- Fix vapi generation with GObject-introspection >= 1.36.
+- Minor build clean-up.
+- Check the XML profiles against their schema on make check-profiles.
+- Re-enable some of the old tests on make check.
+- Fix format detection for ADTS audio streams.
+- Fix WMA bitrate detection.
+- Fix gtk-doc warnings.
+
+Profiles:
+- Fix MPEG_TS_*_EU audio profiles to include proper bitrates and audio
+  formats.
+- Remove depth matching in PNG profiles.
+- Fix AAC level for MULT5 AAC.
+- Add MPEG_TS_{SD,HD}_{EU,NA} profiles.
+- Add MPEG_PS_{NTSC,PAL} profiles.
+
+All contributors to this release:
+  Jens Georg <jensg@openismus.com>
+
 0.10.1
 ======
 - Add functionality to let the meta-data back-end provide a profile on its
