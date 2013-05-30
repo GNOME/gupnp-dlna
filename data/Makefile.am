@@ -21,7 +21,7 @@ dlnadir = $(shareddir)/dlna-profiles
 dlna_DATA = $(dlnaschemas) $(dlnaprofiles)
 
 if HAVE_XMLLINT
-check: $(dlnaprofiles) $(dlnaschemas)
+check-profiles: $(dlnaprofiles) $(dlnaschemas)
 	$(XMLLINT) --relaxng $(dlnaschemas) $(dlnaprofiles) >/dev/null
 endif
 
