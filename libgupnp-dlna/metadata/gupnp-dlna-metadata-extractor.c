@@ -30,24 +30,25 @@
  * get needed metadata for profile matching. This class itself does
  * not implement any metadata extraction features. For that it is
  * expected to provide a plugin which:
- * 1. Provides a #GUPnPDLNAMetadataExtractor subclass implementation.
- * 2. Exports a gupnp_dlna_get_default_extractor() which takes no
- * parameters and returns a #GUPnPDLNAMetadataExtractor.
+ * - Provides a #GUPnPDLNAMetadataExtractor subclass implementation.
+ * - Exports a <function>gupnp_dlna_get_default_extractor</function>() which
+ * takes no parameters and returns a #GUPnPDLNAMetadataExtractor.
  *
  * #GModule is used for loading the plugin, so #GModule's features can
- * be used also (like exporting g_module_check_init() to initialize
- * multimedia framework used for extracting metadata).
+ * be used also (like exporting <function>g_module_check_init</function>() to
+ * initialize the multimedia framework used for extracting metadata).
  *
  * Default plugin directory and default plugin file is set during
  * configuration stage, but it can be overriden during runtime by
- * setting respectively %GUPNP_DLNA_METADATA_BACKEND and
- * %GUPNP_DLNA_METADATA_BACKEND_DIR environment variables before the
- * plugin is loaded (i.e. before #GUPnPDLNAProfileGuesser is used for
+ * setting respectively <envar>GUPNP_DLNA_METADATA_BACKEND</envar> and
+ * <envar>GUPNP_DLNA_METADATA_BACKEND_DIR</envar> environment variables before
+ * the plugin is loaded (i.e. before #GUPnPDLNAProfileGuesser is used for
  * guessing profile).
  *
- * The %GUPNP_DLNA_METADATA_BACKEND environment variable should hold a
- * name like "gstreamer", so libgstreamer.so will be loaded. For
- * determining a plugin filename g_module_build_path() is used.
+ * The <envar>GUPNP_DLNA_METADATA_BACKEND</envar> environment variable should
+ * hold a name like <userinput>"gstreamer"</userinput>, so
+ * <filename>libgstreamer.so</filename> will be loaded. For determining a
+ * plugin filename g_module_build_path() is used.
  *
  * If subclassing #GUPnPDLNAMetadataExtractor then also
  * #GUPnPDLNAInformation, #GUPnPDLNAAudioInformation,
