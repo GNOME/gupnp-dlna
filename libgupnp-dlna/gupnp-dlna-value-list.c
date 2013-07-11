@@ -150,27 +150,26 @@ GUPnPDLNAValueList *
 gupnp_dlna_value_list_copy (GUPnPDLNAValueList *list)
 {
         GUPnPDLNAValueList *dup;
+        GList *iter;
 
-        if (list) {
-                GList *iter;
+        g_return_val_if_fail (list != NULL, NULL);
 
-                dup = gupnp_dlna_value_list_new (list->type);
-                for (iter = list->values; iter != NULL; iter = iter->next) {
-                        GUPnPDLNAValue *base = (GUPnPDLNAValue *) iter->data;
-                        GUPnPDLNAValue *copy;
+	dup = gupnp_dlna_value_list_new (list->type);
 
-                        if (base == NULL)
-                                continue;
+        g_return_val_if_fail (dup != NULL, NULL);
 
-                        copy = gupnp_dlna_value_copy (base, list->type);
-                        if (copy != NULL)
-                                dup->values = g_list_prepend (dup->values,
-                                                              copy);
-                }
-                dup->values = g_list_reverse (dup->values);
-        } else {
-                dup = NULL;
-        }
+	for (iter = list->values; iter != NULL; iter = iter->next) {
+		GUPnPDLNAValue *base = (GUPnPDLNAValue *) iter->data;
+		GUPnPDLNAValue *copy;
+
+		if (base == NULL)
+			continue;
+
+		copy = gupnp_dlna_value_copy (base, list->type);
+		if (copy != NULL)
+			dup->values = g_list_prepend (dup->values, copy);
+	}
+	dup->values = g_list_reverse (dup->values);
 
         return dup;
 }
