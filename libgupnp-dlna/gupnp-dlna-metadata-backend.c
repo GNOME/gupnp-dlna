@@ -45,7 +45,7 @@ load_metadata_backend (void)
                 GModule *module;
                 gchar *module_path;
                 gpointer get_default_extractor = NULL;
-                gsize loaded = 0;
+                gsize loaded = 1;
 
                 if (!backend)
                         backend = GUPNP_DLNA_DEFAULT_METADATA_BACKEND;
@@ -82,7 +82,7 @@ load_metadata_backend (void)
                 metadata_backend.module = module;
                 metadata_backend.get_default_extractor = get_default_extractor;
                 module = NULL;
-                loaded = 1;
+                loaded = 2;
         fail:
                 g_free (module_path);
                 if (module)
@@ -91,7 +91,7 @@ load_metadata_backend (void)
                 g_once_init_leave (&backend_chosen, loaded);
         }
 
-        return (backend_chosen != 0);
+        return (backend_chosen == 2);
 }
 
 GUPnPDLNAMetadataExtractor *
