@@ -15,6 +15,10 @@ AM_MAINTAINER_MODE([enable])
 
 AM_SILENT_RULES([yes])
 
+AX_REQUIRE_DEFINED([GTK_DOC_CHECK])
+AX_REQUIRE_DEFINED([GOBJECT_INTROSPECTION_CHECK])
+AX_CHECK_ENABLE_DEBUG([yes])
+
 dnl library versioning
 dnl Increase when changing the API
 GUPNP_DLNA_CURRENT=3
@@ -33,6 +37,9 @@ AC_SUBST(GUPNP_DLNA_VERSION_INFO)
 # Check for programs
 AC_PROG_CC
 AC_HEADER_STDC
+
+AX_IS_RELEASE([git-directory])
+AX_COMPILER_FLAGS([WARN_CFLAGS])
 
 # Initialize libtool
 LT_PREREQ([2.2])

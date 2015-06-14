@@ -7,7 +7,8 @@ AM_CFLAGS = \
 	$(GLIB_CFLAGS) \
 	$(GOBJECT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
-	$(GMODULE_CFLAGS)
+	$(GMODULE_CFLAGS) \
+	$(WARN_CFLAGS)
 LIBS = \
 	$(GLIB_LIBS) \
 	$(GOBJECT_LIBS) \
@@ -15,8 +16,10 @@ LIBS = \
 	$(GMODULE_LIBS) \
 	$(top_builddir)/libgupnp-dlna/libgupnp-dlna-2.0.la
 
+gupnp_dlna_info_2_0_LDFLAGS = $(WARN_LDFLAGS)
 gupnp_dlna_info_2_0_SOURCES = \
 	gupnp-dlna-info.c
 
+gupnp_dlna_ls_profiles_2_0_LDFLAGS = $(WARN_LDFLAGS)
 gupnp_dlna_ls_profiles_2_0_SOURCES = \
 	gupnp-dlna-ls-profiles.c

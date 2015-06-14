@@ -14,12 +14,12 @@ sets_LDADD = \
 	$(LIBXML_LIBS) \
 	$(GMODULE_LIBS) \
 	$(top_builddir)/libgupnp-dlna/libgupnp-dlna-2.0.la
+sets_LDFLAGS = $(WARN_LDFLAGS)
 sets_CFLAGS = \
 	$(GLIB_CFLAGS) \
 	$(GOBJECT_CFLAGS) \
 	$(LIBXML_CFLAGS) \
 	$(GMODULE_CFLAGS) \
+	$(WARN_CFLAGS) \
 	-I$(top_srcdir) \
-	-I$(top_srcdir)/libgupnp-dlna \
-	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native \
-	-I$(top_srcdir)/libgupnp-dlna/profile-backends/native/sets
+	-I$(top_srcdir)/libgupnp-dlna

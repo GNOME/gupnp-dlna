@@ -85,6 +85,7 @@ libloader_la_CFLAGS = \
 	$(metadata_cflags) \
 	$(common_cflags) \
 	$(LIBXML_CFLAGS) \
+	$(WARN_CFLAGS) \
 	-DDATA_DIR='"$(shareddir)"'
 
 libguesser_la_SOURCES = \
@@ -95,7 +96,8 @@ libguesser_la_LIBADD = \
 libguesser_la_CFLAGS = \
 	$(guesser_log_cflags) \
 	$(metadata_cflags) \
-	$(common_cflags)
+	$(common_cflags) \
+	$(WARN_CFLAGS)
 
 libmetadata_la_SOURCES = \
 	gupnp-dlna-metadata-backend.c \
@@ -108,10 +110,13 @@ libmetadata_la_CFLAGS = \
 	$(metadata_cflags) \
 	$(GUPNP_DLNA_METADATA_BACKEND_CFLAGS) \
 	$(common_cflags) \
-	$(GMODULE_CFLAGS)
+	$(GMODULE_CFLAGS) \
+	$(WARN_CFLAGS)
+libmetadata_la_LDFLAGS = $(WARN_LDFLAGS)
 
 libgupnp_dlna_2_0_la_LDFLAGS = \
-	$(gupnp_ldflags)
+	$(gupnp_ldflags) \
+	$(WARN_LDFLAGS)
 libgupnp_dlna_2_0_la_SOURCES = \
 	gupnp-dlna-audio-information.c \
 	gupnp-dlna-container-information.c \
@@ -136,7 +141,8 @@ libgupnp_dlna_2_0_la_LIBADD = \
 libgupnp_dlna_2_0_la_CFLAGS = \
 	$(general_log_cflags) \
 	$(metadata_cflags) \
-	$(gupnp_cflags)
+	$(gupnp_cflags) \
+	$(WARN_CFLAGS)
 
 libgupnp_dlna_inc_HEADERS += \
 	gupnp-dlna-profile-guesser.h \
@@ -215,7 +221,8 @@ GUPnPDLNA_2_0_gir_LIBS = libgupnp-dlna-2.0.la
 GUPnPDLNA_2_0_gir_INCLUDES = GObject-2.0
 GUPnPDLNA_2_0_gir_SCANNERFLAGS = \
 	--symbol-prefix=gupnp_dlna \
-	--identifier-prefix=GUPnPDLNA
+	--identifier-prefix=GUPnPDLNA \
+	$(WARN_SCANNERFLAGS)
 GUPnPDLNA_2_0_gir_CFLAGS = \
 	-I$(top_srcdir)
 
@@ -233,7 +240,8 @@ GUPnPDLNAGst_2_0_gir_INCLUDES = GObject-2.0 GUPnPDLNA-2.0 Gst-1.0 GstPbutils-1.0
 GUPnPDLNAGst_2_0_gir_SCANNERFLAGS = \
 	--symbol-prefix=gupnp_dlna_gst \
 	--identifier-prefix=GUPnPDLNAGst \
-	--add-include-path=.
+	--add-include-path=. \
+	$(WARN_SCANNERFLAGS)
 GUPnPDLNAGst_2_0_gir_CFLAGS = \
 	-I$(top_srcdir)
 endif

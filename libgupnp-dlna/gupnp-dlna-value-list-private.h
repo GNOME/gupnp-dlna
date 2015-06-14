@@ -33,9 +33,6 @@ G_BEGIN_DECLS
 GUPnPDLNAValueList *
 gupnp_dlna_value_list_new (GUPnPDLNAValueType *type);
 
-void
-gupnp_dlna_value_list_free (GUPnPDLNAValueList *list);
-
 gboolean
 gupnp_dlna_value_list_add_range (GUPnPDLNAValueList *list,
                                  const gchar        *min,

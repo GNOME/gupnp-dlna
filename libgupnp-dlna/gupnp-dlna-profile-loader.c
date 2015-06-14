@@ -376,6 +376,7 @@ merge_restrictions (GUPnPDLNAProfileLoader *loader,
                 target_list = &data->videos;
 
                 break;
+        case GUPNP_DLNA_RESTRICTION_TYPE_INVALID:
         default:
                 g_assert_not_reached ();
         }
@@ -1500,7 +1501,7 @@ out:
 
 static GList *
 gupnp_dlna_profile_loader_get_from_dir (GUPnPDLNAProfileLoader *loader,
-                                        gchar                  *profile_dir)
+                                        const gchar            *profile_dir)
 {
         GDir *dir;
         GList *profiles = NULL;
