@@ -73,6 +73,7 @@ get_audio_info (GUPnPDLNAGstAudioInformation *gst_info)
 
                 adts_hack = (stream_count == g_list_length (iter)) &&
                             stream_count == 2;
+                gst_discoverer_stream_info_list_free (iter);
 
                 for (iter = priv->stream_list; iter; iter = iter->next) {
                         GstDiscovererStreamInfo *stream =
