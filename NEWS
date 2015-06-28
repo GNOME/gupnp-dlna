@@ -1,3 +1,25 @@
+0.10.3
+======
+- Fix potential crash if gupnp_dlna_value_list_new failed.
+- Fix hang if no meta-data back-end is available.
+- Remove use of gnome-common, add compiler warnings and fix const
+  correctness.
+- Fix memory leak in gst-audio-information.
+- Fix unit tests for new automake
+
+
+Bugs fixed in this release:
+ - https://bugzilla.gnome.org/show_bug.cgi?id=704096
+ - https://bugzilla.gnome.org/show_bug.cgi?id=707909
+ - https://bugzilla.gnome.org/show_bug.cgi?id=750929
+ - https://bugzilla.gnome.org/show_bug.cgi?id=751295
+
+All contributors to this release:
+ - Jens Georg <mail@jensge.org>
+ - Philip Withnall <philip@tecnocode.co.uk>
+ - Mark Ryan <mark.d.ryan@intel.com>
+ - Ludovic Ferrandis <ludovic.ferrandis@intel.com>
+
 0.10.2
 ======
 - Fix vapi generation with GObject-introspection >= 1.36.
