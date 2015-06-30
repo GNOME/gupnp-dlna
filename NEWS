@@ -6,13 +6,17 @@
   correctness.
 - Fix memory leak in gst-audio-information.
 - Fix unit tests for new automake
-
+- Make it possible to override the DLNA profile dir using
+  GUPNP_DLNA_PROFILE_DIR environment variable
+- Fix discoverer testsuite to run completely uninstalled.
+- Fix gupnp-dlna-info -a to be stuck if profile guesser does not work.
 
 Bugs fixed in this release:
  - https://bugzilla.gnome.org/show_bug.cgi?id=704096
  - https://bugzilla.gnome.org/show_bug.cgi?id=707909
  - https://bugzilla.gnome.org/show_bug.cgi?id=750929
  - https://bugzilla.gnome.org/show_bug.cgi?id=751295
+ - https://bugzilla.gnome.org/show_bug.cgi?id=751634
 
 All contributors to this release:
  - Jens Georg <mail@jensge.org>
