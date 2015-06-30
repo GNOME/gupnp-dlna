@@ -63,6 +63,8 @@ while read line; do
   path=$(echo ${line} | cut -f 1 -d ',')
   profile=$(echo ${line} | cut -f 2 -d ',')
   mime=$(echo ${line} | cut -f 3 -d ',')
+  xfail=$(echo ${line} | cut -f 4 -d ',')
+  bug=$(echo ${line} | cut -f 5 -d ',')
 
   # Run discoverer to get profile name/mime
   out=$(${GUPNP_DLNA_INFO} -a ${@} ${MEDIA_DIR}/${path})
@@ -72,8 +74,12 @@ while read line; do
   # Now compare the two
   echo -n " Testing ${path} ... "
   if [[ "x${profile}" != "x${out_profile}" || "x${mime}" != "x${out_mime}" ]]; then
-    ret=1
-    echo -e "\e[01;31mFAIL: ${path},${out_profile},${out_mime}\e[0m"
+    if [[ "x${xfail}" != "x" ]]; then
+        echo "XFAIL: ${bug}"
+    else
+        ret=1
+        echo -e "\e[01;31mFAIL: ${path},${out_profile},${out_mime}\e[0m"
+    fi
   else
     echo "PASS"
   fi
