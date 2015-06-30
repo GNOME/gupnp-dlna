@@ -295,6 +295,8 @@ gupnp_dlna_profile_guesser_guess_profile_async
         g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
         extractor = gupnp_dlna_metadata_backend_get_extractor ();
+        g_return_val_if_fail (extractor != NULL, FALSE);
+
         extractor_error = NULL;
         id = g_signal_connect_swapped (extractor,
                                        "done",
@@ -348,6 +350,8 @@ gupnp_dlna_profile_guesser_guess_profile_sync
 
         extraction_error = NULL;
         extractor = gupnp_dlna_metadata_backend_get_extractor ();
+        g_return_val_if_fail (extractor != NULL, NULL);
+
         info = gupnp_dlna_metadata_extractor_extract_sync (extractor,
                                                            uri,
                                                            timeout_in_ms,
