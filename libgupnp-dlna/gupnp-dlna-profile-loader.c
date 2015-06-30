@@ -99,6 +99,7 @@ struct _GUPnPDLNAProfileLoaderPrivate {
         GList      *tags_stack;
         GList      *dlna_profile_data_stack;
         GList      *restriction_data_stack;
+        char       *dlna_profile_dir;
 };
 
 static GUPnPDLNANameValueListPair *
@@ -816,6 +817,7 @@ gupnp_dlna_profile_loader_dispose (GObject *object)
                          gupnp_dlna_profile_data_stack_free);
         g_clear_pointer (&priv->restriction_data_stack,
                          gupnp_dlna_restriction_data_stack_free);
+        g_clear_pointer (&priv->dlna_profile_dir, g_free);
 
         G_OBJECT_CLASS (gupnp_dlna_profile_loader_parent_class)->dispose
                                         (object);
@@ -1369,7 +1371,7 @@ process_include (GUPnPDLNAProfileLoader  *loader,
                 xmlFree (path);
 
         if (!g_path_is_absolute (g_path)) {
-                gchar *tmp = g_build_filename (DLNA_DATA_DIR,
+                gchar *tmp = g_build_filename (loader->priv->dlna_profile_dir,
                                                g_path,
                                                NULL);
                 g_free (g_path);
@@ -1433,6 +1435,7 @@ gupnp_dlna_profile_loader_get_from_file (GUPnPDLNAProfileLoader  *loader,
         xmlRelaxNGParserCtxtPtr rngp = NULL;
         xmlRelaxNGPtr rngs = NULL;
         GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        char *rng_path = NULL;
 
         if (g_hash_table_contains (priv->files_hash, path))
                 goto out;
@@ -1444,9 +1447,12 @@ gupnp_dlna_profile_loader_get_from_file (GUPnPDLNAProfileLoader  *loader,
                 goto out;
 
         /* Load the schema for validation */
-        rngp = xmlRelaxNGNewParserCtxt (DLNA_DATA_DIR
-                                        G_DIR_SEPARATOR_S
-                                        "dlna-profiles.rng");
+        rng_path = g_build_filename (loader->priv->dlna_profile_dir,
+                                     "dlna-profiles.rng",
+                                     NULL);
+        rngp = xmlRelaxNGNewParserCtxt (rng_path);
+        g_free (rng_path);
+
         if (!rngp)
                 goto out;
         rngs = xmlRelaxNGParse (rngp);
@@ -1506,6 +1512,8 @@ gupnp_dlna_profile_loader_get_from_dir (GUPnPDLNAProfileLoader *loader,
         GDir *dir;
         GList *profiles = NULL;
 
+        g_debug ("Loading DLNA profiles from %s", profile_dir);
+
         if ((dir = g_dir_open (profile_dir, 0, NULL))) {
                 const gchar *entry;
 
@@ -1549,8 +1557,25 @@ gupnp_dlna_profile_loader_get_from_disk (GUPnPDLNAProfileLoader *loader)
 
         g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader), NULL);
 
-        profiles = gupnp_dlna_profile_loader_get_from_dir (loader,
-                                                           DLNA_DATA_DIR);
+        if (loader->priv->dlna_profile_dir == NULL) {
+                char **env = NULL;
+                const char *profile_dir = NULL;
+
+                env = g_get_environ ();
+                profile_dir = g_environ_getenv (env, "GUPNP_DLNA_PROFILE_DIR");
+                if (profile_dir != NULL && g_path_is_absolute (profile_dir)) {
+                        loader->priv->dlna_profile_dir = g_strdup (profile_dir);
+                } else {
+                        loader->priv->dlna_profile_dir = g_strdup (DLNA_DATA_DIR);
+                }
+
+
+                g_strfreev (env);
+        }
+
+        profiles = gupnp_dlna_profile_loader_get_from_dir
+                                        (loader,
+                                         loader->priv->dlna_profile_dir);
 
         profiles = g_list_reverse (profiles);
 
