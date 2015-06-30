@@ -51,6 +51,7 @@ typedef struct
         GUPnPDLNAProfileGuesser *guesser;
         int argc;
         char **argv;
+        GMainLoop *ml;
 } PrivStruct;
 
 static void
@@ -212,6 +213,11 @@ async_idle_loop (PrivStruct *ps)
         for (iter = 1; iter < ps->argc; iter++)
                 process_file (ps->guesser, ps->argv[iter]);
 
+        /* No files added to queue, exit program */
+        if (files_to_guess == 0) {
+                g_main_loop_quit (ps->ml);
+        }
+
         return FALSE;
 }
 
@@ -266,6 +272,10 @@ main (int argc,
 
         guesser = gupnp_dlna_profile_guesser_new (relaxed_mode,
                                                   extended_mode);
+        if (guesser == NULL) {
+                g_print ("Failed to create meta-data guesser\n");
+                exit (1);
+        }
 
         if (async == FALSE) {
                 gint iter;
@@ -279,6 +289,7 @@ main (int argc,
                 ps->guesser = guesser;
                 ps->argc = argc;
                 ps->argv = argv;
+                ps->ml = ml;
 
                 g_idle_add ((GSourceFunc) async_idle_loop, ps);
 
