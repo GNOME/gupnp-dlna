@@ -31,6 +31,7 @@
 #include "config.h"
 #endif
 
+#include <locale.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -248,6 +249,8 @@ main (int argc,
 #if !GLIB_CHECK_VERSION(2,35,0)
         g_type_init ();
 #endif
+
+        setlocale (LC_ALL, "");
 
         ctx = g_option_context_new (" - program to extract DLNA and related metadata");
         g_option_context_add_main_entries (ctx, options, NULL);
