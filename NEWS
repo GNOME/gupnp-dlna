@@ -1,3 +1,15 @@
+0.10.4
+======
+- Call setlocale in commandline tools.
+- Include VAPI in tarball.
+
+Bugs fixed in this release:
+ - https://bugzilla.gnome.org/show_bug.cgi?id=760431
+
+All contributors to this release:
+ - Jens Georg <mail@jensge.org>
+ - Ting-Wei Lan <lantw@src.gnome.org>
+
 0.10.3
 ======
 - Fix potential crash if gupnp_dlna_value_list_new failed.
