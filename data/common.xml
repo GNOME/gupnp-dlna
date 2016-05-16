@@ -3,6 +3,12 @@
 <dlna-profiles>
   <restrictions>
     <!-- Common containers -->
+    <restriction id="M4A" type="container">
+        <field name="name" type="string">
+            <value>audio/x-m4a</value>
+        </field>
+    </restriction>
+
     <restriction id="MP4" type="container">
       <field name="name" type="string">
         <value>video/quicktime</value>

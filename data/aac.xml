@@ -65,6 +65,11 @@
     <parent name="AAC-320" />
   </dlna-profile>
 
+  <dlna-profile name="AAC_ISO_320" mime="audio/mp4">
+    <parent name="M4A" />
+    <parent name="AAC-320" />
+  </dlna-profile>
+
   <dlna-profile name="AAC_ISO_320" mime="audio/3gpp">
     <parent name="3GP" />
     <parent name="AAC-320" />
@@ -82,6 +87,11 @@
     <parent name="AAC-576" />
   </dlna-profile>
 
+  <dlna-profile name="AAC_ISO" mime="audio/mp4">
+    <parent name="M4A" />
+    <parent name="AAC-576" />
+  </dlna-profile>
+
   <dlna-profile name="AAC_ISO" mime="audio/3gpp">
     <parent name="3GP" />
     <parent name="AAC-576" />
@@ -96,6 +106,11 @@
 
   <dlna-profile name="AAC_MULT5_ISO" mime="audio/mp4">
     <parent name="MP4" />
+    <parent name="AAC-MULT5" />
+  </dlna-profile>
+
+  <dlna-profile name="AAC_MULT5_ISO" mime="audio/mp4">
+    <parent name="M4A" />
     <parent name="AAC-MULT5" />
   </dlna-profile>
 
