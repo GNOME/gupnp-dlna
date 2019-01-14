@@ -48,13 +48,13 @@
 
 #include "gupnp-dlna-container-information.h"
 
-G_DEFINE_ABSTRACT_TYPE (GUPnPDLNAContainerInformation,
-                        gupnp_dlna_container_information,
-                        G_TYPE_OBJECT)
-
 struct _GUPnPDLNAContainerInformationPrivate {
         gpointer placeholder;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAContainerInformation,
+                                     gupnp_dlna_container_information,
+                                     G_TYPE_OBJECT)
 
 static void
 gupnp_dlna_container_information_class_init
@@ -66,19 +66,13 @@ gupnp_dlna_container_information_class_init
         info_class->is_system_stream = NULL;
         info_class->get_variant = NULL;
         info_class->get_mime = NULL;
-
-        g_type_class_add_private
-                                (info_class,
-                                 sizeof (GUPnPDLNAContainerInformationPrivate));
 }
 
 static void
 gupnp_dlna_container_information_init (GUPnPDLNAContainerInformation *info)
 {
-        GUPnPDLNAContainerInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (info,
-                                         GUPNP_TYPE_DLNA_CONTAINER_INFORMATION,
-                                         GUPnPDLNAContainerInformationPrivate);
+        GUPnPDLNAContainerInformationPrivate *priv = 
+            gupnp_dlna_container_information_get_instance_private (info);
 
         info->priv = priv;
 }

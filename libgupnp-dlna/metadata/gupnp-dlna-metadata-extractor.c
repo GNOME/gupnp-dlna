@@ -65,13 +65,13 @@ enum {
 
 static guint signals[SIGNAL_LAST];
 
-G_DEFINE_ABSTRACT_TYPE (GUPnPDLNAMetadataExtractor,
-                        gupnp_dlna_metadata_extractor,
-                        G_TYPE_OBJECT)
-
 struct _GUPnPDLNAMetadataExtractorPrivate {
         gpointer placeholder;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAMetadataExtractor,
+                                     gupnp_dlna_metadata_extractor,
+                                     G_TYPE_OBJECT)
 
 static void
 gupnp_dlna_metadata_extractor_class_init
@@ -102,18 +102,13 @@ gupnp_dlna_metadata_extractor_class_init
                               2,
                               GUPNP_TYPE_DLNA_INFORMATION,
                               G_TYPE_ERROR);
-
-        g_type_class_add_private (extractor_class,
-                                  sizeof (GUPnPDLNAMetadataExtractorPrivate));
 }
 
 static void
 gupnp_dlna_metadata_extractor_init (GUPnPDLNAMetadataExtractor *self)
 {
         GUPnPDLNAMetadataExtractorPrivate *priv =
-                G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                             GUPNP_TYPE_DLNA_METADATA_EXTRACTOR,
-                                             GUPnPDLNAMetadataExtractorPrivate);
+            gupnp_dlna_metadata_extractor_get_instance_private (self);
 
         self->priv = priv;
 }

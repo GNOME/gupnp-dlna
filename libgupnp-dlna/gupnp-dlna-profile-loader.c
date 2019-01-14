@@ -34,7 +34,24 @@
 #include "gupnp-dlna-value-type.h"
 #include "gupnp-dlna-restriction-private.h"
 
-G_DEFINE_TYPE (GUPnPDLNAProfileLoader, gupnp_dlna_profile_loader, G_TYPE_OBJECT)
+struct _GUPnPDLNAProfileLoaderPrivate {
+        /* parser part */
+        GHashTable *restrictions;
+        GHashTable *profile_ids;
+        GHashTable *files_hash;
+        gboolean    relaxed_mode;
+        gboolean    extended_mode;
+        /* loader part */
+        GHashTable *descriptions;
+        GList      *tags_stack;
+        GList      *dlna_profile_data_stack;
+        GList      *restriction_data_stack;
+        char       *dlna_profile_dir;
+};
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAProfileLoader,
+                            gupnp_dlna_profile_loader,
+                            G_TYPE_OBJECT)
 
 #define DLNA_DATA_DIR DATA_DIR G_DIR_SEPARATOR_S "dlna-profiles"
 #define NODE_TYPE_ELEMENT_START 1
@@ -86,21 +103,6 @@ typedef struct {
         GUPnPDLNARestriction     *restriction;
         GUPnPDLNARestrictionType  type;
 } GUPnPDLNADescription;
-
-struct _GUPnPDLNAProfileLoaderPrivate {
-        /* parser part */
-        GHashTable *restrictions;
-        GHashTable *profile_ids;
-        GHashTable *files_hash;
-        gboolean    relaxed_mode;
-        gboolean    extended_mode;
-        /* loader part */
-        GHashTable *descriptions;
-        GList      *tags_stack;
-        GList      *dlna_profile_data_stack;
-        GList      *restriction_data_stack;
-        char       *dlna_profile_dir;
-};
 
 static GUPnPDLNANameValueListPair *
 gupnp_dlna_name_value_list_pair_new (const gchar        *name,
@@ -856,18 +858,13 @@ gupnp_dlna_profile_loader_class_init (GUPnPDLNAProfileLoaderClass *loader_class)
         g_object_class_install_property (object_class,
                                          PROP_EXTENDED_MODE,
                                          spec);
-
-        g_type_class_add_private (loader_class,
-                                  sizeof (GUPnPDLNAProfileLoaderPrivate));
 }
 
 static void
 gupnp_dlna_profile_loader_init (GUPnPDLNAProfileLoader *self)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (self,
-                                         GUPNP_TYPE_DLNA_PROFILE_LOADER,
-                                         GUPnPDLNAProfileLoaderPrivate);
+        GUPnPDLNAProfileLoaderPrivate *priv = 
+            gupnp_dlna_profile_loader_get_instance_private (self);
 
         priv->restrictions = g_hash_table_new_full (g_str_hash,
                                                     g_str_equal,

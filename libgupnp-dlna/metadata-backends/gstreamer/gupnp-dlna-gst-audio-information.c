@@ -25,16 +25,16 @@
 #include "gupnp-dlna-gst-audio-information.h"
 #include "gupnp-dlna-gst-info-utils.h"
 
-G_DEFINE_TYPE (GUPnPDLNAGstAudioInformation,
-               gupnp_dlna_gst_audio_information,
-               GUPNP_TYPE_DLNA_AUDIO_INFORMATION)
-
 struct _GUPnPDLNAGstAudioInformationPrivate {
         GstDiscovererInfo *info;
         GList *stream_list;
         GstDiscovererAudioInfo *audio_info;
         GstCaps *caps;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstAudioInformation,
+                            gupnp_dlna_gst_audio_information,
+                            GUPNP_TYPE_DLNA_AUDIO_INFORMATION)
 
 enum
 {
@@ -377,18 +377,13 @@ gupnp_dlna_gst_audio_information_class_init
         g_object_class_install_property (object_class,
                                          PROP_INFO,
                                          pspec);
-
-        g_type_class_add_private (gst_info_class,
-                                  sizeof (GUPnPDLNAGstAudioInformationPrivate));
 }
 
 static void
 gupnp_dlna_gst_audio_information_init (GUPnPDLNAGstAudioInformation *self)
 {
-        GUPnPDLNAGstAudioInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (self,
-                                         GUPNP_TYPE_DLNA_GST_AUDIO_INFORMATION,
-                                         GUPnPDLNAGstAudioInformationPrivate);
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+            gupnp_dlna_gst_audio_information_get_instance_private (self);
 
         priv->info = NULL;
         priv->stream_list = NULL;

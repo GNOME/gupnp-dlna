@@ -36,7 +36,6 @@
  * Public representation of the various audio/container/image/video
  * restrictions specified for that DLNA profile is to be added.
  */
-G_DEFINE_TYPE (GUPnPDLNAProfile, gupnp_dlna_profile, G_TYPE_OBJECT)
 
 struct _GUPnPDLNAProfilePrivate {
         gchar    *name;
@@ -47,6 +46,8 @@ struct _GUPnPDLNAProfilePrivate {
         GList    *image_restrictions;
         GList    *video_restrictions;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAProfile, gupnp_dlna_profile, G_TYPE_OBJECT)
 
 enum {
         PROP_0,
@@ -265,16 +266,13 @@ gupnp_dlna_profile_class_init (GUPnPDLNAProfileClass *klass)
         g_object_class_install_property (object_class,
                                          PROP_VIDEO_RESTRICTIONS,
                                          pspec);
-
-        g_type_class_add_private (klass, sizeof (GUPnPDLNAProfilePrivate));
 }
 
 static void
 gupnp_dlna_profile_init (GUPnPDLNAProfile *profile)
 {
-        GUPnPDLNAProfilePrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE (profile,
-                                                  GUPNP_TYPE_DLNA_PROFILE,
-                                                  GUPnPDLNAProfilePrivate);
+        GUPnPDLNAProfilePrivate *priv =
+            gupnp_dlna_profile_get_instance_private (profile);
 
         priv->name = NULL;
         priv->mime = NULL;

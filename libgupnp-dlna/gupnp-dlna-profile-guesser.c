@@ -43,14 +43,14 @@ enum {
 
 static guint signals[SIGNAL_LAST];
 
-G_DEFINE_TYPE (GUPnPDLNAProfileGuesser,
-               gupnp_dlna_profile_guesser,
-               G_TYPE_OBJECT)
-
 struct _GUPnPDLNAProfileGuesserPrivate {
         gboolean relaxed_mode;
         gboolean extended_mode;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAProfileGuesser,
+                            gupnp_dlna_profile_guesser,
+                            G_TYPE_OBJECT)
 
 enum {
         PROP_0,
@@ -197,18 +197,13 @@ gupnp_dlna_profile_guesser_class_init
                                gupnp_dlna_profile_loader_get_from_disk (loader);
                 g_object_unref (loader);
         }
-
-        g_type_class_add_private (guesser_class,
-                                  sizeof (GUPnPDLNAProfileGuesserPrivate));
 }
 
 static void
 gupnp_dlna_profile_guesser_init (GUPnPDLNAProfileGuesser *self)
 {
-        GUPnPDLNAProfileGuesserPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (self,
-                                         GUPNP_TYPE_DLNA_PROFILE_GUESSER,
-                                         GUPnPDLNAProfileGuesserPrivate);
+        GUPnPDLNAProfileGuesserPrivate *priv =
+            gupnp_dlna_profile_guesser_get_instance_private (self);
 
         priv->relaxed_mode = FALSE;
         priv->extended_mode = FALSE;

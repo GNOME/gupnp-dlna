@@ -47,13 +47,13 @@
 
 #include "gupnp-dlna-image-information.h"
 
-G_DEFINE_ABSTRACT_TYPE (GUPnPDLNAImageInformation,
-                        gupnp_dlna_image_information,
-                        G_TYPE_OBJECT)
-
 struct _GUPnPDLNAImageInformationPrivate {
         gpointer placeholder;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAImageInformation,
+                                     gupnp_dlna_image_information,
+                                     G_TYPE_OBJECT)
 
 static void
 gupnp_dlna_image_information_class_init
@@ -63,18 +63,13 @@ gupnp_dlna_image_information_class_init
         info_class->get_height = NULL;
         info_class->get_width = NULL;
         info_class->get_mime = NULL;
-
-        g_type_class_add_private (info_class,
-                                  sizeof (GUPnPDLNAImageInformationPrivate));
 }
 
 static void
 gupnp_dlna_image_information_init (GUPnPDLNAImageInformation *info)
 {
-        GUPnPDLNAImageInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (info,
-                                         GUPNP_TYPE_DLNA_IMAGE_INFORMATION,
-                                         GUPnPDLNAImageInformationPrivate);
+        GUPnPDLNAImageInformationPrivate *priv =
+            gupnp_dlna_image_information_get_instance_private (info);
 
         info->priv = priv;
 }

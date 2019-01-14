@@ -47,13 +47,13 @@
 
 #include "gupnp-dlna-audio-information.h"
 
-G_DEFINE_ABSTRACT_TYPE (GUPnPDLNAAudioInformation,
-                        gupnp_dlna_audio_information,
-                        G_TYPE_OBJECT)
-
 struct _GUPnPDLNAAudioInformationPrivate {
         gpointer placeholder;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAAudioInformation,
+                        gupnp_dlna_audio_information,
+                        G_TYPE_OBJECT)
 
 static void
 gupnp_dlna_audio_information_class_init
@@ -71,18 +71,13 @@ gupnp_dlna_audio_information_class_init
         info_class->get_stream_format = NULL;
         info_class->get_wma_version = NULL;
         info_class->get_mime = NULL;
-
-        g_type_class_add_private (info_class,
-                                  sizeof (GUPnPDLNAAudioInformationPrivate));
 }
 
 static void
 gupnp_dlna_audio_information_init (GUPnPDLNAAudioInformation *info)
 {
-        GUPnPDLNAAudioInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (info,
-                                         GUPNP_TYPE_DLNA_AUDIO_INFORMATION,
-                                         GUPnPDLNAAudioInformationPrivate);
+        GUPnPDLNAAudioInformationPrivate *priv =
+            gupnp_dlna_audio_information_get_instance_private (info);
 
         info->priv = priv;
 }

@@ -34,10 +34,6 @@
 
 #include "gupnp-dlna-information.h"
 
-G_DEFINE_ABSTRACT_TYPE (GUPnPDLNAInformation,
-                        gupnp_dlna_information,
-                        G_TYPE_OBJECT)
-
 struct _GUPnPDLNAInformationPrivate {
         gchar* uri;
         gboolean got_audio_info;
@@ -49,6 +45,10 @@ struct _GUPnPDLNAInformationPrivate {
         GUPnPDLNAImageInformation *image_info;
         GUPnPDLNAVideoInformation *video_info;
 };
+
+G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAInformation,
+                                     gupnp_dlna_information,
+                                     G_TYPE_OBJECT)
 
 enum {
         PROP_0,
@@ -233,18 +233,13 @@ gupnp_dlna_information_class_init (GUPnPDLNAInformationClass *info_class)
                                      GUPNP_TYPE_DLNA_VIDEO_INFORMATION,
                                      G_PARAM_READABLE);
         g_object_class_install_property (object_class, PROP_VIDEO_INFO, pspec);
-
-        g_type_class_add_private (info_class,
-                                  sizeof (GUPnPDLNAInformationPrivate));
 }
 
 static void
 gupnp_dlna_information_init (GUPnPDLNAInformation *info)
 {
-        GUPnPDLNAInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (info,
-                                         GUPNP_TYPE_DLNA_INFORMATION,
-                                         GUPnPDLNAInformationPrivate);
+        GUPnPDLNAInformationPrivate *priv =
+            gupnp_dlna_information_get_instance_private (info);
 
         priv->uri = NULL;
         priv->got_audio_info = FALSE;
