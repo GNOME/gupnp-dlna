@@ -39,7 +39,7 @@
 static gboolean relaxed = FALSE;
 
 static void
-print_profile (GUPnPDLNAProfile *profile)
+print_profile (GUPnPDLNAProfile *profile, gpointer user_data)
 {
         g_print ("%s %-30s%-35s\n",
                  gupnp_dlna_profile_get_extended (profile) ? "*" : " ",
