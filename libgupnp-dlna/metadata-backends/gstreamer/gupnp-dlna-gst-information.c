@@ -29,13 +29,13 @@
 #include "gupnp-dlna-gst-image-information.h"
 #include "gupnp-dlna-gst-video-information.h"
 
-G_DEFINE_TYPE (GUPnPDLNAGstInformation,
-               gupnp_dlna_gst_information,
-               GUPNP_TYPE_DLNA_INFORMATION)
-
 struct _GUPnPDLNAGstInformationPrivate {
         GstDiscovererInfo* info;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstInformation,
+                            gupnp_dlna_gst_information,
+                            GUPNP_TYPE_DLNA_INFORMATION)
 
 enum {
         PROP_0,
@@ -174,21 +174,12 @@ gupnp_dlna_gst_information_class_init
         g_object_class_install_property (object_class,
                                          PROP_INFO,
                                          pspec);
-
-        g_type_class_add_private (gst_info_class,
-                                  sizeof (GUPnPDLNAGstInformationPrivate));
 }
 
 static void
 gupnp_dlna_gst_information_init (GUPnPDLNAGstInformation *self)
 {
-        GUPnPDLNAGstInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (self,
-                                         GUPNP_TYPE_DLNA_GST_INFORMATION,
-                                         GUPnPDLNAGstInformationPrivate);
-
-        priv->info = NULL;
-        self->priv = priv;
+        self->priv = gupnp_dlna_gst_information_get_instance_private (self);
 }
 
 GUPnPDLNAGstInformation *

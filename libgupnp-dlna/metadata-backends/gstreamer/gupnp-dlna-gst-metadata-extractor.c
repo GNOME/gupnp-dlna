@@ -26,13 +26,13 @@
 #include "gupnp-dlna-gst-information.h"
 #include "gupnp-dlna-gst-utils.h"
 
-G_DEFINE_TYPE (GUPnPDLNAGstMetadataExtractor,
-               gupnp_dlna_gst_metadata_extractor,
-               GUPNP_TYPE_DLNA_METADATA_EXTRACTOR)
-
 struct _GUPnPDLNAGstMetadataExtractorPrivate {
         gpointer placeholder;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstMetadataExtractor,
+                            gupnp_dlna_gst_metadata_extractor,
+                            GUPNP_TYPE_DLNA_METADATA_EXTRACTOR)
 
 static gboolean
 unref_discoverer_in_idle (GstDiscoverer *discoverer)
@@ -137,21 +137,12 @@ gupnp_dlna_gst_metadata_extractor_class_init
 
         extractor_class->extract_async = backend_extract_async;
         extractor_class->extract_sync = backend_extract_sync;
-
-        g_type_class_add_private
-                                (gst_extractor_class,
-                                 sizeof (GUPnPDLNAGstMetadataExtractorPrivate));
 }
 
 static void
 gupnp_dlna_gst_metadata_extractor_init (GUPnPDLNAGstMetadataExtractor *self)
 {
-        GUPnPDLNAGstMetadataExtractorPrivate *priv =
-            G_TYPE_INSTANCE_GET_PRIVATE (self,
-                                         GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR,
-                                         GUPnPDLNAGstMetadataExtractorPrivate);
-
-        self->priv = priv;
+        self->priv = gupnp_dlna_gst_metadata_extractor_get_instance_private (self);
 }
 
 GUPnPDLNAGstMetadataExtractor *

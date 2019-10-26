@@ -25,15 +25,15 @@
 #include "gupnp-dlna-gst-container-information.h"
 #include "gupnp-dlna-gst-info-utils.h"
 
-G_DEFINE_TYPE (GUPnPDLNAGstContainerInformation,
-               gupnp_dlna_gst_container_information,
-               GUPNP_TYPE_DLNA_CONTAINER_INFORMATION)
-
 struct _GUPnPDLNAGstContainerInformationPrivate {
         GstDiscovererInfo *info;
         GstDiscovererStreamInfo *container_info;
         GstCaps *caps;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstContainerInformation,
+                            gupnp_dlna_gst_container_information,
+                            GUPNP_TYPE_DLNA_CONTAINER_INFORMATION)
 
 enum
 {
@@ -247,26 +247,14 @@ gupnp_dlna_gst_container_information_class_init
         g_object_class_install_property (object_class,
                                          PROP_INFO,
                                          pspec);
-
-        g_type_class_add_private
-                             (gst_info_class,
-                              sizeof (GUPnPDLNAGstContainerInformationPrivate));
 }
 
 static void
 gupnp_dlna_gst_container_information_init
                                         (GUPnPDLNAGstContainerInformation *self)
 {
-        GUPnPDLNAGstContainerInformationPrivate *priv =
-                G_TYPE_INSTANCE_GET_PRIVATE
-                                     (self,
-                                      GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION,
-                                      GUPnPDLNAGstContainerInformationPrivate);
-
-        priv->info = NULL;
-        priv->container_info = NULL;
-        priv->caps = NULL;
-        self->priv = priv;
+        self->priv = gupnp_dlna_gst_container_information_get_instance_private
+                                        (self);
 }
 
 GUPnPDLNAGstContainerInformation *

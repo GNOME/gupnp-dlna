@@ -25,16 +25,16 @@
 #include "gupnp-dlna-gst-video-information.h"
 #include "gupnp-dlna-gst-info-utils.h"
 
-G_DEFINE_TYPE (GUPnPDLNAGstVideoInformation,
-               gupnp_dlna_gst_video_information,
-               GUPNP_TYPE_DLNA_VIDEO_INFORMATION)
-
 struct _GUPnPDLNAGstVideoInformationPrivate {
         GstDiscovererInfo *info;
         GList *stream_list;
         GstDiscovererVideoInfo *video_info;
         GstCaps *caps;
 };
+
+G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstVideoInformation,
+                            gupnp_dlna_gst_video_information,
+                            GUPNP_TYPE_DLNA_VIDEO_INFORMATION)
 
 enum
 {
@@ -372,24 +372,13 @@ gupnp_dlna_gst_video_information_class_init
         g_object_class_install_property (object_class,
                                          PROP_INFO,
                                          pspec);
-
-        g_type_class_add_private (gst_info_class,
-                                  sizeof (GUPnPDLNAGstVideoInformationPrivate));
 }
 
 static void
 gupnp_dlna_gst_video_information_init (GUPnPDLNAGstVideoInformation *self)
 {
-        GUPnPDLNAGstVideoInformationPrivate *priv = G_TYPE_INSTANCE_GET_PRIVATE
-                                        (self,
-                                         GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION,
-                                         GUPnPDLNAGstVideoInformationPrivate);
-
-        priv->info = NULL;
-        priv->stream_list = NULL;
-        priv->video_info = NULL;
-        priv->caps = NULL;
-        self->priv = priv;
+        self->priv = gupnp_dlna_gst_video_information_get_instance_private
+                                        (self);
 }
 
 GUPnPDLNAGstVideoInformation *
