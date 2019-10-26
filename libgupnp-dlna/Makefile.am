@@ -66,10 +66,6 @@ if GSTREAMER_METADATA_BACKEND_ENABLED
 include $(top_srcdir)/libgupnp-dlna/metadata-backends/gstreamer/gstreamer.am
 endif
 
-if GSTREAMER_LEGACY_METADATA_BACKEND_ENABLED
-include $(top_srcdir)/libgupnp-dlna/metadata-backends/gstreamer-legacy/gstreamer.am
-endif
-
 noinst_LTLIBRARIES += \
 	libloader.la \
 	libguesser.la \
