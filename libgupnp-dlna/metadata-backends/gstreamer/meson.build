@@ -22,6 +22,7 @@ libgupnp_dlna_gst = library(
         config_dep,
         gupnp_dlna
     ],
+    c_args : ['-DG_LOG_DOMAIN="gupnp-dlna-metadata"'],
     install: true
 )
 

@@ -97,6 +97,7 @@ libgupnp_dlna = library(
         libmetadata
     ],
     dependencies: [glib, gio, gmodule],
+    c_args : ['-DG_LOG_DOMAIN="gupnp-dlna"'],
     include_directories: include_directories('..'),
     install: true
 )
