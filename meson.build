@@ -5,6 +5,7 @@ project(
 )
 
 pkg = import('pkgconfig')
+gnome = import('gnome')
 
 shareddir = join_paths(get_option('prefix'), get_option('datadir'), 'gupnp-dlna-2.0')
 metadata_backend_dir = join_paths(get_option('prefix'), get_option('libdir'), 'gupnp-dlna')

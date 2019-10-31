@@ -2,17 +2,19 @@ dlna_gst_headers = files('gupnp-dlna-gst-utils.h')
 
 install_headers(dlna_gst_headers, subdir : headers_subdir)
 
+dlna_gst_sources = files(
+    'gupnp-dlna-gst-audio-information.c',
+    'gupnp-dlna-gst-container-information.c',
+    'gupnp-dlna-gst-image-information.c',
+    'gupnp-dlna-gst-information.c',
+    'gupnp-dlna-gst-info-utils.c',
+    'gupnp-dlna-gst-utils.c',
+    'gupnp-dlna-gst-video-information.c'
+)
+
 libgupnp_dlna_gst = library(
     'gupnp-dlna-gst-2.0',
-    files(
-        'gupnp-dlna-gst-audio-information.c',
-        'gupnp-dlna-gst-container-information.c',
-        'gupnp-dlna-gst-image-information.c',
-        'gupnp-dlna-gst-information.c',
-        'gupnp-dlna-gst-info-utils.c',
-        'gupnp-dlna-gst-utils.c',
-        'gupnp-dlna-gst-video-information.c'
-    ),
+    dlna_gst_sources,
     version: library_version,
     dependencies : [
         glib,
@@ -55,3 +57,18 @@ pkg.generate(
     libraries: gupnp_dlna,
     requires: gstreamer_pbu
 )
+
+if get_option('introspection')
+    gupnp_dlna_gst_gir = gnome.generate_gir(
+        libgupnp_dlna_gst,
+        dependencies: gupnp_dlna_gir,
+        sources : dlna_gst_headers +
+            dlna_gst_sources,
+        namespace : 'GUPnPDLNAGst',
+        nsversion : '2.0',
+        symbol_prefix : 'gupnp_dlna_gst',
+        identifier_prefix : 'GUPnPDLNAGst',
+        install: true,
+        includes : ['GObject-2.0', 'GUPnPDLNA-2.0', 'Gst-1.0', 'GstPbutils-1.0']
+    )
+endif
