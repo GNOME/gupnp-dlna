@@ -46,9 +46,11 @@ shared_module(
 )
 
 pkg.generate(
-    libraries : libgupnp_dlna_gst,
+    libgupnp_dlna_gst,
     version: meson.project_version(),
     subdirs : 'gupnp-dlna-2.0',
     name: 'gupnp-dlna-gst-2.0',
-    description : 'GStreamer specific utils using GUPnP-DLNA'
+    description : 'GStreamer specific utils using GUPnP-DLNA',
+    libraries: gupnp_dlna,
+    requires: gstreamer_pbu
 )

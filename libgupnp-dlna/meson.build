@@ -111,7 +111,17 @@ pkg.generate(
     version: meson.project_version(),
     subdirs : 'gupnp-dlna-2.0',
     name: 'gupnp-dlna-2.0',
-    description: 'GObject-based DLNA specific UPnP library'
+    description: 'GObject-based DLNA specific UPnP library',
+    libraries: [glib, gobject]
+)
+
+pkg.generate(
+    version: meson.project_version(),
+    subdirs: 'gupnp-dlna-2.0/metadata',
+    name : 'gupnp-dlna-metadata-2.0',
+    description: 'Metadata extractor plugin development files for GUPnP-DLNA',
+    libraries: [glib, gobject, gupnp_dlna],
+    variables: 'plugindir=@0@'.format(metadata_backend_dir)
 )
 
 subdir('metadata-backends')
