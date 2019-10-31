@@ -12,7 +12,7 @@ metadata_backend_dir = join_paths(get_option('prefix'), get_option('libdir'), 'g
 library_version = '3.0.0'
 
 config = configuration_data()
-config.set_quoted('GUPNP_DLNA_DEFAULT_METADATA_BACKEND', 'gstreamer')
+config.set_quoted('GUPNP_DLNA_DEFAULT_METADATA_BACKEND', get_option('default_backend'))
 config.set_quoted('GUPNP_DLNA_DEFAULT_METADATA_BACKEND_DIR', metadata_backend_dir)
 
 configure_file(output: 'config.h', configuration: config)

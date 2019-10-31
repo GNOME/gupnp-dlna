@@ -1,2 +1,3 @@
 option('gstreamer_backend', type : 'feature', value: 'enabled')
+option('default_backend', type: 'string', value: 'gstreamer')
 option('introspection', type: 'boolean', value: 'true')
