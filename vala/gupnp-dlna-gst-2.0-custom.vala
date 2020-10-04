@@ -1,2 +1,0 @@
-namespace GUPnP.DLNA.Gst {
-}

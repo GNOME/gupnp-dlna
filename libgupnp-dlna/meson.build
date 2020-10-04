@@ -146,6 +146,7 @@ if get_option('introspection')
             metadata_sources +
             loader_sources,
         namespace : 'GUPnPDLNA',
+        header : 'libgupnp-dlna/gupnp-dlna.h',
         nsversion : '2.0',
         symbol_prefix : 'gupnp_dlna',
         identifier_prefix : 'GUPnPDLNA',

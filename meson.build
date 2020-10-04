@@ -54,3 +54,8 @@ install_data(
 
 subdir('libgupnp-dlna')
 subdir('tools')
+if get_option('introspection')
+    if get_option('vapi')
+        subdir('vala')
+    endif
+endif
