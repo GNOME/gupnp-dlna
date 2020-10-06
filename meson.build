@@ -59,3 +59,4 @@ if get_option('introspection')
         subdir('vala')
     endif
 endif
+subdir('doc')
