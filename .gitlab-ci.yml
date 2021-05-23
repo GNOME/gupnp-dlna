@@ -61,12 +61,13 @@ check-merge-request:
 
 .gupnpdlna.fedora@common:
   variables:
-    BASE_TAG: '2021-05-23.0'
+    BASE_TAG: '2021-05-23.1'
     FDO_UPSTREAM_REPO: GNOME/gupnp-dlna
-    FDO_DISTRIBUTION_PACKAGES: 'clang clang-analyzer gcovr git libasan libubsan python3-gobject python3-pip xmlto gobject-introspection-devel gtk-doc libxml2-devel vala ninja-build'
+    FDO_DISTRIBUTION_PACKAGES: 'clang clang-analyzer gcovr git libasan libubsan python3-gobject python3-pip xmlto gobject-introspection-devel gtk-doc libxml2-devel vala ninja-build gstreamer1-devel gstreamer1-plugins-base-devel'
     FDO_DISTRIBUTION_EXEC: |
       dnf clean all &&
-      pip3 install meson
+      pip3 install meson &&
+      git clone https://gitlab.gnome.org/GNOME/gupnp-dlna-media
 
 .gupnpdlna.fedora:34@x86_64:
   extends: .gupnpdlna.fedora@common
