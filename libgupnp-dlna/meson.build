@@ -137,6 +137,7 @@ pkg.generate(
 )
 
 if get_option('introspection')
+    gupnp_dlna_gir_dir = meson.current_build_dir()
     gupnp_dlna_gir = gnome.generate_gir(
         libgupnp_dlna,
         sources : headers +

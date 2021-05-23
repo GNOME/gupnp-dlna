@@ -69,6 +69,6 @@ if get_option('introspection')
         symbol_prefix : 'gupnp_dlna_gst',
         identifier_prefix : 'GUPnPDLNAGst',
         install: true,
-        includes : ['GObject-2.0', 'GUPnPDLNA-2.0', 'Gst-1.0', 'GstPbutils-1.0']
+        includes : ['GObject-2.0', gupnp_dlna_gir.get(0), 'Gst-1.0', 'GstPbutils-1.0']
     )
 endif
