@@ -102,3 +102,4 @@ po/Makefile.in.in
 po/POTFILES
 stamp-*
 tests/dlna-profile-parser
+build
