@@ -30,6 +30,10 @@ config_dep = declare_dependency(
 gstreamer = dependency('gstreamer-1.0', required: get_option('gstreamer_backend'), disabler : true)
 gstreamer_pbu = dependency('gstreamer-pbutils-1.0', required: get_option('gstreamer_backend'), disabler : true)
 
+# default is relative to the source dir; if test_media is absolute, join_paths() will return that instead
+media_dir = join_paths(meson.current_source_dir(), get_option('test_media'))
+dlna_profile_dir = join_paths(meson.current_source_dir(), 'data')
+
 install_data(
     files(
         'data/dlna-profiles.rng',
@@ -60,3 +64,4 @@ if get_option('introspection')
     endif
 endif
 subdir('doc')
+subdir('tests')

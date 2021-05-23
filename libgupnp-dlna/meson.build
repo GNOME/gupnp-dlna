@@ -115,7 +115,7 @@ libgupnp_dlna = library(
 
 gupnp_dlna = declare_dependency(
     link_with : libgupnp_dlna,
-    include_directories: include_directories('.')
+    include_directories: [include_directories('.'), include_directories('..')],
 )
 
 pkg.generate(

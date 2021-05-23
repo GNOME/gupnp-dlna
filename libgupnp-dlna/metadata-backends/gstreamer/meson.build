@@ -1,5 +1,7 @@
 dlna_gst_headers = files('gupnp-dlna-gst-utils.h')
 
+dlna_backend_dir = meson.current_build_dir()
+
 install_headers(dlna_gst_headers, subdir : headers_subdir)
 
 dlna_gst_sources = files(
