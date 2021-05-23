@@ -66,10 +66,7 @@ check-merge-request:
     FDO_DISTRIBUTION_PACKAGES: 'clang clang-analyzer gcovr git libasan libubsan python3-gobject python3-pip xmlto gobject-introspection-devel gtk-doc libxml2-devel vala ninja-build gstreamer1-devel gstreamer1-plugins-base-devel'
     FDO_DISTRIBUTION_EXEC: |
       dnf clean all &&
-      pip3 install meson &&
-      mkdir -p /usr/local/share &&
-      cd /usr/local/share &&
-      git clone --depth=1 https://gitlab.gnome.org/GNOME/gupnp-dlna-media
+      pip3 install meson
 
 .gupnpdlna.fedora:34@x86_64:
   extends: .gupnpdlna.fedora@common
@@ -101,6 +98,7 @@ build-fedora@x86_64:
     G_SLICE: "always-malloc"
     MALLOC_CHECK_: "3"
   script:
+    - git clone --depth=1 https://gitlab.gnome.org/GNOME/gupnp-dlna-media.git tests/gupnp-dlna-media
     - cd build
     - |
       # Remove the many "CI_" variables from the environment. Meson dumps the
