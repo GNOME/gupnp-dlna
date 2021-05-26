@@ -160,7 +160,7 @@ gupnp_dlna_metadata_extractor_extract_async
  *
  * Discovers synchronously metadata of given @uri.
  *
- * Returns: A #GUPnPDLNAInformation object if discovery succeeded,
+ * Returns: (transfer full) : A #GUPnPDLNAInformation object if discovery succeeded,
  * otherwise %NULL.
  */
 GUPnPDLNAInformation *
