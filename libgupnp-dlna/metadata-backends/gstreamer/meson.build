@@ -63,7 +63,6 @@ pkg.generate(
 if get_option('introspection')
     gupnp_dlna_gst_gir = gnome.generate_gir(
         libgupnp_dlna_gst,
-        dependencies: gupnp_dlna_gir,
         sources : dlna_gst_headers +
             dlna_gst_sources,
         namespace : 'GUPnPDLNAGst',
