@@ -1,5 +1,7 @@
 ACLOCAL_AMFLAGS = -I m4 ${ACLOCAL_FLAGS}
 
+EXTRA_DIST = meson.build meson_options.txt
+
 SUBDIRS = libgupnp-dlna tools tests data doc vala
 
 pkgconfig_DATA = gupnp-dlna-2.0.pc gupnp-dlna-metadata-2.0.pc

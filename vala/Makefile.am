@@ -24,7 +24,8 @@ EXTRA_DIST = \
 	GUPnPDLNA-2.0.metadata \
 	gupnp-dlna-2.0-custom.vala \
 	gupnp-dlna-2.0.vapi \
-	gupnp-dlna-2.0.stamp
+	gupnp-dlna-2.0.stamp \
+	meson.build
 
 if GSTREAMER_METADATA_BACKEND_ENABLED
 gupnp-dlna-gst-2.0.vapi: gupnp-dlna-gst-2.0.stamp

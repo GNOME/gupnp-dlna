@@ -26,3 +26,5 @@ sets_CFLAGS = \
 	$(WARN_CFLAGS) \
 	-I$(top_srcdir) \
 	-I$(top_srcdir)/libgupnp-dlna
+
+EXTRA_DIST = meson.build
