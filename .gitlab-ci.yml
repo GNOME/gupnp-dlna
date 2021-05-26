@@ -189,5 +189,4 @@ pages:
     - build-fedora-container@x86_64
   only:
     - master
-    - /^wip\/.*\/ci.*$/
 
