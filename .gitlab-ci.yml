@@ -98,7 +98,12 @@ build-fedora@x86_64:
     G_SLICE: "always-malloc"
     MALLOC_CHECK_: "3"
   script:
-    - git clone --depth=1 https://gitlab.gnome.org/GNOME/gupnp-dlna-media.git tests/gupnp-dlna-media
+    - if [[ x"$GUPNP_DLNA_RUN_MEDIA_TEST" != "x" ]] ;
+      then
+        git clone --depth=1 https://gitlab.gnome.org/GNOME/gupnp-dlna-media.git tests/gupnp-dlna-media ;
+      else
+        echo "Media discoverer tests disabled." ;
+      fi
     - cd build
     - |
       # Remove the many "CI_" variables from the environment. Meson dumps the
