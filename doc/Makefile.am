@@ -7,4 +7,4 @@ endif
 
 SUBDIRS += .
 
-EXTRA_DIST = version.xml.in
+EXTRA_DIST = version.xml.in meson.build

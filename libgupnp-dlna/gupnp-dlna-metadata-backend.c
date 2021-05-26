@@ -19,6 +19,10 @@
  * Boston, MA 02110-1301, USA.
  */
 
+#ifdef HAVE_CONFIG_H
+#include <config.h>
+#endif
+
 #include <gmodule.h>
 #include "gupnp-dlna-metadata-backend.h"
 

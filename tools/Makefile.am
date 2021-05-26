@@ -23,3 +23,5 @@ gupnp_dlna_info_2_0_SOURCES = \
 gupnp_dlna_ls_profiles_2_0_LDFLAGS = $(WARN_LDFLAGS)
 gupnp_dlna_ls_profiles_2_0_SOURCES = \
 	gupnp-dlna-ls-profiles.c
+
+EXTRA_DIST = meson.build

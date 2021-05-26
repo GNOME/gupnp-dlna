@@ -253,3 +253,9 @@ typelib_DATA = $(gir_DATA:.gir=.typelib)
 CLEANFILES = $(gir_DATA) $(typelib_DATA)
 
 endif
+
+EXTRA_DIST = \
+	meson.build \
+	metadata-backends/gstreamer/meson.build \
+	metadata-backends/meson.build \
+	meson.build
