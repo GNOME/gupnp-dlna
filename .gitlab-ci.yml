@@ -180,7 +180,7 @@ pages:
   script:
       - meson doc-build -Dgtk_doc=true
       - ninja -C doc-build gupnp-dlna-doc
-      - mkdir -p public
+      - mkdir -p public/docs
       - cp doc/index.html public/docs
       - mv doc-build/doc/gupnp-dlna/html public/docs/gupnp-dlna
       - mv doc-build/doc/gupnp-dlna-gst/html public/docs/gupnp-dlna-gst
