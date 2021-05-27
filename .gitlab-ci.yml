@@ -181,7 +181,10 @@ pages:
       - meson doc-build -Dgtk_doc=true
       - ninja -C doc-build gupnp-dlna-doc
       - mkdir -p public
-      - mv doc-build/doc/html public/docs
+      - cp doc/index.html public/docs
+      - mv doc-build/doc/gupnp-dlna/html public/docs/gupnp-dlna
+      - mv doc-build/doc/gupnp-dlna-gst/html public/docs/gupnp-dlna-gst
+      - mv doc-build/doc/gupnp-dlna-metadata/html public/docs/gupnp-dlna-metadata
   artifacts:
     paths:
       - public

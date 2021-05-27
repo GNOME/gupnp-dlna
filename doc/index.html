@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>GUPnP-DLNA API reference</title>
+<link rel="stylesheet" type="text/css" media="all" href="https://static.gnome.org/css/grass-theme-style.css">
+</head>
+<body class="with-star">
+<div class="clearfix"></div>
+<div id="container" class="two_columns">
+<div class="container_12">
+<div class="page_title"><h1 class="subindex" id="subindex-references">API Reference</h1></div>
+<div class="content">
+<dl class="doc-index">
+<dt><a class="doc-link" lang="en" href="/docs/gupnp-dlna/">GUPnP-DLNA reference manual</a></dt>
+<dd>GUPnP DLNA is a set of utility APIs to simplify DLNA-specific bits of MediaServer implementations, such as DLNA media profile guessing.</dd>
+<dt><a class="doc-link" lang="en" href="/docs/gupnp-dlna-gst/">GUPnP-DLNA-Gst reference manual</a></dt>
+<dd>GUPnP DLNA GStreamer is a set of utility function targeted for using GUPnP-DLNA with GStreamer.</dd>
+<dt><a class="doc-link" lang="en" href="/docs/gupnp-dlna-metadata/">GUPnP-DLNA-Metadata </a></dt>
+<dd>GUPnP DLNA Metadata is a set of APIs to create a metadata extractor plugins used by GUPnP DLNA Profile Guesser to guess the profile.</dd>
+</dl>
+<script type="text/javascript">
+$(document).ready(function() {
+    // Get browser
+    $.each($.browser, function(i) {
+        $('body').addClass(i);
+        return false;
+    });
+
+    // Get OS and add it as class to body tag, this then allows forcing some
+    // customisation in the CSS rules.
+    var match = navigator.userAgent.toLowerCase().match(/(win|mac|linux)/);
+    if (match) {
+        $('body').addClass(match[0]);
+    }
+});
+    </script>
+</body>
+</html>
