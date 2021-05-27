@@ -179,7 +179,7 @@ pages:
   stage: website
   script:
       - meson doc-build -Dgtk_doc=true
-      - ninja -C doc-build gupnp-dlna-doc
+      - ninja -C doc-build gupnp-dlna-doc gupnp-dlna-gst-doc gupnp-dlna-metadata-doc
       - mkdir -p public/docs
       - cp doc/index.html public/docs
       - mv doc-build/doc/gupnp-dlna/html public/docs/gupnp-dlna
