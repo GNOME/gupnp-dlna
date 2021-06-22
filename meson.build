@@ -15,17 +15,17 @@ config = configuration_data()
 config.set_quoted('GUPNP_DLNA_DEFAULT_METADATA_BACKEND', get_option('default_backend'))
 config.set_quoted('GUPNP_DLNA_DEFAULT_METADATA_BACKEND_DIR', metadata_backend_dir)
 
-configure_file(output: 'config.h', configuration: config)
-add_global_arguments('-DHAVE_CONFIG_H=1', language : 'c')
+
+# Generate config.h
+subdir('internal')
+add_project_arguments('-DHAVE_CONFIG_H=1', language : 'c')
+toplevel_incdir = include_directories('.')
 
 glib = dependency('glib-2.0')
 gobject = dependency('gobject-2.0')
 gio = dependency('gio-2.0')
 gmodule = dependency('gmodule-2.0')
 xml = dependency('libxml-2.0')
-config_dep = declare_dependency(
-    include_directories : include_directories('.')
-)
 
 gstreamer = dependency('gstreamer-1.0', required: get_option('gstreamer_backend'), disabler : true)
 gstreamer_pbu = dependency('gstreamer-pbutils-1.0', required: get_option('gstreamer_backend'), disabler : true)

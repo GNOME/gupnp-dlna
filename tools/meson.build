@@ -5,9 +5,9 @@ executable(
         glib,
         gobject,
         xml,
-        config_dep,
         gupnp_dlna
     ],
+    include_directories : config_h_inc,
     install: true
 )
 
@@ -18,8 +18,8 @@ executable(
         glib,
         gobject,
         xml,
-        config_dep,
         gupnp_dlna
     ],
+    include_directories : config_h_inc,
     install: true
 )

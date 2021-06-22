@@ -1,5 +1,7 @@
 headers_subdir = 'gupnp-dlna-2.0/libgupnp-dlna'
 
+metadata_incdir = include_directories('metadata')
+
 loader_sources = files(
     'gupnp-dlna-profile-loader.c'
 )
@@ -12,7 +14,10 @@ libloader = static_library(
         '-DDATA_DIR="@0@"'.format(shareddir)
     ],
     dependencies : [glib, gio, xml],
-    include_directories: include_directories('..')
+    include_directories: [
+        toplevel_incdir,
+        config_h_inc
+    ]
 )
 
 guesser_sources = files(
@@ -28,10 +33,11 @@ libguesser = static_library(
         '-DG_LOG_DOMAIN="gupnp-dlna-guesser"',
         '-DDATA_DIR="@0@"'.format(shareddir)
     ],
-    include_directories: include_directories(
-        '..',
-        'metadata'
-    )
+    include_directories: [
+        toplevel_incdir,
+        metadata_incdir,
+        config_h_inc
+    ]
 )
 
 metadata_sources = files(
@@ -47,10 +53,11 @@ libmetadata = static_library(
         '-DG_LOG_DOMAIN="gupnp-dlna-metadata"',
         '-DDATA_DIR="@0@"'.format(shareddir)
     ],
-    include_directories: include_directories(
-        '..',
-        'metadata'
-    )
+    include_directories: [
+        toplevel_incdir,
+        metadata_incdir,
+        config_h_inc
+    ]
 )
 
 headers = files(
@@ -109,7 +116,10 @@ libgupnp_dlna = library(
     ],
     dependencies: [glib, gio, gmodule],
     c_args : ['-DG_LOG_DOMAIN="gupnp-dlna"'],
-    include_directories: include_directories('..'),
+    include_directories: [
+        include_directories('..'), 
+        config_h_inc
+    ],
     install: true
 )
 
@@ -117,6 +127,8 @@ gupnp_dlna = declare_dependency(
     link_with : libgupnp_dlna,
     include_directories: [include_directories('.'), include_directories('..')],
 )
+
+meson.override_dependency('gupnp-dlna-2.0', gupnp_dlna)
 
 pkg.generate(
     libgupnp_dlna,

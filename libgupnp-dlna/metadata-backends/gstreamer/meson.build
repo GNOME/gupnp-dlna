@@ -23,12 +23,17 @@ libgupnp_dlna_gst = library(
         gio,
         gstreamer_pbu,
         gstreamer,
-        config_dep,
         gupnp_dlna
     ],
+    include_directories : [
+        toplevel_incdir,
+        metadata_incdir,
+        config_h_inc],
     c_args : ['-DG_LOG_DOMAIN="gupnp-dlna-metadata"'],
     install: true
 )
+
+meson.override_dependency('gupnp-dlna-gst-2.0', libgupnp_dlna_gst)
 
 shared_module(
     'gstreamer',
@@ -40,12 +45,11 @@ shared_module(
     dependencies : [
         glib,
         gstreamer_pbu,
-        config_dep,
     ],
-    include_directories : include_directories(
-        '../../metadata',
-        '../..'
-    ),
+    include_directories : [
+        toplevel_incdir,
+        metadata_incdir,
+        config_h_inc],
     install: true,
     install_dir : metadata_backend_dir
 )

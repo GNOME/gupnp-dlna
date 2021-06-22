@@ -25,8 +25,8 @@
 #define _GUPNP_DLNA_GST_METADATA_EXTRACTOR
 
 #include <glib-object.h>
-#include "gupnp-dlna-metadata-extractor.h"
-#include "gupnp-dlna-information.h"
+#include <libgupnp-dlna/metadata/gupnp-dlna-metadata-extractor.h>
+#include <libgupnp-dlna/gupnp-dlna-information.h>
 
 G_BEGIN_DECLS
 
