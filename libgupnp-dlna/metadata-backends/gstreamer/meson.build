@@ -33,7 +33,12 @@ libgupnp_dlna_gst = library(
     install: true
 )
 
-meson.override_dependency('gupnp-dlna-gst-2.0', libgupnp_dlna_gst)
+gupnp_dlna_gst = declare_dependency(
+    link_with: libgupnp_dlna_gst,
+    include_directories : [include_directories('.')]
+)
+
+meson.override_dependency('gupnp-dlna-gst-2.0', gupnp_dlna_gst)
 
 shared_module(
     'gstreamer',
