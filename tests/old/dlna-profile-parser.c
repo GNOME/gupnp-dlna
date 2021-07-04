@@ -104,10 +104,6 @@ main (int argc, char **argv)
 
         GOptionContext *ctx;
 
-#if !GLIB_CHECK_VERSION(2,35,0)
-        g_type_init ();
-#endif
-
         ctx = g_option_context_new (" - test to parse dlna profiles");
         g_option_context_add_main_entries (ctx, options, NULL);
         g_option_context_add_group (ctx, gst_init_get_option_group ());
