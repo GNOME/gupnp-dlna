@@ -51,10 +51,9 @@ value_new (GUPnPDLNAValueType *type,
 static GUPnPDLNAInfoValue *
 value_unsupported (GUPnPDLNAValueType *type)
 {
-        GUPnPDLNAInfoValue *info_value = g_slice_new (GUPnPDLNAInfoValue);
+        GUPnPDLNAInfoValue *info_value = g_slice_new0 (GUPnPDLNAInfoValue);
 
         info_value->type = type;
-        memset (&info_value->value, 0, sizeof (GUPnPDLNAValueUnion));
         info_value->unsupported = TRUE;
 
         return info_value;

@@ -30,6 +30,12 @@ struct _GUPnPDLNAGstContainerInformationPrivate {
         GstDiscovererStreamInfo *container_info;
         GstCaps *caps;
 };
+typedef struct _GUPnPDLNAGstContainerInformationPrivate
+        GUPnPDLNAGstContainerInformationPrivate;
+
+struct _GUPnPDLNAGstContainerInformation{
+        GUPnPDLNAContainerInformation parent;
+};
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstContainerInformation,
                             gupnp_dlna_gst_container_information,
@@ -45,7 +51,9 @@ enum
 static GstDiscovererStreamInfo *
 get_container_info (GUPnPDLNAGstContainerInformation *gst_info)
 {
-        GUPnPDLNAGstContainerInformationPrivate *priv = gst_info->priv;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        gst_info);
 
         if (!priv->container_info) {
                 priv->container_info =
@@ -58,7 +66,9 @@ get_container_info (GUPnPDLNAGstContainerInformation *gst_info)
 static GstCaps *
 get_caps (GUPnPDLNAGstContainerInformation *gst_info)
 {
-        GUPnPDLNAGstContainerInformationPrivate *priv = gst_info->priv;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        gst_info);
 
         if (!priv->caps) {
                 priv->caps = gst_discoverer_stream_info_get_caps
@@ -74,9 +84,11 @@ get_int_value (GUPnPDLNAGstContainerInformation *gst_info,
 {
         GstCaps *caps = get_caps (gst_info);
         GstDiscovererStreamInfo *stream = get_container_info (gst_info);
-        GstDiscovererInfo *info = gst_info->priv->info;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        gst_info);
 
-        return gupnp_dlna_gst_get_int_value (caps, stream, info, name);
+        return gupnp_dlna_gst_get_int_value (caps, stream, priv->info, name);
 }
 
 static GUPnPDLNAStringValue
@@ -85,9 +97,11 @@ get_string_value (GUPnPDLNAGstContainerInformation *gst_info,
 {
         GstCaps *caps = get_caps (gst_info);
         GstDiscovererStreamInfo *stream = get_container_info (gst_info);
-        GstDiscovererInfo *info = gst_info->priv->info;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        gst_info);
 
-        return gupnp_dlna_gst_get_string_value (caps, stream, info, name);
+        return gupnp_dlna_gst_get_string_value (caps, stream, priv->info, name);
 }
 
 static GUPnPDLNABoolValue
@@ -96,9 +110,11 @@ get_bool_value (GUPnPDLNAGstContainerInformation *gst_info,
 {
         GstCaps *caps = get_caps (gst_info);
         GstDiscovererStreamInfo *stream = get_container_info (gst_info);
-        GstDiscovererInfo *info = gst_info->priv->info;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        gst_info);
 
-        return gupnp_dlna_gst_get_bool_value (caps, stream, info, name);
+        return gupnp_dlna_gst_get_bool_value (caps, stream, priv->info, name);
 }
 
 static GUPnPDLNAIntValue
@@ -160,7 +176,9 @@ gupnp_dlna_gst_container_information_dispose (GObject *object)
 {
         GUPnPDLNAGstContainerInformation *info =
                                   GUPNP_DLNA_GST_CONTAINER_INFORMATION (object);
-        GUPnPDLNAGstContainerInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        info);
         GObjectClass *parent_class =
              G_OBJECT_CLASS (gupnp_dlna_gst_container_information_parent_class);
 
@@ -179,7 +197,9 @@ gupnp_dlna_gst_container_information_set_property (GObject      *object,
 {
         GUPnPDLNAGstContainerInformation *info =
                                   GUPNP_DLNA_GST_CONTAINER_INFORMATION (object);
-        GUPnPDLNAGstContainerInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -203,7 +223,9 @@ gupnp_dlna_gst_container_information_get_property (GObject    *object,
 {
         GUPnPDLNAGstContainerInformation *info =
                                   GUPNP_DLNA_GST_CONTAINER_INFORMATION (object);
-        GUPnPDLNAGstContainerInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstContainerInformationPrivate *priv =
+                gupnp_dlna_gst_container_information_get_instance_private (
+                        info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -253,8 +275,6 @@ static void
 gupnp_dlna_gst_container_information_init
                                         (GUPnPDLNAGstContainerInformation *self)
 {
-        self->priv = gupnp_dlna_gst_container_information_get_instance_private
-                                        (self);
 }
 
 GUPnPDLNAGstContainerInformation *

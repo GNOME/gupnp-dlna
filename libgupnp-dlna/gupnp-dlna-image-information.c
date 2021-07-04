@@ -50,6 +50,8 @@
 struct _GUPnPDLNAImageInformationPrivate {
         gpointer placeholder;
 };
+typedef struct _GUPnPDLNAImageInformationPrivate
+        GUPnPDLNAImageInformationPrivate;
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAImageInformation,
                                      gupnp_dlna_image_information,
@@ -68,10 +70,6 @@ gupnp_dlna_image_information_class_init
 static void
 gupnp_dlna_image_information_init (GUPnPDLNAImageInformation *info)
 {
-        GUPnPDLNAImageInformationPrivate *priv =
-            gupnp_dlna_image_information_get_instance_private (info);
-
-        info->priv = priv;
 }
 
 /**
@@ -85,13 +83,13 @@ gupnp_dlna_image_information_get_depth (GUPnPDLNAImageInformation *info)
 {
         GUPnPDLNAImageInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_IMAGE_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_IMAGE_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_IMAGE_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_IMAGE_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_IMAGE_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_depth != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -110,13 +108,13 @@ gupnp_dlna_image_information_get_height (GUPnPDLNAImageInformation *info)
 {
         GUPnPDLNAImageInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_IMAGE_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_IMAGE_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_IMAGE_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_IMAGE_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_IMAGE_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_height != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -135,13 +133,13 @@ gupnp_dlna_image_information_get_width (GUPnPDLNAImageInformation *info)
 {
         GUPnPDLNAImageInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_IMAGE_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_IMAGE_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_IMAGE_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_IMAGE_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_IMAGE_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_width != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -160,13 +158,13 @@ gupnp_dlna_image_information_get_mime (GUPnPDLNAImageInformation *info)
 {
         GUPnPDLNAImageInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_IMAGE_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_IMAGE_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_IMAGE_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_IMAGE_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_IMAGE_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mime != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);

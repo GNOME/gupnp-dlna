@@ -28,45 +28,28 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_FINAL_TYPE (GUPnPDLNAGstContainerInformation,
+                      gupnp_dlna_gst_container_information,
+                      GUPNP_DLNA,
+                      GST_CONTAINER_INFORMATION,
+                      GUPnPDLNAContainerInformation)
+
 #define GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION \
         (gupnp_dlna_gst_container_information_get_type())
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_GST_DLNA_CONTAINER_INFORMATION: (skip)
+ */
+#define GUPNP_IS_GST_DLNA_CONTAINER_INFORMATION GUPNP_DLNA_IS_GST_CONTAINER_INFORMATION
+/**
+ * GUPNP_IS_GST_DLNA_CONTAINER_INFORMATION_CLASS: (skip)
+ */
+#define GUPNP_IS_GST_DLNA_CONTAINER_INFORMATION_CLASS                          \
+        GUPNP_DLNA_IS_GST_CONTAINER_INFORMATION_CLASS
 
-#define GUPNP_DLNA_GST_CONTAINER_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST \
-                                   ((obj), \
-                                    GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION, \
-                                    GUPnPDLNAGstContainerInformation))
-
-#define GUPNP_DLNA_GST_CONTAINER_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION, \
-                                  GUPnPDLNAGstContainerInformationClass))
-
-#define GUPNP_IS_DLNA_GST_CONTAINER_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION))
-
-#define GUPNP_IS_DLNA_GST_CONTAINER_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION))
-
-#define GUPNP_DLNA_GST_CONTAINER_INFORMATION_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_GST_CONTAINER_INFORMATION, \
-                                    GUPnPDLNAGstContainerInformationClass))
-
-typedef struct _GUPnPDLNAGstContainerInformationPrivate
-                GUPnPDLNAGstContainerInformationPrivate;
-
-typedef struct {
-        GUPnPDLNAContainerInformation parent;
-
-        GUPnPDLNAGstContainerInformationPrivate *priv;
-} GUPnPDLNAGstContainerInformation;
-
-typedef struct {
+struct _GUPnPDLNAGstContainerInformationClass {
         GUPnPDLNAContainerInformationClass parent_class;
-} GUPnPDLNAGstContainerInformationClass;
+};
 
 GType
 gupnp_dlna_gst_container_information_get_type (void);

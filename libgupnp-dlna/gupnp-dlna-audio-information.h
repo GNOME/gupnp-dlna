@@ -27,40 +27,24 @@
 
 G_BEGIN_DECLS
 
-#define GUPNP_TYPE_DLNA_AUDIO_INFORMATION \
-        (gupnp_dlna_audio_information_get_type())
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAAudioInformation,
+                          gupnp_dlna_audio_information,
+                          GUPNP_DLNA,
+                          AUDIO_INFORMATION,
+                          GObject)
 
-#define GUPNP_DLNA_AUDIO_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_AUDIO_INFORMATION, \
-                                     GUPnPDLNAAudioInformation))
+#define GUPNP_TYPE_DLNA_AUDIO_INFORMATION                                      \
+        (gupnp_dlna_audio_information_get_type ())
 
-#define GUPNP_DLNA_AUDIO_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_AUDIO_INFORMATION, \
-                                  GUPnPDLNAAudioInformationClass))
-
-#define GUPNP_IS_DLNA_AUDIO_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_AUDIO_INFORMATION))
-
-#define GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_AUDIO_INFORMATION))
-
-#define GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_AUDIO_INFORMATION, \
-                                    GUPnPDLNAAudioInformationClass))
-
-typedef struct _GUPnPDLNAAudioInformationPrivate
-                GUPnPDLNAAudioInformationPrivate;
-
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAAudioInformationPrivate *priv;
-} GUPnPDLNAAudioInformation;
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_AUDIO_INFORMATION: (skip)
+ */
+#define GUPNP_IS_DLNA_AUDIO_INFORMATION GUPNP_DLNA_IS_AUDIO_INFORMATION
+/**
+ * GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS
 
 /**
  * GUPnPDLNAAudioInformationClass:
@@ -91,7 +75,7 @@ typedef struct {
  * type.
  * @_reserved: Padding. Ignore it.
  */
-typedef struct {
+struct _GUPnPDLNAAudioInformationClass {
         GObjectClass parent_class;
 
         GUPnPDLNAIntValue
@@ -131,10 +115,7 @@ typedef struct {
         (* get_mime) (GUPnPDLNAAudioInformation *info);
 
         gpointer _reserved[12];
-} GUPnPDLNAAudioInformationClass;
-
-GType
-gupnp_dlna_audio_information_get_type (void);
+};
 
 GUPnPDLNAIntValue
 gupnp_dlna_audio_information_get_bitrate (GUPnPDLNAAudioInformation *info);

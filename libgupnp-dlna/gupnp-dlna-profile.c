@@ -37,6 +37,13 @@
  * restrictions specified for that DLNA profile is to be added.
  */
 
+/**
+ * GUPnPDLNAProfile:
+ *
+ * The top-level object used for the in-memory representation of the
+ * DLNA Profiles.
+ */
+
 struct _GUPnPDLNAProfilePrivate {
         gchar    *name;
         gchar    *mime;
@@ -46,6 +53,7 @@ struct _GUPnPDLNAProfilePrivate {
         GList    *image_restrictions;
         GList    *video_restrictions;
 };
+typedef struct _GUPnPDLNAProfilePrivate GUPnPDLNAProfilePrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAProfile, gupnp_dlna_profile, G_TYPE_OBJECT)
 
@@ -67,7 +75,8 @@ gupnp_dlna_profile_get_property (GObject    *object,
                                  GParamSpec *pspec)
 {
         GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (object);
-        GUPnPDLNAProfilePrivate *priv = profile->priv;
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
         switch (property_id) {
         case PROP_DLNA_NAME:
@@ -122,7 +131,8 @@ gupnp_dlna_profile_set_property (GObject      *object,
                                  GParamSpec   *pspec)
 {
         GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (object);
-        GUPnPDLNAProfilePrivate *priv = profile->priv;
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
         switch (property_id) {
         case PROP_DLNA_NAME:
@@ -170,7 +180,8 @@ static void
 gupnp_dlna_profile_finalize (GObject *object)
 {
         GUPnPDLNAProfile *profile = GUPNP_DLNA_PROFILE (object);
-        GUPnPDLNAProfilePrivate *priv = profile->priv;
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
         g_free (priv->name);
         g_free (priv->mime);
@@ -271,17 +282,6 @@ gupnp_dlna_profile_class_init (GUPnPDLNAProfileClass *klass)
 static void
 gupnp_dlna_profile_init (GUPnPDLNAProfile *profile)
 {
-        GUPnPDLNAProfilePrivate *priv =
-            gupnp_dlna_profile_get_instance_private (profile);
-
-        priv->name = NULL;
-        priv->mime = NULL;
-        priv->extended = FALSE;
-        priv->audio_restrictions = NULL;
-        priv->container_restrictions = NULL;
-        priv->image_restrictions = NULL;
-        priv->video_restrictions = NULL;
-        profile->priv = priv;
 }
 
 /**
@@ -293,9 +293,11 @@ gupnp_dlna_profile_init (GUPnPDLNAProfile *profile)
 const gchar *
 gupnp_dlna_profile_get_name (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), NULL);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->name;
+        return priv->name;
 }
 
 /**
@@ -307,9 +309,11 @@ gupnp_dlna_profile_get_name (GUPnPDLNAProfile *profile)
 const gchar *
 gupnp_dlna_profile_get_mime (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), NULL);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->mime;
+        return priv->mime;
 }
 
 /**
@@ -321,9 +325,11 @@ gupnp_dlna_profile_get_mime (GUPnPDLNAProfile *profile)
 gboolean
 gupnp_dlna_profile_get_extended (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), FALSE);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), FALSE);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->extended;
+        return priv->extended;
 }
 
 /**
@@ -338,9 +344,11 @@ gupnp_dlna_profile_get_extended (GUPnPDLNAProfile *profile)
 GList *
 gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), NULL);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->audio_restrictions;
+        return priv->audio_restrictions;
 }
 
 /**
@@ -355,9 +363,11 @@ gupnp_dlna_profile_get_audio_restrictions (GUPnPDLNAProfile *profile)
 GList *
 gupnp_dlna_profile_get_container_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), NULL);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->container_restrictions;
+        return priv->container_restrictions;
 }
 
 /**
@@ -372,9 +382,11 @@ gupnp_dlna_profile_get_container_restrictions (GUPnPDLNAProfile *profile)
 GList *
 gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), NULL);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->image_restrictions;
+        return priv->image_restrictions;
 }
 
 /**
@@ -389,9 +401,11 @@ gupnp_dlna_profile_get_image_restrictions (GUPnPDLNAProfile *profile)
 GList *
 gupnp_dlna_profile_get_video_restrictions (GUPnPDLNAProfile *profile)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE (profile), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE (profile), NULL);
+        GUPnPDLNAProfilePrivate *priv =
+                gupnp_dlna_profile_get_instance_private (profile);
 
-        return profile->priv->video_restrictions;
+        return priv->video_restrictions;
 }
 
 GUPnPDLNAProfile *

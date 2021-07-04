@@ -33,6 +33,12 @@ struct _GUPnPDLNAGstInformationPrivate {
         GstDiscovererInfo* info;
 };
 
+typedef struct _GUPnPDLNAGstInformationPrivate GUPnPDLNAGstInformationPrivate;
+
+struct _GUPnPDLNAGstInformation {
+        GUPnPDLNAInformation parent;
+};
+
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstInformation,
                             gupnp_dlna_gst_information,
                             GUPNP_TYPE_DLNA_INFORMATION)
@@ -47,7 +53,8 @@ static void
 gupnp_dlna_gst_information_dispose (GObject *object)
 {
         GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (object);
-        GUPnPDLNAGstInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
 
         g_clear_pointer (&priv->info, gupnp_dlna_gst_discoverer_info_unref);
         G_OBJECT_CLASS
@@ -61,7 +68,8 @@ gupnp_dlna_gst_information_set_property (GObject      *object,
                                          GParamSpec   *pspec)
 {
         GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (object);
-        GUPnPDLNAGstInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -86,7 +94,8 @@ gupnp_dlna_gst_information_get_property (GObject    *object,
                                          GParamSpec *pspec)
 {
         GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (object);
-        GUPnPDLNAGstInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -104,47 +113,56 @@ gupnp_dlna_gst_information_get_property (GObject    *object,
 GUPnPDLNAAudioInformation *
 backend_get_audio_information (GUPnPDLNAInformation *self)
 {
-        GUPnPDLNAGstInformation *gst_info = GUPNP_DLNA_GST_INFORMATION (self);
-
-        if (gst_info == NULL)
+        if (!GUPNP_DLNA_IS_GST_INFORMATION (self))
                 return NULL;
 
-        return GUPNP_DLNA_AUDIO_INFORMATION
-                (gupnp_dlna_gst_audio_information_new_from_discoverer_info
-                                        (gst_info->priv->info));
+        GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (self);
+
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
+
+        return GUPNP_DLNA_AUDIO_INFORMATION (
+                gupnp_dlna_gst_audio_information_new_from_discoverer_info (
+                        priv->info));
 }
 
 GUPnPDLNAContainerInformation *
 backend_get_container_information (GUPnPDLNAInformation *self)
 {
-        GUPnPDLNAGstInformation *gst_info = GUPNP_DLNA_GST_INFORMATION (self);
-
-        if (gst_info == NULL)
+        if (!GUPNP_DLNA_IS_GST_INFORMATION (self))
                 return NULL;
+
+        GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (self);
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
 
         return GUPNP_DLNA_CONTAINER_INFORMATION
                 (gupnp_dlna_gst_container_information_new_from_discoverer_info
-                                        (gst_info->priv->info));
+                                        (priv->info));
 }
 
 GUPnPDLNAImageInformation *
 backend_get_image_information (GUPnPDLNAInformation *self)
 {
-        GUPnPDLNAGstInformation *gst_info = GUPNP_DLNA_GST_INFORMATION (self);
+        GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (self);
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
 
-        return GUPNP_DLNA_IMAGE_INFORMATION
-                (gupnp_dlna_gst_image_information_new_from_discoverer_info
-                                        (gst_info->priv->info));
+        return GUPNP_DLNA_IMAGE_INFORMATION (
+                gupnp_dlna_gst_image_information_new_from_discoverer_info (
+                        priv->info));
 }
 
 GUPnPDLNAVideoInformation *
 backend_get_video_information (GUPnPDLNAInformation *self)
 {
-        GUPnPDLNAGstInformation *gst_info = GUPNP_DLNA_GST_INFORMATION (self);
+        GUPnPDLNAGstInformation *info = GUPNP_DLNA_GST_INFORMATION (self);
+        GUPnPDLNAGstInformationPrivate *priv =
+                gupnp_dlna_gst_information_get_instance_private (info);
 
-        return GUPNP_DLNA_VIDEO_INFORMATION
-                (gupnp_dlna_gst_video_information_new_from_discoverer_info
-                                        (gst_info->priv->info));
+        return GUPNP_DLNA_VIDEO_INFORMATION (
+                gupnp_dlna_gst_video_information_new_from_discoverer_info (
+                        priv->info));
 }
 
 static void
@@ -179,7 +197,6 @@ gupnp_dlna_gst_information_class_init
 static void
 gupnp_dlna_gst_information_init (GUPnPDLNAGstInformation *self)
 {
-        self->priv = gupnp_dlna_gst_information_get_instance_private (self);
 }
 
 GUPnPDLNAGstInformation *

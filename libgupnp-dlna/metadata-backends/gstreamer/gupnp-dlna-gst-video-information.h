@@ -30,40 +30,25 @@ G_BEGIN_DECLS
 
 #define GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION gupnp_dlna_gst_video_information_get_type()
 
-#define GUPNP_DLNA_GST_VIDEO_INFORMATION(obj)                                     \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj),                             \
-                                     GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION,       \
-                                     GUPnPDLNAGstVideoInformation))
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_VIDEO_INFORMATION: (skip)
+ */
+#define GUPNP_IS_DLNA_GST_VIDEO_INFORMATION GUPNP_DLNA_IS_GST_VIDEO_INFORMATION
+/**
+ * GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_GST_VIDEO_INFORMATION_CLASS GUPNP_DLNA_IS_GST_VIDEO_INFORMATION_CLASS
 
-#define GUPNP_DLNA_GST_VIDEO_INFORMATION_CLASS(klass)                             \
-        (G_TYPE_CHECK_CLASS_CAST ((klass),                              \
-                                  GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION,          \
-                                  GUPnPDLNAGstVideoInformationClass))
+G_DECLARE_FINAL_TYPE (GUPnPDLNAGstVideoInformation,
+                      gupnp_dlna_gst_video_information,
+                      GUPNP_DLNA,
+                      GST_VIDEO_INFORMATION,
+                      GUPnPDLNAVideoInformation)
 
-#define GUPNP_IS_DLNA_GST_VIDEO_INFORMATION(obj)                                  \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION))
-
-#define GUPNP_IS_DLNA_GST_VIDEO_INFORMATION_CLASS(klass)                          \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION))
-
-#define GUPNP_DLNA_GST_VIDEO_INFORMATION_GET_CLASS(obj)                           \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj),                              \
-                                    GUPNP_TYPE_DLNA_GST_VIDEO_INFORMATION,        \
-                                    GUPnPDLNAGstVideoInformationClass))
-
-typedef struct _GUPnPDLNAGstVideoInformationPrivate GUPnPDLNAGstVideoInformationPrivate;
-
-typedef struct {
-        GUPnPDLNAVideoInformation parent;
-
-        GUPnPDLNAGstVideoInformationPrivate *priv;
-} GUPnPDLNAGstVideoInformation;
-
-typedef struct {
+struct _GUPnPDLNAGstVideoInformationClass {
         GUPnPDLNAVideoInformationClass parent_class;
-} GUPnPDLNAGstVideoInformationClass;
-
-GType gupnp_dlna_gst_video_information_get_type (void);
+};
 
 GUPnPDLNAGstVideoInformation *
 gupnp_dlna_gst_video_information_new_from_discoverer_info (GstDiscovererInfo *info);

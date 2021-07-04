@@ -45,6 +45,7 @@ struct _GUPnPDLNAInformationPrivate {
         GUPnPDLNAImageInformation *image_info;
         GUPnPDLNAVideoInformation *video_info;
 };
+typedef struct _GUPnPDLNAInformationPrivate GUPnPDLNAInformationPrivate;
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAInformation,
                                      gupnp_dlna_information,
@@ -70,7 +71,8 @@ static void
 gupnp_dlna_information_dispose (GObject *object)
 {
         GUPnPDLNAInformation *info = GUPNP_DLNA_INFORMATION (object);
-        GUPnPDLNAInformationPrivate *priv = info->priv;
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
         g_clear_object (&priv->audio_info);
         g_clear_object (&priv->container_info);
@@ -83,8 +85,10 @@ static void
 gupnp_dlna_information_finalize (GObject *object)
 {
         GUPnPDLNAInformation *info = GUPNP_DLNA_INFORMATION (object);
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
-        g_free (info->priv->uri);
+        g_free (priv->uri);
         G_OBJECT_CLASS (gupnp_dlna_information_parent_class)->finalize (object);
 }
 
@@ -95,7 +99,8 @@ gupnp_dlna_information_set_property (GObject      *object,
                                      GParamSpec   *pspec)
 {
         GUPnPDLNAInformation *info = GUPNP_DLNA_INFORMATION (object);
-        GUPnPDLNAInformationPrivate *priv = info->priv;
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_URI:
@@ -116,7 +121,8 @@ gupnp_dlna_information_get_property (GObject    *object,
                                      GParamSpec *pspec)
 {
         GUPnPDLNAInformation *info = GUPNP_DLNA_INFORMATION (object);
-        GUPnPDLNAInformationPrivate *priv = info->priv;
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_URI:
@@ -238,19 +244,6 @@ gupnp_dlna_information_class_init (GUPnPDLNAInformationClass *info_class)
 static void
 gupnp_dlna_information_init (GUPnPDLNAInformation *info)
 {
-        GUPnPDLNAInformationPrivate *priv =
-            gupnp_dlna_information_get_instance_private (info);
-
-        priv->uri = NULL;
-        priv->got_audio_info = FALSE;
-        priv->got_container_info = FALSE;
-        priv->got_image_info = FALSE;
-        priv->got_video_info = FALSE;
-        priv->audio_info = NULL;
-        priv->container_info = NULL;
-        priv->image_info = NULL;
-        priv->video_info = NULL;
-        info->priv = priv;
 }
 
 /**
@@ -265,18 +258,17 @@ gupnp_dlna_information_init (GUPnPDLNAInformation *info)
 GUPnPDLNAAudioInformation *
 gupnp_dlna_information_get_audio_information (GUPnPDLNAInformation *info)
 {
-        GUPnPDLNAInformationPrivate *priv;
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
-
-        priv = info->priv;
         if (!priv->got_audio_info) {
                 GUPnPDLNAInformationClass *info_class;
 
                 info_class = GUPNP_DLNA_INFORMATION_GET_CLASS (info);
 
                 g_return_val_if_fail
-                                  (GUPNP_IS_DLNA_INFORMATION_CLASS (info_class),
+                                  (GUPNP_DLNA_IS_INFORMATION_CLASS (info_class),
                                    NULL);
                 g_return_val_if_fail (info_class->get_audio_information != NULL,
                                       NULL);
@@ -300,18 +292,17 @@ gupnp_dlna_information_get_audio_information (GUPnPDLNAInformation *info)
 GUPnPDLNAContainerInformation *
 gupnp_dlna_information_get_container_information (GUPnPDLNAInformation *info)
 {
-        GUPnPDLNAInformationPrivate *priv;
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
-
-        priv = info->priv;
         if (!priv->got_container_info) {
                 GUPnPDLNAInformationClass *info_class;
 
                 info_class = GUPNP_DLNA_INFORMATION_GET_CLASS (info);
 
                 g_return_val_if_fail
-                                  (GUPNP_IS_DLNA_INFORMATION_CLASS (info_class),
+                                  (GUPNP_DLNA_IS_INFORMATION_CLASS (info_class),
                                    NULL);
                 g_return_val_if_fail
                                  (info_class->get_container_information != NULL,
@@ -337,18 +328,18 @@ gupnp_dlna_information_get_container_information (GUPnPDLNAInformation *info)
 GUPnPDLNAImageInformation *
 gupnp_dlna_information_get_image_information (GUPnPDLNAInformation *info)
 {
-        GUPnPDLNAInformationPrivate *priv;
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
-        priv = info->priv;
         if (!priv->got_image_info) {
                 GUPnPDLNAInformationClass *info_class;
 
                 info_class = GUPNP_DLNA_INFORMATION_GET_CLASS (info);
 
                 g_return_val_if_fail
-                                  (GUPNP_IS_DLNA_INFORMATION_CLASS (info_class),
+                                  (GUPNP_DLNA_IS_INFORMATION_CLASS (info_class),
                                    NULL);
                 g_return_val_if_fail (info_class->get_image_information != NULL,
                                       NULL);
@@ -372,18 +363,18 @@ gupnp_dlna_information_get_image_information (GUPnPDLNAInformation *info)
 GUPnPDLNAVideoInformation *
 gupnp_dlna_information_get_video_information (GUPnPDLNAInformation *info)
 {
-        GUPnPDLNAInformationPrivate *priv;
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
 
-        priv = info->priv;
         if (!priv->got_video_info) {
                 GUPnPDLNAInformationClass *info_class;
 
                 info_class = GUPNP_DLNA_INFORMATION_GET_CLASS (info);
 
                 g_return_val_if_fail
-                                  (GUPNP_IS_DLNA_INFORMATION_CLASS (info_class),
+                                  (GUPNP_DLNA_IS_INFORMATION_CLASS (info_class),
                                    NULL);
                 g_return_val_if_fail (info_class->get_video_information != NULL,
                                       NULL);
@@ -404,7 +395,7 @@ gupnp_dlna_information_get_video_information (GUPnPDLNAInformation *info)
 const gchar *
 gupnp_dlna_information_get_profile_name (GUPnPDLNAInformation *info)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
 
         return GUPNP_DLNA_INFORMATION_GET_CLASS (info)->get_profile_name (info);
 }
@@ -419,7 +410,10 @@ gupnp_dlna_information_get_profile_name (GUPnPDLNAInformation *info)
 const gchar *
 gupnp_dlna_information_get_uri (GUPnPDLNAInformation *info)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
 
-        return info->priv->uri;
+        GUPnPDLNAInformationPrivate *priv =
+                gupnp_dlna_information_get_instance_private (info);
+
+        return priv->uri;
 }

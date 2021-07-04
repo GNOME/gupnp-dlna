@@ -48,6 +48,7 @@ struct _GUPnPDLNAProfileLoaderPrivate {
         GList      *restriction_data_stack;
         char       *dlna_profile_dir;
 };
+typedef struct _GUPnPDLNAProfileLoaderPrivate GUPnPDLNAProfileLoaderPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAProfileLoader,
                             gupnp_dlna_profile_loader,
@@ -220,7 +221,9 @@ static void
 push_tag (GUPnPDLNAProfileLoader *loader,
           GUPnPDLNAParsedElement  element)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+            gupnp_dlna_profile_loader_get_instance_private (loader);
+
         gint raw_element = (gint) element;
 
         priv->tags_stack = g_list_prepend (priv->tags_stack,
@@ -230,7 +233,8 @@ push_tag (GUPnPDLNAProfileLoader *loader,
 static void
 pop_tag (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         priv->tags_stack = g_list_delete_link (priv->tags_stack,
                                                priv->tags_stack);
@@ -239,7 +243,8 @@ pop_tag (GUPnPDLNAProfileLoader *loader)
 static GUPnPDLNAParsedElement
 top_tag (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         if (priv->tags_stack != NULL) {
                 gint top_raw = GPOINTER_TO_INT (priv->tags_stack->data);
@@ -314,7 +319,6 @@ post_field (GUPnPDLNAProfileLoader *loader,
             const gchar            *type,
             GList                  *values)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv;
         GUPnPDLNARestrictionData *restriction_data;
         GUPnPDLNANameValueListPair *pair;
         GUPnPDLNAValueList *value_list;
@@ -331,7 +335,8 @@ post_field (GUPnPDLNAProfileLoader *loader,
         if (value_type == NULL)
                 return;
 
-        priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         restriction_data =
                 (GUPnPDLNARestrictionData *) priv->restriction_data_stack->data;
         value_list = gupnp_dlna_value_list_new (value_type);
@@ -353,7 +358,8 @@ static void
 merge_restrictions (GUPnPDLNAProfileLoader *loader,
                     GUPnPDLNADescription   *description)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNAProfileData* data =
                    (GUPnPDLNAProfileData *) priv->dlna_profile_data_stack->data;
         GList **target_list;
@@ -402,7 +408,8 @@ static void
 collect_parents (GUPnPDLNAProfileLoader *loader,
                  GUPnPDLNADescription   *description)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNARestrictionData *data =
                 (GUPnPDLNARestrictionData *) priv->restriction_data_stack->data;
 
@@ -436,7 +443,8 @@ static void
 post_parent (GUPnPDLNAProfileLoader *loader,
              const gchar            *parent)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         pop_tag (loader);
 
@@ -453,7 +461,8 @@ post_parent (GUPnPDLNAProfileLoader *loader,
 static void
 pre_restriction (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNARestrictionData *data = gupnp_dlna_restriction_data_new ();
 
         push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_RESTRICTION);
@@ -484,7 +493,8 @@ post_restriction (GUPnPDLNAProfileLoader *loader,
                   const gchar            *id,
                   const gchar            *name)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNARestrictionData *data =
                 (GUPnPDLNARestrictionData *) priv->restriction_data_stack->data;
         GUPnPDLNARestriction *restriction;
@@ -563,7 +573,8 @@ post_restrictions (GUPnPDLNAProfileLoader *loader)
 static void
 pre_dlna_profile (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNAProfileData* data = gupnp_dlna_profile_data_new ();
 
         push_tag (loader, GUPNP_DLNA_PARSED_ELEMENT_DLNA_PROFILE);
@@ -650,7 +661,8 @@ create_profile (GUPnPDLNAProfileLoader *loader,
                 const gchar            *mime,
                 gboolean                extended)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNAProfileData *data =
                    (GUPnPDLNAProfileData *) priv->dlna_profile_data_stack->data;
         GList *audio_restrictions = NULL;
@@ -692,7 +704,8 @@ create_profile (GUPnPDLNAProfileLoader *loader,
 static void
 post_dlna_profile (GUPnPDLNAProfileLoader *loader)
 {
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
         GUPnPDLNAProfileData *data =
                    (GUPnPDLNAProfileData *) priv->dlna_profile_data_stack->data;
 
@@ -764,7 +777,8 @@ gupnp_dlna_profile_loader_get_property (GObject    *object,
                                         GParamSpec *pspec)
 {
         GUPnPDLNAProfileLoader *loader = GUPNP_DLNA_PROFILE_LOADER (object);
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         switch (prop_id) {
         case PROP_RELAXED_MODE:
@@ -787,7 +801,8 @@ gupnp_dlna_profile_loader_set_property (GObject      *object,
                                         GParamSpec   *pspec)
 {
         GUPnPDLNAProfileLoader *loader = GUPNP_DLNA_PROFILE_LOADER (object);
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         switch (prop_id) {
         case PROP_RELAXED_MODE:
@@ -807,7 +822,8 @@ static void
 gupnp_dlna_profile_loader_dispose (GObject *object)
 {
         GUPnPDLNAProfileLoader *loader = GUPNP_DLNA_PROFILE_LOADER (object);
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         g_clear_pointer (&priv->restrictions, g_hash_table_unref);
         g_clear_pointer (&priv->profile_ids, g_hash_table_unref);
@@ -884,11 +900,6 @@ gupnp_dlna_profile_loader_init (GUPnPDLNAProfileLoader *self)
                                   g_str_equal,
                                   g_free,
                                   (GDestroyNotify) gupnp_dlna_description_free);
-        priv->tags_stack = NULL;
-        priv->dlna_profile_data_stack = NULL;
-        priv->restriction_data_stack = NULL;
-
-        self->priv = priv;
 }
 
 static GUPnPDLNAFieldValue *
@@ -981,7 +992,8 @@ process_field (GUPnPDLNAProfileLoader *loader,
         gboolean done = FALSE;
         gboolean skip = FALSE;
         GUPnPDLNAFieldValue *value = NULL;
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         pre_field (loader);
 
@@ -1066,7 +1078,8 @@ process_parent (GUPnPDLNAProfileLoader *loader,
 {
         xmlChar *parent = NULL;
         xmlChar *used = NULL;
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         pre_parent (loader);
 
@@ -1112,7 +1125,8 @@ process_restriction (GUPnPDLNAProfileLoader *loader,
         xmlChar *id = NULL;
         xmlChar *type = NULL;
         gchar *name = NULL;
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         pre_restriction (loader);
         /*
@@ -1258,7 +1272,8 @@ process_dlna_profile (GUPnPDLNAProfileLoader  *loader,
         xmlChar *extended;
         gboolean done = FALSE;
         gboolean is_extended = FALSE;
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
         pre_dlna_profile (loader);
 
@@ -1368,9 +1383,10 @@ process_include (GUPnPDLNAProfileLoader  *loader,
                 xmlFree (path);
 
         if (!g_path_is_absolute (g_path)) {
-                gchar *tmp = g_build_filename (loader->priv->dlna_profile_dir,
-                                               g_path,
-                                               NULL);
+                GUPnPDLNAProfileLoaderPrivate *priv =
+                        gupnp_dlna_profile_loader_get_instance_private (loader);
+                gchar *tmp =
+                        g_build_filename (priv->dlna_profile_dir, g_path, NULL);
                 g_free (g_path);
                 g_path = tmp;
         }
@@ -1431,7 +1447,9 @@ gupnp_dlna_profile_loader_get_from_file (GUPnPDLNAProfileLoader  *loader,
         xmlTextReaderPtr reader = NULL;
         xmlRelaxNGParserCtxtPtr rngp = NULL;
         xmlRelaxNGPtr rngs = NULL;
-        GUPnPDLNAProfileLoaderPrivate *priv = loader->priv;
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
+
         char *rng_path = NULL;
 
         if (g_hash_table_contains (priv->files_hash, path))
@@ -1444,7 +1462,7 @@ gupnp_dlna_profile_loader_get_from_file (GUPnPDLNAProfileLoader  *loader,
                 goto out;
 
         /* Load the schema for validation */
-        rng_path = g_build_filename (loader->priv->dlna_profile_dir,
+        rng_path = g_build_filename (priv->dlna_profile_dir,
                                      "dlna-profiles.rng",
                                      NULL);
         rngp = xmlRelaxNGNewParserCtxt (rng_path);
@@ -1552,27 +1570,29 @@ gupnp_dlna_profile_loader_get_from_disk (GUPnPDLNAProfileLoader *loader)
 {
         GList *profiles;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_LOADER (loader), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_LOADER (loader), NULL);
+        GUPnPDLNAProfileLoaderPrivate *priv =
+                gupnp_dlna_profile_loader_get_instance_private (loader);
 
-        if (loader->priv->dlna_profile_dir == NULL) {
+        if (priv->dlna_profile_dir == NULL) {
                 char **env = NULL;
                 const char *profile_dir = NULL;
 
                 env = g_get_environ ();
                 profile_dir = g_environ_getenv (env, "GUPNP_DLNA_PROFILE_DIR");
                 if (profile_dir != NULL && g_path_is_absolute (profile_dir)) {
-                        loader->priv->dlna_profile_dir = g_strdup (profile_dir);
+                        priv->dlna_profile_dir = g_strdup (profile_dir);
                 } else {
-                        loader->priv->dlna_profile_dir = g_strdup (DLNA_DATA_DIR);
+                        priv->dlna_profile_dir = g_strdup (DLNA_DATA_DIR);
                 }
 
 
                 g_strfreev (env);
         }
 
-        profiles = gupnp_dlna_profile_loader_get_from_dir
-                                        (loader,
-                                         loader->priv->dlna_profile_dir);
+        profiles =
+                gupnp_dlna_profile_loader_get_from_dir (loader,
+                                                        priv->dlna_profile_dir);
 
         profiles = g_list_reverse (profiles);
 

@@ -31,6 +31,12 @@ struct _GUPnPDLNAGstImageInformationPrivate {
         GstDiscovererVideoInfo *image_info;
         GstCaps *caps;
 };
+typedef struct _GUPnPDLNAGstImageInformationPrivate
+        GUPnPDLNAGstImageInformationPrivate;
+
+struct _GUPnPDLNAGstImageInformation {
+        GUPnPDLNAImageInformation parent;
+};
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstImageInformation,
                             gupnp_dlna_gst_image_information,
@@ -46,7 +52,9 @@ enum
 static GstDiscovererVideoInfo *
 get_image_info (GUPnPDLNAGstImageInformation *gst_info)
 {
-        GUPnPDLNAGstImageInformationPrivate *priv = gst_info->priv;
+        GUPnPDLNAGstImageInformationPrivate *priv =
+                gupnp_dlna_gst_image_information_get_instance_private (
+                        gst_info);
 
         if (!priv->image_info) {
                 GList *iter;
@@ -78,7 +86,9 @@ get_image_info (GUPnPDLNAGstImageInformation *gst_info)
 static GstCaps *
 get_caps (GUPnPDLNAGstImageInformation *gst_info)
 {
-        GUPnPDLNAGstImageInformationPrivate *priv = gst_info->priv;
+        GUPnPDLNAGstImageInformationPrivate *priv =
+                gupnp_dlna_gst_image_information_get_instance_private (
+                        gst_info);
 
         if (!priv->caps)
                 priv->caps = gst_discoverer_stream_info_get_caps
@@ -153,7 +163,8 @@ gupnp_dlna_gst_image_information_dispose (GObject *object)
 {
         GUPnPDLNAGstImageInformation *info =
                                       GUPNP_DLNA_GST_IMAGE_INFORMATION (object);
-        GUPnPDLNAGstImageInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstImageInformationPrivate *priv =
+                gupnp_dlna_gst_image_information_get_instance_private (info);
         GObjectClass *parent_class =
                  G_OBJECT_CLASS (gupnp_dlna_gst_image_information_parent_class);
         g_clear_pointer (&priv->info, gupnp_dlna_gst_discoverer_info_unref);
@@ -173,7 +184,8 @@ gupnp_dlna_gst_image_information_set_property (GObject      *object,
 {
         GUPnPDLNAGstImageInformation *info =
                                       GUPNP_DLNA_GST_IMAGE_INFORMATION (object);
-        GUPnPDLNAGstImageInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstImageInformationPrivate *priv =
+                gupnp_dlna_gst_image_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -197,7 +209,8 @@ gupnp_dlna_gst_image_information_get_property (GObject    *object,
 {
         GUPnPDLNAGstImageInformation *info =
                                       GUPNP_DLNA_GST_IMAGE_INFORMATION (object);
-        GUPnPDLNAGstImageInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstImageInformationPrivate *priv =
+                gupnp_dlna_gst_image_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -244,7 +257,6 @@ gupnp_dlna_gst_image_information_class_init
 static void
 gupnp_dlna_gst_image_information_init (GUPnPDLNAGstImageInformation *self)
 {
-        self->priv = gupnp_dlna_gst_image_information_get_instance_private (self);
 }
 
 GUPnPDLNAGstImageInformation *

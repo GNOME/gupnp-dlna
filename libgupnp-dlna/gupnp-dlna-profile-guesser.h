@@ -32,52 +32,29 @@ G_BEGIN_DECLS
 
 #define GUPNP_TYPE_DLNA_PROFILE_GUESSER (gupnp_dlna_profile_guesser_get_type())
 
-#define GUPNP_DLNA_PROFILE_GUESSER(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE_GUESSER, \
-                                     GUPnPDLNAProfileGuesser))
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAProfileGuesser,
+                          gupnp_dlna_profile_guesser,
+                          GUPNP_DLNA,
+                          PROFILE_GUESSER,
+                          GObject)
 
-#define GUPNP_DLNA_PROFILE_GUESSER_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE_GUESSER, \
-                                  GUPnPDLNAProfileGuesserClass))
-
-#define GUPNP_IS_DLNA_PROFILE_GUESSER(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE_GUESSER))
-
-#define GUPNP_IS_DLNA_PROFILE_GUESSER_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE_GUESSER))
-
-#define GUPNP_DLNA_PROFILE_GUESSER_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_PROFILE_GUESSER, \
-                                    GUPnPDLNAProfileGuesserClass))
-
-typedef struct _GUPnPDLNAProfileGuesserPrivate GUPnPDLNAProfileGuesserPrivate;
-
+// Backwards-compatible defines
 /**
- * GUPnPDLNAProfileGuesser:
- *
- * The top-level object used to for DLNA profile guessing.
+ * GUPNP_IS_DLNA_PROFILE_GUESSER: (skip)
  */
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAProfileGuesserPrivate *priv;
-} GUPnPDLNAProfileGuesser;
+#define GUPNP_IS_DLNA_PROFILE_GUESSER GUPNP_DLNA_IS_PROFILE_GUESSER
+/**
+ * GUPNP_IS_DLNA_PROFILE_GUESSER_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_PROFILE_GUESSER_CLASS GUPNP_DLNA_IS_PROFILE_GUESSER_CLASS
 
 /**
  * GUPnPDLNAProfileGuesserClass:
  * @parent_class: A #GObjectClass - parent of this class.
  */
-typedef struct {
+struct _GUPnPDLNAProfileGuesserClass {
         GObjectClass parent_class;
-} GUPnPDLNAProfileGuesserClass;
-
-GType
-gupnp_dlna_profile_guesser_get_type (void) G_GNUC_CONST;
+};
 
 GUPnPDLNAProfileGuesser *
 gupnp_dlna_profile_guesser_new (gboolean relaxed_mode,

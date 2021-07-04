@@ -30,38 +30,23 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAInformation,
+                          gupnp_dlna_information,
+                          GUPNP_DLNA,
+                          INFORMATION,
+                          GObject)
+
 #define GUPNP_TYPE_DLNA_INFORMATION (gupnp_dlna_information_get_type())
 
-#define GUPNP_DLNA_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_INFORMATION, \
-                                     GUPnPDLNAInformation))
-
-#define GUPNP_DLNA_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_INFORMATION, \
-                                  GUPnPDLNAInformationClass))
-
-#define GUPNP_IS_DLNA_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_INFORMATION))
-
-#define GUPNP_IS_DLNA_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_INFORMATION))
-
-#define GUPNP_DLNA_INFORMATION_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_INFORMATION, \
-                                    GUPnPDLNAInformationClass))
-
-typedef struct _GUPnPDLNAInformationPrivate GUPnPDLNAInformationPrivate;
-
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAInformationPrivate *priv;
-} GUPnPDLNAInformation;
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_INFORMATION: (skip)
+ */
+#define GUPNP_IS_DLNA_INFORMATION GUPNP_DLNA_IS_INFORMATION
+/**
+ * GUPNP_IS_DLNA_INFORMATION_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_INFORMATION_CLASS GUPNP_DLNA_IS_INFORMATION_CLASS
 
 /**
  * GUPnPDLNAInformationClass:
@@ -78,7 +63,7 @@ typedef struct {
  * get the name of the DLNA profile assigned with this information.
  * @_reserved: Padding. Ignore it.
  */
-typedef struct {
+struct _GUPnPDLNAInformationClass{
         GObjectClass parent_class;
 
         GUPnPDLNAAudioInformation *
@@ -97,10 +82,7 @@ typedef struct {
         (* get_profile_name) (GUPnPDLNAInformation *info);
 
         gpointer _reserved[11];
-} GUPnPDLNAInformationClass;
-
-GType
-gupnp_dlna_information_get_type (void);
+};
 
 GUPnPDLNAAudioInformation*
 gupnp_dlna_information_get_audio_information (GUPnPDLNAInformation *info);

@@ -25,11 +25,18 @@
 #include "gupnp-dlna-gst-audio-information.h"
 #include "gupnp-dlna-gst-info-utils.h"
 
+
 struct _GUPnPDLNAGstAudioInformationPrivate {
         GstDiscovererInfo *info;
         GList *stream_list;
         GstDiscovererAudioInfo *audio_info;
         GstCaps *caps;
+};
+typedef struct _GUPnPDLNAGstAudioInformationPrivate
+        GUPnPDLNAGstAudioInformationPrivate;
+
+struct _GUPnPDLNAGstAudioInformation {
+        GObject parent;
 };
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstAudioInformation,
@@ -46,7 +53,9 @@ enum
 static GstDiscovererAudioInfo *
 get_audio_info (GUPnPDLNAGstAudioInformation *gst_info)
 {
-        GUPnPDLNAGstAudioInformationPrivate *priv = gst_info->priv;
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (
+                        gst_info);
 
         if (!priv->audio_info) {
                 GList *iter;
@@ -103,8 +112,10 @@ get_audio_info (GUPnPDLNAGstAudioInformation *gst_info)
 static GstCaps *
 get_caps (GUPnPDLNAGstAudioInformation *gst_info)
 {
-        GUPnPDLNAGstAudioInformationPrivate *priv = gst_info->priv;
         GstDiscovererStreamInfo *info = GST_DISCOVERER_STREAM_INFO (get_audio_info (gst_info));
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (
+                        gst_info);
 
         if (!priv->caps)
                 priv->caps = gst_discoverer_stream_info_get_caps (info);
@@ -119,9 +130,11 @@ get_int_value (GUPnPDLNAGstAudioInformation *gst_info,
         GstCaps *caps = get_caps (gst_info);
         GstDiscovererStreamInfo *stream =
                          GST_DISCOVERER_STREAM_INFO (get_audio_info (gst_info));
-        GstDiscovererInfo *info = gst_info->priv->info;
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (
+                        gst_info);
 
-        return gupnp_dlna_gst_get_int_value (caps, stream, info, name);
+        return gupnp_dlna_gst_get_int_value (caps, stream, priv->info, name);
 }
 
 static GUPnPDLNAStringValue
@@ -131,9 +144,11 @@ get_string_value (GUPnPDLNAGstAudioInformation *gst_info,
         GstCaps *caps = get_caps (gst_info);
         GstDiscovererStreamInfo *stream =
                          GST_DISCOVERER_STREAM_INFO (get_audio_info (gst_info));
-        GstDiscovererInfo *info = gst_info->priv->info;
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (
+                        gst_info);
 
-        return gupnp_dlna_gst_get_string_value (caps, stream, info, name);
+        return gupnp_dlna_gst_get_string_value (caps, stream, priv->info, name);
 }
 
 static GUPnPDLNAIntValue
@@ -282,7 +297,8 @@ gupnp_dlna_gst_audio_information_dispose (GObject *object)
 {
         GUPnPDLNAGstAudioInformation *info =
                                       GUPNP_DLNA_GST_AUDIO_INFORMATION (object);
-        GUPnPDLNAGstAudioInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (info);
         GObjectClass *parent_class =
                  G_OBJECT_CLASS (gupnp_dlna_gst_audio_information_parent_class);
 
@@ -303,7 +319,8 @@ gupnp_dlna_gst_audio_information_set_property (GObject      *object,
 {
         GUPnPDLNAGstAudioInformation *info =
                                       GUPNP_DLNA_GST_AUDIO_INFORMATION (object);
-        GUPnPDLNAGstAudioInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -327,7 +344,8 @@ gupnp_dlna_gst_audio_information_get_property (GObject    *object,
 {
         GUPnPDLNAGstAudioInformation *info =
                                       GUPNP_DLNA_GST_AUDIO_INFORMATION (object);
-        GUPnPDLNAGstAudioInformationPrivate *priv = info->priv;
+        GUPnPDLNAGstAudioInformationPrivate *priv =
+                gupnp_dlna_gst_audio_information_get_instance_private (info);
 
         switch (property_id) {
         case PROP_INFO:
@@ -382,14 +400,6 @@ gupnp_dlna_gst_audio_information_class_init
 static void
 gupnp_dlna_gst_audio_information_init (GUPnPDLNAGstAudioInformation *self)
 {
-        GUPnPDLNAGstAudioInformationPrivate *priv =
-            gupnp_dlna_gst_audio_information_get_instance_private (self);
-
-        priv->info = NULL;
-        priv->stream_list = NULL;
-        priv->audio_info = NULL;
-        priv->caps = NULL;
-        self->priv = priv;
 }
 
 GUPnPDLNAGstAudioInformation *

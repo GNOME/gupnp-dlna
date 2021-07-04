@@ -29,45 +29,26 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAMetadataExtractor,
+                          gupnp_dlna_metadata_extractor,
+                          GUPNP_DLNA,
+                          METADATA_EXTRACTOR,
+                          GObject)
+
 #define GUPNP_TYPE_DLNA_METADATA_EXTRACTOR \
         (gupnp_dlna_metadata_extractor_get_type())
 
-#define GUPNP_DLNA_METADATA_EXTRACTOR(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_METADATA_EXTRACTOR, \
-                                     GUPnPDLNAMetadataExtractor))
-
-#define GUPNP_DLNA_METADATA_EXTRACTOR_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_METADATA_EXTRACTOR, \
-                                  GUPnPDLNAMetadataExtractorClass))
-
-#define GUPNP_IS_DLNA_METADATA_EXTRACTOR(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_METADATA_EXTRACTOR))
-
-#define GUPNP_IS_DLNA_METADATA_EXTRACTOR_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_METADATA_EXTRACTOR))
-
-#define GUPNP_DLNA_METADATA_EXTRACTOR_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_METADATA_EXTRACTOR, \
-                                    GUPnPDLNAMetadataExtractorClass))
-
-typedef struct _GUPnPDLNAMetadataExtractorPrivate
-                GUPnPDLNAMetadataExtractorPrivate;
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_METADATA_EXTRACTOR: (skip)
+ */
+#define GUPNP_IS_DLNA_METADATA_EXTRACTOR GUPNP_DLNA_IS_METADATA_EXTRACTOR
 
 /**
- * GUPnPDLNAMetadataExtractor:
- *
- * The top-level object used to for metadata extraction.
+ * GUPNP_IS_DLNA_METADATA_EXTRACTOR_CLASS: (skip)
  */
-typedef struct {
-        GObject parent;
+#define GUPNP_IS_DLNA_METADATA_EXTRACTOR_CLASS GUPNP_DLNA_IS_METADATA_EXTRACTOR_CLASS
 
-        GUPnPDLNAMetadataExtractorPrivate *priv;
-} GUPnPDLNAMetadataExtractor;
 
 /**
  * GUPnPDLNAMetadataExtractorClass:
@@ -78,7 +59,7 @@ typedef struct {
  * information about media file synchronously.
  * @_reserved: Padding. Ignore it.
  */
-typedef struct {
+struct _GUPnPDLNAMetadataExtractorClass {
         GObjectClass parent_class;
 
         /* virtuals */
@@ -95,10 +76,7 @@ typedef struct {
                           GError                     **error);
 
         gpointer _reserved[12];
-} GUPnPDLNAMetadataExtractorClass;
-
-GType
-gupnp_dlna_metadata_extractor_get_type (void);
+};
 
 gboolean
 gupnp_dlna_metadata_extractor_extract_async

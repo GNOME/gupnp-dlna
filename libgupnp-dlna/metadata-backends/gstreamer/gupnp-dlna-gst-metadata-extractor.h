@@ -33,49 +33,16 @@ G_BEGIN_DECLS
 #define GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR \
         (gupnp_dlna_gst_metadata_extractor_get_type())
 
-#define GUPNP_DLNA_GST_METADATA_EXTRACTOR(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR, \
-                                     GUPnPDLNAGstMetadataExtractor))
+G_DECLARE_FINAL_TYPE (GUPnPDLNAGstMetadataExtractor,
+                      gupnp_dlna_gst_metadata_extractor,
+                      GUPNP_DLNA,
+                      GST_METADATA_EXTRACTOR,
+                      GUPnPDLNAMetadataExtractor)
 
-#define GUPNP_DLNA_GST_METADATA_EXTRACTOR_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR, \
-                                  GUPnPDLNAGstMetadataExtractorClass))
 
-#define GUPNP_IS_DLNA_GST_METADATA_EXTRACTOR(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR))
-
-#define GUPNP_IS_DLNA_GST_METADATA_EXTRACTOR_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR))
-
-#define GUPNP_DLNA_GST_METADATA_EXTRACTOR_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_GST_METADATA_EXTRACTOR, \
-                                    GUPnPDLNAGstMetadataExtractorClass))
-
-typedef struct _GUPnPDLNAGstMetadataExtractorPrivate
-                GUPnPDLNAGstMetadataExtractorPrivate;
-
-/**
- * GUPnPDLNAGstMetadataExtractor:
- *
- * The top-level object used to for metadata extraction.
- */
-typedef struct {
-        GUPnPDLNAMetadataExtractor parent;
-
-        GUPnPDLNAGstMetadataExtractorPrivate *priv;
-} GUPnPDLNAGstMetadataExtractor;
-
-typedef struct {
+struct _GUPnPDLNAGstMetadataExtractorClass {
         GUPnPDLNAMetadataExtractorClass parent_class;
-} GUPnPDLNAGstMetadataExtractorClass;
-
-GType
-gupnp_dlna_gst_metadata_extractor_get_type (void);
+};
 
 GUPnPDLNAGstMetadataExtractor *
 gupnp_dlna_gst_metadata_extractor_new (void);

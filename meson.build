@@ -9,7 +9,7 @@ gnome = import('gnome')
 
 shareddir = join_paths(get_option('prefix'), get_option('datadir'), 'gupnp-dlna-2.0')
 metadata_backend_dir = join_paths(get_option('prefix'), get_option('libdir'), 'gupnp-dlna')
-library_version = '3.0.0'
+library_version = '4.0.0'
 
 config = configuration_data()
 config.set_quoted('GUPNP_DLNA_DEFAULT_METADATA_BACKEND', get_option('default_backend'))

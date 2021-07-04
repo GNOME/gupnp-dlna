@@ -47,6 +47,7 @@ struct _GUPnPDLNAProfileGuesserPrivate {
         gboolean relaxed_mode;
         gboolean extended_mode;
 };
+typedef struct _GUPnPDLNAProfileGuesserPrivate GUPnPDLNAProfileGuesserPrivate;
 
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAProfileGuesser,
                             gupnp_dlna_profile_guesser,
@@ -67,7 +68,8 @@ gupnp_dlna_profile_guesser_set_property (GObject      *object,
                                          GParamSpec   *pspec)
 {
         GUPnPDLNAProfileGuesser *self = GUPNP_DLNA_PROFILE_GUESSER (object);
-        GUPnPDLNAProfileGuesserPrivate *priv = self->priv;
+        GUPnPDLNAProfileGuesserPrivate *priv =
+                gupnp_dlna_profile_guesser_get_instance_private (self);
 
         switch (property_id) {
         case PROP_DLNA_RELAXED_MODE:
@@ -93,7 +95,8 @@ gupnp_dlna_profile_guesser_get_property (GObject    *object,
                                          GParamSpec *pspec)
 {
         GUPnPDLNAProfileGuesser *self = GUPNP_DLNA_PROFILE_GUESSER (object);
-        GUPnPDLNAProfileGuesserPrivate *priv = self->priv;
+        GUPnPDLNAProfileGuesserPrivate *priv =
+                gupnp_dlna_profile_guesser_get_instance_private (self);
 
         switch (property_id) {
         case PROP_DLNA_RELAXED_MODE:
@@ -202,12 +205,6 @@ gupnp_dlna_profile_guesser_class_init
 static void
 gupnp_dlna_profile_guesser_init (GUPnPDLNAProfileGuesser *self)
 {
-        GUPnPDLNAProfileGuesserPrivate *priv =
-            gupnp_dlna_profile_guesser_get_instance_private (self);
-
-        priv->relaxed_mode = FALSE;
-        priv->extended_mode = FALSE;
-        self->priv = priv;
 }
 
 /**
@@ -285,7 +282,7 @@ gupnp_dlna_profile_guesser_guess_profile_async
         GError *extractor_error;
         guint id;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), FALSE);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), FALSE);
         g_return_val_if_fail (uri != NULL, FALSE);
         g_return_val_if_fail (error == NULL || *error == NULL, FALSE);
 
@@ -338,7 +335,7 @@ gupnp_dlna_profile_guesser_guess_profile_sync
         GUPnPDLNAInformation *info;
         GUPnPDLNAProfile *profile;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), NULL);
         g_return_val_if_fail (uri != NULL, NULL);
         g_return_val_if_fail (dlna_info == NULL || *dlna_info == NULL, NULL);
         g_return_val_if_fail (error == NULL || *error == NULL, NULL);
@@ -402,8 +399,8 @@ gupnp_dlna_profile_guesser_guess_profile_from_info
         GUPnPDLNAProfile *profile;
         const gchar *profile_name;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
-        g_return_val_if_fail (GUPNP_IS_DLNA_INFORMATION (info), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_INFORMATION (info), NULL);
 
         profiles = gupnp_dlna_profile_guesser_list_profiles (guesser);
         video_info = gupnp_dlna_information_get_video_information (info);
@@ -457,12 +454,12 @@ gupnp_dlna_profile_guesser_get_profile (GUPnPDLNAProfileGuesser *guesser,
 {
         // TODO: use a GHashTable for this.
         GList *iter;
-        GUPnPDLNAProfileGuesserPrivate *priv;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), NULL);
         g_return_val_if_fail (name != NULL, NULL);
 
-        priv = guesser->priv;
+        GUPnPDLNAProfileGuesserPrivate *priv =
+                gupnp_dlna_profile_guesser_get_instance_private (guesser);
 
         for (iter = profiles_list[priv->relaxed_mode][priv->extended_mode];
              iter;
@@ -489,11 +486,10 @@ gupnp_dlna_profile_guesser_get_profile (GUPnPDLNAProfileGuesser *guesser,
 GList *
 gupnp_dlna_profile_guesser_list_profiles (GUPnPDLNAProfileGuesser *guesser)
 {
-        GUPnPDLNAProfileGuesserPrivate *priv;
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), NULL);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), NULL);
-
-        priv = guesser->priv;
+        GUPnPDLNAProfileGuesserPrivate *priv =
+                gupnp_dlna_profile_guesser_get_instance_private (guesser);
 
         return profiles_list[priv->relaxed_mode][priv->extended_mode];
 }
@@ -507,9 +503,11 @@ gupnp_dlna_profile_guesser_list_profiles (GUPnPDLNAProfileGuesser *guesser)
 gboolean
 gupnp_dlna_profile_guesser_get_relaxed_mode (GUPnPDLNAProfileGuesser *guesser)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), FALSE);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), FALSE);
+        GUPnPDLNAProfileGuesserPrivate *priv =
+                gupnp_dlna_profile_guesser_get_instance_private (guesser);
 
-        return guesser->priv->relaxed_mode;
+        return priv->relaxed_mode;
 }
 
 /**
@@ -521,9 +519,11 @@ gupnp_dlna_profile_guesser_get_relaxed_mode (GUPnPDLNAProfileGuesser *guesser)
 gboolean
 gupnp_dlna_profile_guesser_get_extended_mode (GUPnPDLNAProfileGuesser *guesser)
 {
-        g_return_val_if_fail (GUPNP_IS_DLNA_PROFILE_GUESSER (guesser), FALSE);
+        g_return_val_if_fail (GUPNP_DLNA_IS_PROFILE_GUESSER (guesser), FALSE);
+        GUPnPDLNAProfileGuesserPrivate *priv =
+                gupnp_dlna_profile_guesser_get_instance_private (guesser);
 
-        return guesser->priv->extended_mode;
+        return priv->extended_mode;
 }
 
 /**

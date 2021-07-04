@@ -69,6 +69,9 @@ struct _GUPnPDLNAMetadataExtractorPrivate {
         gpointer placeholder;
 };
 
+typedef struct _GUPnPDLNAMetadataExtractorPrivate
+        GUPnPDLNAMetadataExtractorPrivate;
+
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAMetadataExtractor,
                                      gupnp_dlna_metadata_extractor,
                                      G_TYPE_OBJECT)
@@ -107,10 +110,6 @@ gupnp_dlna_metadata_extractor_class_init
 static void
 gupnp_dlna_metadata_extractor_init (GUPnPDLNAMetadataExtractor *self)
 {
-        GUPnPDLNAMetadataExtractorPrivate *priv =
-            gupnp_dlna_metadata_extractor_get_instance_private (self);
-
-        self->priv = priv;
 }
 
 /**
@@ -134,13 +133,13 @@ gupnp_dlna_metadata_extractor_extract_async
 {
         GUPnPDLNAMetadataExtractorClass *extractor_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_METADATA_EXTRACTOR (extractor),
+        g_return_val_if_fail (GUPNP_DLNA_IS_METADATA_EXTRACTOR (extractor),
                               FALSE);
         g_return_val_if_fail (uri != NULL, FALSE);
 
         extractor_class = GUPNP_DLNA_METADATA_EXTRACTOR_GET_CLASS (extractor);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_METADATA_EXTRACTOR_CLASS
+        g_return_val_if_fail (GUPNP_DLNA_IS_METADATA_EXTRACTOR_CLASS
                                         (extractor_class),
                               FALSE);
         g_return_val_if_fail (extractor_class->extract_async != NULL, FALSE);
@@ -172,13 +171,13 @@ gupnp_dlna_metadata_extractor_extract_sync
 {
         GUPnPDLNAMetadataExtractorClass *extractor_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_METADATA_EXTRACTOR (extractor),
+        g_return_val_if_fail (GUPNP_DLNA_IS_METADATA_EXTRACTOR (extractor),
                               NULL);
         g_return_val_if_fail (uri != NULL, NULL);
 
         extractor_class = GUPNP_DLNA_METADATA_EXTRACTOR_GET_CLASS (extractor);
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_METADATA_EXTRACTOR_CLASS
+        g_return_val_if_fail (GUPNP_DLNA_IS_METADATA_EXTRACTOR_CLASS
                                         (extractor_class),
                               NULL);
         g_return_val_if_fail (extractor_class->extract_async != NULL, NULL);
@@ -206,8 +205,8 @@ gupnp_dlna_metadata_extractor_emit_done (GUPnPDLNAMetadataExtractor *extractor,
                                          GUPnPDLNAInformation       *info,
                                          GError                     *error)
 {
-        g_return_if_fail (GUPNP_IS_DLNA_METADATA_EXTRACTOR (extractor));
-        g_return_if_fail (GUPNP_IS_DLNA_INFORMATION (info));
+        g_return_if_fail (GUPNP_DLNA_IS_METADATA_EXTRACTOR (extractor));
+        g_return_if_fail (GUPNP_DLNA_IS_INFORMATION (info));
 
         g_signal_emit (extractor, signals[DONE], 0, info, error);
 }

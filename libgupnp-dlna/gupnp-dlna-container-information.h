@@ -27,40 +27,24 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAContainerInformation,
+                          gupnp_dlna_container_information,
+                          GUPNP_DLNA,
+                          CONTAINER_INFORMATION,
+                          GObject)
+
 #define GUPNP_TYPE_DLNA_CONTAINER_INFORMATION \
         (gupnp_dlna_container_information_get_type())
 
-#define GUPNP_DLNA_CONTAINER_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_CONTAINER_INFORMATION, \
-                                     GUPnPDLNAContainerInformation))
-
-#define GUPNP_DLNA_CONTAINER_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_CONTAINER_INFORMATION, \
-                                  GUPnPDLNAContainerInformationClass))
-
-#define GUPNP_IS_DLNA_CONTAINER_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_CONTAINER_INFORMATION))
-
-#define GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_CONTAINER_INFORMATION))
-
-#define GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_CONTAINER_INFORMATION, \
-                                    GUPnPDLNAContainerInformationClass))
-
-typedef struct _GUPnPDLNAContainerInformationPrivate
-                GUPnPDLNAContainerInformationPrivate;
-
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAContainerInformationPrivate *priv;
-} GUPnPDLNAContainerInformation;
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_CONTAINER_INFORMATION: (skip)
+ */
+#define GUPNP_IS_DLNA_CONTAINER_INFORMATION GUPNP_DLNA_IS_CONTAINER_INFORMATION
+/**
+ * GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS
 
 /**
  * GUPnPDLNAContainerInformationClass:
@@ -79,7 +63,7 @@ typedef struct {
  * type.
  * @_reserved: Padding. Ignore it.
  */
-typedef struct {
+struct _GUPnPDLNAContainerInformationClass {
         GObjectClass parent_class;
 
         GUPnPDLNAIntValue
@@ -101,10 +85,7 @@ typedef struct {
         (* get_mime) (GUPnPDLNAContainerInformation *info);
 
         gpointer _reserved[12];
-} GUPnPDLNAContainerInformationClass;
-
-GType
-gupnp_dlna_container_information_get_type (void);
+};
 
 GUPnPDLNAIntValue
 gupnp_dlna_container_information_get_mpeg_version

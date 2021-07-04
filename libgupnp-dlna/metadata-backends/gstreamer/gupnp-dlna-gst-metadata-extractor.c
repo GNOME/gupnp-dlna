@@ -26,19 +26,37 @@
 #include "gupnp-dlna-gst-information.h"
 #include "gupnp-dlna-gst-utils.h"
 
-struct _GUPnPDLNAGstMetadataExtractorPrivate {
-        gpointer placeholder;
-};
+typedef struct _GUPnPDLNAGstMetadataExtractorPrivate
+        GUPnPDLNAGstMetadataExtractorPrivate;
 
-G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstMetadataExtractor,
-                            gupnp_dlna_gst_metadata_extractor,
-                            GUPNP_TYPE_DLNA_METADATA_EXTRACTOR)
+/**
+ * GUPnPDLNAGstMetadataExtractor:
+ *
+ * The top-level object used to for metadata extraction.
+ */
+struct _GUPnPDLNAGstMetadataExtractor {
+        GUPnPDLNAMetadataExtractor parent;
+
+        GUPnPDLNAGstMetadataExtractorPrivate *priv;
+};
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_GST_METADATA_BACKEND: (skip)
+ */
+#define GUPNP_IS_GST_DLNA_METADATA_BACKEND GUPNP_DLNA_IS_GST_METADATA_BACKEND
+/**
+ * GUPNP_IS_GST_DLNA_METADATA_BACKEND_CLASS: (skip)
+ */
+#define GUPNP_IS_GST_DLNA_METADATA_BACKEND_CLASS GUPNP_DLNA_IS_GST_METADATA_BACKEND_CLASS
+
+G_DEFINE_TYPE (GUPnPDLNAGstMetadataExtractor,
+               gupnp_dlna_gst_metadata_extractor,
+               GUPNP_TYPE_DLNA_METADATA_EXTRACTOR)
 
 static gboolean
 unref_discoverer_in_idle (GstDiscoverer *discoverer)
 {
-        if (discoverer)
-                g_object_unref (discoverer);
+        g_clear_object (&discoverer);
 
         return FALSE;
 }
@@ -142,7 +160,6 @@ gupnp_dlna_gst_metadata_extractor_class_init
 static void
 gupnp_dlna_gst_metadata_extractor_init (GUPnPDLNAGstMetadataExtractor *self)
 {
-        self->priv = gupnp_dlna_gst_metadata_extractor_get_instance_private (self);
 }
 
 GUPnPDLNAGstMetadataExtractor *

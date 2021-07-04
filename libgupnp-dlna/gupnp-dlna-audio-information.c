@@ -50,6 +50,8 @@
 struct _GUPnPDLNAAudioInformationPrivate {
         gpointer placeholder;
 };
+typedef struct _GUPnPDLNAAudioInformationPrivate
+        GUPnPDLNAAudioInformationPrivate;
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAAudioInformation,
                         gupnp_dlna_audio_information,
@@ -76,10 +78,6 @@ gupnp_dlna_audio_information_class_init
 static void
 gupnp_dlna_audio_information_init (GUPnPDLNAAudioInformation *info)
 {
-        GUPnPDLNAAudioInformationPrivate *priv =
-            gupnp_dlna_audio_information_get_instance_private (info);
-
-        info->priv = priv;
 }
 
 /**
@@ -93,13 +91,13 @@ gupnp_dlna_audio_information_get_bitrate (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_bitrate != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -118,13 +116,13 @@ gupnp_dlna_audio_information_get_channels (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_channels != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -143,13 +141,13 @@ gupnp_dlna_audio_information_get_depth (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_depth != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -168,13 +166,13 @@ gupnp_dlna_audio_information_get_layer (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_layer != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -193,13 +191,13 @@ gupnp_dlna_audio_information_get_level (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_level != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -219,13 +217,13 @@ gupnp_dlna_audio_information_get_mpeg_audio_version
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mpeg_audio_version != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -244,13 +242,13 @@ gupnp_dlna_audio_information_get_mpeg_version (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mpeg_version != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -269,13 +267,13 @@ gupnp_dlna_audio_information_get_profile (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_profile != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -294,13 +292,13 @@ gupnp_dlna_audio_information_get_rate (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_rate != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -319,13 +317,13 @@ gupnp_dlna_audio_information_get_stream_format (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_stream_format != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -344,13 +342,13 @@ gupnp_dlna_audio_information_get_wma_version (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_wma_version != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -369,13 +367,13 @@ gupnp_dlna_audio_information_get_mime (GUPnPDLNAAudioInformation *info)
 {
         GUPnPDLNAAudioInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_AUDIO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_AUDIO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_AUDIO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_AUDIO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_AUDIO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mime != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);

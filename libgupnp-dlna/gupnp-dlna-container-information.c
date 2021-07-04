@@ -51,6 +51,8 @@
 struct _GUPnPDLNAContainerInformationPrivate {
         gpointer placeholder;
 };
+typedef struct _GUPnPDLNAContainerInformationPrivate
+        GUPnPDLNAContainerInformationPrivate;
 
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAContainerInformation,
                                      gupnp_dlna_container_information,
@@ -71,10 +73,6 @@ gupnp_dlna_container_information_class_init
 static void
 gupnp_dlna_container_information_init (GUPnPDLNAContainerInformation *info)
 {
-        GUPnPDLNAContainerInformationPrivate *priv = 
-            gupnp_dlna_container_information_get_instance_private (info);
-
-        info->priv = priv;
 }
 
 /**
@@ -89,13 +87,13 @@ gupnp_dlna_container_information_get_mpeg_version
 {
         GUPnPDLNAContainerInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_CONTAINER_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_CONTAINER_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                        (GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS (info_class),
+                        (GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS (info_class),
                          GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mpeg_version != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -115,13 +113,13 @@ gupnp_dlna_container_information_get_packet_size
 {
         GUPnPDLNAContainerInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_CONTAINER_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_CONTAINER_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                        (GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS (info_class),
+                        (GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS (info_class),
                          GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_packet_size != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -141,13 +139,13 @@ gupnp_dlna_container_information_get_profile
 {
         GUPnPDLNAContainerInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_CONTAINER_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_CONTAINER_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                        (GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS (info_class),
+                        (GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS (info_class),
                          GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_profile != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -167,13 +165,13 @@ gupnp_dlna_container_information_is_system_stream
 {
         GUPnPDLNAContainerInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_CONTAINER_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_CONTAINER_INFORMATION (info),
                               GUPNP_DLNA_BOOL_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                        (GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS (info_class),
+                        (GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS (info_class),
                          GUPNP_DLNA_BOOL_VALUE_UNSET);
         g_return_val_if_fail (info_class->is_system_stream != NULL,
                               GUPNP_DLNA_BOOL_VALUE_UNSET);
@@ -193,13 +191,13 @@ gupnp_dlna_container_information_get_variant
 {
         GUPnPDLNAContainerInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_CONTAINER_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_CONTAINER_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                        (GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS (info_class),
+                        (GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS (info_class),
                          GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_variant != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -218,13 +216,13 @@ gupnp_dlna_container_information_get_mime (GUPnPDLNAContainerInformation *info)
 {
         GUPnPDLNAContainerInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_CONTAINER_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_CONTAINER_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_CONTAINER_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                        (GUPNP_IS_DLNA_CONTAINER_INFORMATION_CLASS (info_class),
+                        (GUPNP_DLNA_IS_CONTAINER_INFORMATION_CLASS (info_class),
                          GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mime != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);

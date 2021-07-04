@@ -29,55 +29,31 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAProfile,
+                          gupnp_dlna_profile,
+                          GUPNP_DLNA,
+                          PROFILE,
+                          GObject)
+
 #define GUPNP_TYPE_DLNA_PROFILE gupnp_dlna_profile_get_type()
 
-#define GUPNP_DLNA_PROFILE(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE, \
-                                     GUPnPDLNAProfile))
-
-#define GUPNP_DLNA_PROFILE_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE, \
-                                  GUPnPDLNAProfileClass))
-
-#define GUPNP_IS_DLNA_PROFILE(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE))
-
-#define GUPNP_IS_DLNA_PROFILE_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE))
-
-#define GUPNP_DLNA_PROFILE_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_PROFILE, \
-                                    GUPnPDLNAProfileClass))
-
-typedef struct _GUPnPDLNAProfilePrivate GUPnPDLNAProfilePrivate;
-
+// Backwards-compatible defines
 /**
- * GUPnPDLNAProfile:
- *
- * The top-level object used for the in-memory representation of the
- * DLNA Profiles.
+ * GUPNP_IS_DLNA_PROFILE: (skip)
  */
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAProfilePrivate *priv;
-} GUPnPDLNAProfile;
+#define GUPNP_IS_DLNA_PROFILE GUPNP_DLNA_IS_PROFILE
+/**
+ * GUPNP_IS_DLNA_PROFILE_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_PROFILE_CLASS GUPNP_DLNA_IS_PROFILE_CLASS
 
 /**
  * GUPnPDLNAProfileClass:
  * @parent_class: A #GObjectClass - parent of this class.
  */
-typedef struct {
+struct _GUPnPDLNAProfileClass {
         GObjectClass parent_class;
-} GUPnPDLNAProfileClass;
-
-GType
-gupnp_dlna_profile_get_type (void);
+};
 
 const gchar *
 gupnp_dlna_profile_get_name (GUPnPDLNAProfile *profile);

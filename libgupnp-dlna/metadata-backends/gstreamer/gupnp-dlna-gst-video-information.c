@@ -32,6 +32,14 @@ struct _GUPnPDLNAGstVideoInformationPrivate {
         GstCaps *caps;
 };
 
+typedef struct _GUPnPDLNAGstVideoInformationPrivate GUPnPDLNAGstVideoInformationPrivate;
+
+struct _GUPnPDLNAGstVideoInformation {
+        GUPnPDLNAVideoInformation parent;
+
+        GUPnPDLNAGstVideoInformationPrivate *priv;
+};
+
 G_DEFINE_TYPE_WITH_PRIVATE (GUPnPDLNAGstVideoInformation,
                             gupnp_dlna_gst_video_information,
                             GUPNP_TYPE_DLNA_VIDEO_INFORMATION)

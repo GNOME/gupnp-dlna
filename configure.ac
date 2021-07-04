@@ -21,7 +21,7 @@ AX_CHECK_ENABLE_DEBUG([yes])
 
 dnl library versioning
 dnl Increase when changing the API
-GUPNP_DLNA_CURRENT=3
+GUPNP_DLNA_CURRENT=4
 
 dnl Update when changing implementation of current API,
 dnl reset to 0 when changing CURRENT.  This is the revision of

@@ -52,6 +52,9 @@ struct _GUPnPDLNAVideoInformationPrivate {
         gpointer placeholder;
 };
 
+typedef struct _GUPnPDLNAVideoInformationPrivate
+        GUPnPDLNAVideoInformationPrivate;
+
 G_DEFINE_ABSTRACT_TYPE_WITH_PRIVATE (GUPnPDLNAVideoInformation,
                                      gupnp_dlna_video_information,
                                      G_TYPE_OBJECT)
@@ -76,10 +79,6 @@ gupnp_dlna_video_information_class_init
 static void
 gupnp_dlna_video_information_init (GUPnPDLNAVideoInformation *info)
 {
-        GUPnPDLNAVideoInformationPrivate *priv =
-            gupnp_dlna_video_information_get_instance_private (info);
-
-        info->priv = priv;
 }
 
 /**
@@ -93,13 +92,13 @@ gupnp_dlna_video_information_get_bitrate (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_bitrate != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -118,13 +117,13 @@ gupnp_dlna_video_information_get_framerate (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_FRACTION_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_FRACTION_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_framerate != NULL,
                               GUPNP_DLNA_FRACTION_VALUE_UNSET);
@@ -143,13 +142,13 @@ gupnp_dlna_video_information_get_height (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_height != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -168,13 +167,13 @@ gupnp_dlna_video_information_is_interlaced (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_BOOL_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_BOOL_VALUE_UNSET);
         g_return_val_if_fail (info_class->is_interlaced != NULL,
                               GUPNP_DLNA_BOOL_VALUE_UNSET);
@@ -193,13 +192,13 @@ gupnp_dlna_video_information_get_level (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_level != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -218,13 +217,13 @@ gupnp_dlna_video_information_get_mpeg_version (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mpeg_version != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -244,13 +243,13 @@ gupnp_dlna_video_information_get_pixel_aspect_ratio
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_FRACTION_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_FRACTION_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_pixel_aspect_ratio != NULL,
                               GUPNP_DLNA_FRACTION_VALUE_UNSET);
@@ -269,13 +268,13 @@ gupnp_dlna_video_information_get_profile (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_profile != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);
@@ -294,13 +293,13 @@ gupnp_dlna_video_information_is_system_stream (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_BOOL_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_BOOL_VALUE_UNSET);
         g_return_val_if_fail (info_class->is_system_stream != NULL,
                               GUPNP_DLNA_BOOL_VALUE_UNSET);
@@ -319,13 +318,13 @@ gupnp_dlna_video_information_get_width (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_INT_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_INT_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_width != NULL,
                               GUPNP_DLNA_INT_VALUE_UNSET);
@@ -344,13 +343,13 @@ gupnp_dlna_video_information_get_mime (GUPnPDLNAVideoInformation *info)
 {
         GUPnPDLNAVideoInformationClass *info_class;
 
-        g_return_val_if_fail (GUPNP_IS_DLNA_VIDEO_INFORMATION (info),
+        g_return_val_if_fail (GUPNP_DLNA_IS_VIDEO_INFORMATION (info),
                               GUPNP_DLNA_STRING_VALUE_UNSET);
 
         info_class = GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS (info);
 
         g_return_val_if_fail
-                            (GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS (info_class),
+                            (GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS (info_class),
                              GUPNP_DLNA_STRING_VALUE_UNSET);
         g_return_val_if_fail (info_class->get_mime != NULL,
                               GUPNP_DLNA_STRING_VALUE_UNSET);

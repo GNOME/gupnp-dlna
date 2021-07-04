@@ -31,45 +31,29 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAProfileLoader,
+                          gupnp_dlna_profile_loader,
+                          GUPNP_DLNA,
+                          PROFILE_LOADER,
+                          GObject)
+
+
 #define GUPNP_TYPE_DLNA_PROFILE_LOADER (gupnp_dlna_profile_loader_get_type ())
-
-#define GUPNP_DLNA_PROFILE_LOADER(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE_LOADER, \
-                                     GUPnPDLNAProfileLoader))
-
-#define GUPNP_DLNA_PROFILE_LOADER_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE_LOADER, \
-                                  GUPnPDLNAProfileLoaderClass))
-
-#define GUPNP_IS_DLNA_PROFILE_LOADER(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_PROFILE_LOADER))
-
-#define GUPNP_IS_DLNA_PROFILE_LOADER_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_PROFILE_LOADER))
-
-#define GUPNP_DLNA_PROFILE_LOADER_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_PROFILE_LOADER, \
-                                    GUPnPDLNAProfileLoaderClass))
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_PROFILE_LOADER: (skip)
+ */
+#define GUPNP_IS_DLNA_PROFILE_LOADER GUPNP_DLNA_IS_PROFILE_LOADER
+/**
+ * GUPNP_IS_DLNA_PROFILE_LOADER_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_PROFILE_LOADER_CLASS GUPNP_DLNA_IS_PROFILE_LOADER_CLASS
 
 typedef struct _GUPnPDLNAProfileLoaderPrivate GUPnPDLNAProfileLoaderPrivate;
 
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAProfileLoaderPrivate *priv;
-} GUPnPDLNAProfileLoader;
-
-typedef struct {
+struct _GUPnPDLNAProfileLoaderClass {
         GObjectClass parent_class;
-} GUPnPDLNAProfileLoaderClass;
-
-GType
-gupnp_dlna_profile_loader_get_type (void);
+};
 
 GUPnPDLNAProfileLoader *
 gupnp_dlna_profile_loader_new (gboolean relaxed_mode,

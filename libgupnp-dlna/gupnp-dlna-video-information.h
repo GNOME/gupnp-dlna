@@ -27,40 +27,25 @@
 
 G_BEGIN_DECLS
 
+G_DECLARE_DERIVABLE_TYPE (GUPnPDLNAVideoInformation,
+                          gupnp_dlna_video_information,
+                          GUPNP_DLNA,
+                          VIDEO_INFORMATION,
+                          GObject)
+
+
 #define GUPNP_TYPE_DLNA_VIDEO_INFORMATION \
         (gupnp_dlna_video_information_get_type())
 
-#define GUPNP_DLNA_VIDEO_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_CAST ((obj), \
-                                     GUPNP_TYPE_DLNA_VIDEO_INFORMATION, \
-                                     GUPnPDLNAVideoInformation))
-
-#define GUPNP_DLNA_VIDEO_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_CAST ((klass), \
-                                  GUPNP_TYPE_DLNA_VIDEO_INFORMATION, \
-                                  GUPnPDLNAVideoInformationClass))
-
-#define GUPNP_IS_DLNA_VIDEO_INFORMATION(obj) \
-        (G_TYPE_CHECK_INSTANCE_TYPE ((obj), \
-                                     GUPNP_TYPE_DLNA_VIDEO_INFORMATION))
-
-#define GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS(klass) \
-        (G_TYPE_CHECK_CLASS_TYPE ((klass), \
-                                  GUPNP_TYPE_DLNA_VIDEO_INFORMATION))
-
-#define GUPNP_DLNA_VIDEO_INFORMATION_GET_CLASS(obj) \
-        (G_TYPE_INSTANCE_GET_CLASS ((obj), \
-                                    GUPNP_TYPE_DLNA_VIDEO_INFORMATION, \
-                                    GUPnPDLNAVideoInformationClass))
-
-typedef struct _GUPnPDLNAVideoInformationPrivate
-                GUPnPDLNAVideoInformationPrivate;
-
-typedef struct {
-        GObject parent;
-
-        GUPnPDLNAVideoInformationPrivate *priv;
-} GUPnPDLNAVideoInformation;
+// Backwards-compatible defines
+/**
+ * GUPNP_IS_DLNA_VIDEO_INFORMATION: (skip)
+ */
+#define GUPNP_IS_DLNA_VIDEO_INFORMATION GUPNP_DLNA_IS_VIDEO_INFORMATION
+/**
+ * GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS: (skip)
+ */
+#define GUPNP_IS_DLNA_VIDEO_INFORMATION_CLASS GUPNP_DLNA_IS_VIDEO_INFORMATION_CLASS
 
 /**
  * GUPnPDLNAVideoInformationClass:
@@ -89,7 +74,7 @@ typedef struct {
  * type.
  * @_reserved: Padding. Ignore it.
  */
-typedef struct {
+struct _GUPnPDLNAVideoInformationClass {
         GObjectClass parent_class;
 
         GUPnPDLNAIntValue
@@ -126,10 +111,7 @@ typedef struct {
         (* get_mime) (GUPnPDLNAVideoInformation *info);
 
         gpointer _reserved[12];
-} GUPnPDLNAVideoInformationClass;
-
-GType
-gupnp_dlna_video_information_get_type (void);
+};
 
 GUPnPDLNAIntValue
 gupnp_dlna_video_information_get_bitrate (GUPnPDLNAVideoInformation *info);
