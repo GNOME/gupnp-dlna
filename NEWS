@@ -1,3 +1,23 @@
+0.11.0
+======
+
+- Drop GStreamer 0.10 back-end
+- Drop old compatibility code
+- Add meson support
+- Port to more modern GObject
+
+Bugs fixed in this release:
+ - https://gitlab.gnome.org/GNOME/gupnp-dlna/issues/1
+ - https://gitlab.gnome.org/GNOME/gupnp-dlna/issues/7
+
+Merge requests included in this release:
+ - https://gitlab.gnome.org/GNOME/gupnp-dlna/merge_requests/1
+
+All contributors to this release:
+ - Jens Georg <mail@jensge.org>
+ - Jens Georg <jensg@openismus.com>
+ - Andre Klapper <a9016009@gmx.de>
+
 0.10.5
 ======
 
