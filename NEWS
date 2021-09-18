@@ -1,4 +1,9 @@
-0.11.0
+0.12.0 (stable)
+======
+
+- Re-tag of 0.11 as 0.12. No functional change
+
+0.11.0 (development)
 ======
 
 - Drop GStreamer 0.10 back-end
