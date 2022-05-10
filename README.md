@@ -1,5 +1,4 @@
-GUPnP DLNA
-==========
+# GUPnP DLNA
 
 GUPnP is an object-oriented open source framework for creating UPnP devices and
 control points, written in C using GObject and libsoup. The GUPnP API is
