@@ -1,7 +1,7 @@
 project(
     'gupnp-dlna',
     'c',
-    version: '0.12.0'
+    version: '0.13.0'
 )
 
 pkg = import('pkgconfig')
