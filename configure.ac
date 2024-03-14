@@ -1,7 +1,7 @@
 AC_PREREQ([2.63])
 AC_INIT([gupnp-dlna],
         [0.12.0],
-        [https://bugzilla.gnome.org/enter_bug.cgi?product=gupnp&component=gupnp-dlna],
+        [https://gitlab.gnome.org/GNOME/gupnp-dlna/-/issues],
         [gupnp-dlna],
         [http://www.gupnp.org/])
 
