@@ -9,7 +9,7 @@ gupnp_dlna_vapi = gnome.generate_vapi(
     install : true
 )
 
-gnome.generate_vapi(
+gupnp_dlna_gst_vapi = gnome.generate_vapi(
     'gupnp-dlna-gst-2.0',
     sources : [
         gupnp_dlna_gst_gir.get(0),
